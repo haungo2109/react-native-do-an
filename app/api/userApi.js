@@ -50,7 +50,7 @@ const userApi = {
     },
     pushTokenUser: (data) => {
         const url = `/user/push-token/`
-        return api.push(url, data)
+        return api.post(url, data)
     },
 }
 export default userApi

@@ -34,6 +34,7 @@ import { getPaymentMethodAction } from "../redux/reducers/paymentMethodReducer"
 import { getReportTypeAction } from "../redux/reducers/reportReducer"
 import { getCategoryAction } from "../redux/reducers/categoryAuctionReducer"
 import MomoPaymentScreen from "../screens/MomoPaymentScreen"
+import CreateEditAuctionScreen from "../screens/CreateEditAuctionScreen"
 
 const Stack = createNativeStackNavigator()
 const Drawer = createDrawerNavigator()
@@ -110,12 +111,20 @@ const AppContainer = (props) => {
     const responseListener = useRef()
     const dispatch = useDispatch()
     const navigation = useNavigation()
+    const push_token = useSelector((s) => s.notification.pushToken)
+
+    useEffect(() => {
+        if (user?.username && push_token) {
+            const form = new FormData()
+            form.append("push_token", push_token)
+            dispatch(pushTokenUserAction(form))
+        }
+    }, [user])
 
     useEffect(() => {
         dispatch(getPaymentMethodAction())
         dispatch(getReportTypeAction())
         dispatch(getCategoryAction())
-
         registerForPushNotificationsAsync().then((token) => {
             dispatch(setPushToken(token))
         })
@@ -157,7 +166,9 @@ const AppContainer = (props) => {
     }, [])
 
     return (
-        <Stack.Navigator initialRouteName={"MomoPayment"}>
+        <Stack.Navigator
+            initialRouteName={user.username ? "CreateEditAuction" : "Wellcome"}
+        >
             <Stack.Screen
                 name="Wellcome"
                 component={WellcomeScreen}
@@ -172,6 +183,10 @@ const AppContainer = (props) => {
             />
             <Stack.Screen name="User" component={UserScreen} />
             <Stack.Screen name="MomoPayment" component={MomoPaymentScreen} />
+            <Stack.Screen
+                name="CreateEditAuction"
+                component={CreateEditAuctionScreen}
+            />
         </Stack.Navigator>
     )
 }
@@ -222,7 +237,7 @@ async function registerForPushNotificationsAsync() {
             lightColor: "#FF231F7C",
         })
     }
-
+    console.log("push token: ", token)
     return token
 }
 export default AppContainer

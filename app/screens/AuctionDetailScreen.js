@@ -154,7 +154,11 @@ function AuctionDetailScreen({ route, navigation }) {
         let comment = data.find((c) => c.status_transaction == "in process")
         if (comment === undefined) return
 
-        navigation.navigate("MomoPayment", { amount: comment.price })
+        navigation.navigate("MomoPayment", {
+            amount: comment.price,
+            auction_id: item.id,
+            comment_id: comment.id,
+        })
     }
     const renderActionForBuyler = () => {
         switch (item.status_auction) {
@@ -325,13 +329,15 @@ const SelectStatusComment = ({
                         value="default"
                         style={{ color: Colors.gray5 }}
                     />
-                    {data.map((c, i) => (
-                        <Picker.Item
-                            key={i}
-                            label={c.content + " " + c.price}
-                            value={c.id.toString()}
-                        />
-                    ))}
+                    {data.map((c, i) =>
+                        c.status_transaction === "being auctioned" ? (
+                            <Picker.Item
+                                key={i}
+                                label={c.content + " " + c.price}
+                                value={c.id.toString()}
+                            />
+                        ) : null
+                    )}
                 </Picker>
             </FieldCustom>
             <ButtonSubmitCommentAuction onPress={handlSubmitStatusComment}>

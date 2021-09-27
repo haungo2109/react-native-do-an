@@ -123,6 +123,9 @@ function Auction({
     category,
     payment_method,
     showAll = false,
+    date_success,
+    buyer,
+    accept_price,
 }) {
     const dispatch = useDispatch()
     const navigation = useNavigation()
@@ -198,6 +201,13 @@ function Auction({
                         <TextContent>Trạng thái: {status_auction}</TextContent>
                     </>
                 ) : null}
+                {/* {date_success ? (
+                    <>
+                        <TextTitle>{date_success}</TextTitle>
+                        <TextTitle>{buyer}</TextTitle>
+                        <TextTitle>{accept_price}</TextTitle>
+                    </>
+                ) : null} */}
             </WrapperText>
             {auction_images?.length !== 0 ? (
                 <FlatList

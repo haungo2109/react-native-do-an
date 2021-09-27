@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React, { Component, useEffect, useState } from "react"
 import {
     Platform,
     StyleSheet,
@@ -14,17 +14,21 @@ import {
     ActivityIndicator,
 } from "react-native"
 import RNMomosdk from "react-native-momosdk"
+import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
+import auctionApi from "../api/auctionApi"
 import Colors from "../config/Colors"
 import Font from "../config/Font"
+import { postMomoPayAction } from "../redux/reducers/auctionReducer"
+import formatNumberToMoney from "../utils/FormatNumberToMoney"
 const RNMoMoPaymentModule = NativeModules.RNMomosdk
 const EventEmitter = new NativeEventEmitter(RNMoMoPaymentModule)
 
-const merchantname = "CGV Cinemas"
-const merchantcode = "CGV01"
-const merchantNameLabel = "Nhà cung cấp"
-const billdescription = "Fast and Furious 8"
-const amount = 50000
+const merchantname = "OU"
+const merchantcode = "MOMOBDAF20201207"
+const merchantNameLabel = "Mạng xã hội Kanj"
+const billdescription = "Thanh toán đấu giá"
+
 const enviroment = "0" //"1": production
 
 const TextContent = styled.Text`
@@ -64,15 +68,13 @@ const TextCurrency = styled.Text`
     right: 20px;
     font-size: ${Font.huge};
 `
-export default class MomoPaymentScreen extends Component {
-    state = {
-        textAmount: this.formatNumberToMoney(amount, null, ""),
-        amount: amount,
-        description: "",
-        processing: false,
-    }
-    componentDidMount() {
-        // Listen for native events
+const MomoPaymentScreen = ({ route }) => {
+    const [description, setDescription] = useState("")
+    const [processing, setProcessing] = useState(false)
+    const { comment_id, auction_id, amount } = route.params
+
+    const dispatch = useDispatch()
+    useEffect(() => {
         let me = this
         EventEmitter.addListener(
             "RCTMoMoNoficationCenterRequestTokenReceived",
@@ -83,10 +85,8 @@ export default class MomoPaymentScreen extends Component {
                 try {
                     if (response && response.status == 0) {
                         let fromapp = response.fromapp //ALWAYS:: fromapp==momotransfer
-                        me.setState({
-                            description: JSON.stringify(response),
-                            processing: false,
-                        })
+                        setDescription(JSON.stringify(response))
+                        setDescription(false)
                         let momoToken = response.data
                         let phonenumber = response.phonenumber
                         let message = response.message
@@ -94,12 +94,12 @@ export default class MomoPaymentScreen extends Component {
                         let requestId = response.refRequestId //your requestId
                         //continue to submit momoToken,phonenumber to server
                     } else {
-                        me.setState({
-                            description: "message: Get token fail",
-                            processing: false,
-                        })
+                        setDescription("Get token fail")
+                        setDescription(false)
                     }
-                } catch (ex) {}
+                } catch (ex) {
+                    console.log("ERROR: ", ex)
+                }
             }
         )
 
@@ -115,159 +115,117 @@ export default class MomoPaymentScreen extends Component {
                 // status = 3: Parameters invalid
             }
         )
-    }
+    })
 
-    formatNumberToMoney(number, defaultNum, predicate) {
-        predicate = !predicate ? "" : "" + predicate
-        if (
-            number == 0 ||
-            number == "" ||
-            number == null ||
-            number == "undefined" ||
-            isNaN(number) === true ||
-            number == "0" ||
-            number == "00" ||
-            number == "000"
-        )
-            return "0" + predicate
-
-        var array = []
-        var result = ""
-        var count = 0
-
-        if (!number) {
-            return defaultNum ? defaultNum : "" + predicate
-        }
-
-        let flag1 = false
-        if (number < 0) {
-            number = -number
-            flag1 = true
-        }
-
-        var numberString = number.toString()
-        if (numberString.length < 3) {
-            return numberString + predicate
-        }
-
-        for (let i = numberString.length - 1; i >= 0; i--) {
-            count += 1
-            if (numberString[i] == "." || numberString[i] == ",") {
-                array.push(",")
-                count = 0
-            } else {
-                array.push(numberString[i])
-            }
-            if (count == 3 && i >= 1) {
-                array.push(".")
-                count = 0
-            }
-        }
-
-        for (let i = array.length - 1; i >= 0; i--) {
-            result += array[i]
-        }
-
-        if (flag1) result = "-" + result
-
-        return result + predicate
-    }
-
-    onPress = async () => {
-        if (!this.state.processing) {
+    const onPress = async () => {
+        if (!processing) {
             let jsonData = {}
-            jsonData.enviroment = "0" //"0": SANBOX , "1": PRODUCTION
             jsonData.action = "gettoken"
-            jsonData.isDev = true //SANBOX only , remove this key on PRODUCTION
-            jsonData.merchantname = merchantname
+            jsonData.partner = "merchant"
+            jsonData.appScheme = "momobdaf20201207"
+            jsonData.amount = amount
+            jsonData.description = "Thanh toan dau gia"
             jsonData.merchantcode = merchantcode
+            jsonData.enviroment = enviroment
+            jsonData.merchantname = merchantname
+            jsonData.orderLabel = "Mã thanh toán"
+            jsonData.isDev = true //SANBOX only , remove this key on PRODUCTION
             jsonData.merchantnamelabel = merchantNameLabel
-            jsonData.description = billdescription
-            jsonData.amount = this.state.amount
-            jsonData.orderId = "bill234284290348"
-            jsonData.requestId = "your_requestId"
-            jsonData.orderLabel = "Ma don hang"
-            jsonData.appScheme = "momocgv20170101" // iOS App Only , get from Info.plist > key URL types > URL Schemes. Check Readme
-            // console.log("data_request_payment " + JSON.stringify(jsonData))
+            jsonData.orderId = `Kanj-auctionId_${auction_id}-commentId_${comment_id}`
+            console.log("data_request_payment " + JSON.stringify(jsonData))
             if (Platform.OS === "android") {
                 let dataPayment = await RNMomosdk.requestPayment(jsonData)
-                this.momoHandleResponse(dataPayment)
+                momoHandleResponse(dataPayment)
                 console.log("data_request_payment " + dataPayment.status)
             } else {
                 RNMomosdk.requestPayment(JSON.stringify(jsonData))
             }
-            this.setState({ description: "", processing: true })
+            setDescription("")
+            setProcessing(true)
         } else {
-            this.setState({ description: ".....", processing: false })
+            setDescription(".....")
+            setProcessing(false)
         }
     }
 
-    async momoHandleResponse(response) {
+    const momoHandleResponse = async (response) => {
         try {
-            if (response && response.status == 0) {
+            if (response && response.status === 0) {
                 let fromapp = response.fromapp //ALWAYS:: fromapp==momotransfer
-                this.setState({
-                    description: JSON.stringify(response),
-                    processing: false,
-                })
-                let momoToken = response.data
+                setDescription(JSON.stringify(response))
+                setProcessing(false)
+
+                let momo_token = response.data
                 let phonenumber = response.phonenumber
                 let message = response.message
-                //continue to submit momoToken,phonenumber to server
+
+                dispatch(
+                    postMomoPayAction({
+                        auction_id,
+                        comment_id,
+                        phonenumber,
+                        momo_token,
+                        message,
+                    })
+                )
+                    .unwrap()
+                    .then((res) => {
+                        console.log("Success: ", res)
+                        setDescription(res.message)
+                        setProcessing(true)
+                    })
+                    .catch((error) => {
+                        setDescription(error.message)
+                        setProcessing(false)
+                    })
             } else {
-                this.setState({
-                    description: "message: Get token fail",
-                    processing: false,
-                })
+                setDescription(response.message)
+                setProcessing(false)
             }
-        } catch (ex) {}
+        } catch (ex) {
+            setDescription("Đã có lỗi xảy ra, vui lòng thanh toán lại")
+            setProcessing(false)
+        }
     }
 
-    onChangeText = (value) => {
-        let newValue = value.replace(/\./g, "").trim()
-        let amount = this.formatNumberToMoney(newValue, null, "")
-        this.setState({ amount: newValue, textAmount: amount, description: "" })
-    }
+    return (
+        <Container>
+            <WrapperLogoMomo>
+                <LogoImage source={require("../assets/icon/momo-icon.png")} />
+            </WrapperLogoMomo>
+            <TextContent>{"Mã thanh toán: " + merchantcode}</TextContent>
+            <TextContent>{"Tên đơn hàng: " + merchantname}</TextContent>
+            <TextContent>{"Mô tả: " + billdescription}</TextContent>
+            <View>
+                <TotalBar>
+                    <TextTotalBar>{"Tổng thanh toán:"}</TextTotalBar>
+                    <TextTotalBar>
+                        {formatNumberToMoney(amount, null, "")}
+                    </TextTotalBar>
+                    <TextCurrency>{"đ"}</TextCurrency>
+                </TotalBar>
+            </View>
 
-    render() {
-        let { textAmount, description } = this.state
-        return (
-            <Container>
-                <WrapperLogoMomo>
-                    <LogoImage
-                        source={require("../assets/icon/momo-icon.png")}
-                    />
-                </WrapperLogoMomo>
-                <TextContent>{"Mã thanh toán: " + merchantcode}</TextContent>
-                <TextContent>{"Tên đơn hàng: " + merchantname}</TextContent>
-                <TextContent>{"Mô tả: " + billdescription}</TextContent>
-                <View>
-                    <TotalBar>
-                        <TextTotalBar>{"Tổng thanh toán:"}</TextTotalBar>
-                        <TextTotalBar>{textAmount}</TextTotalBar>
-                        <TextCurrency>{"đ"}</TextCurrency>
-                    </TotalBar>
-                </View>
-
-                <TouchableOpacity onPress={this.onPress} style={styles.button}>
-                    {this.state.processing ? (
-                        <Text style={styles.textGrey}>Vui lòng đợi...</Text>
-                    ) : (
-                        <Text style={styles.text}>Xác nhận thanh toán</Text>
-                    )}
-                </TouchableOpacity>
-                {this.state.processing ? (
-                    <ActivityIndicator size="small" color="#000" />
-                ) : null}
-                {description != "" ? (
-                    <Text style={[styles.text, { color: "red" }]}>
-                        {description}
-                    </Text>
-                ) : null}
-            </Container>
-        )
-    }
+            <TouchableOpacity onPress={onPress} style={styles.button}>
+                {processing ? (
+                    <Text style={styles.textGrey}>Vui lòng đợi...</Text>
+                ) : (
+                    <Text style={styles.text}>Xác nhận thanh toán</Text>
+                )}
+            </TouchableOpacity>
+            {processing ? (
+                <ActivityIndicator size="small" color="#000" />
+            ) : null}
+            {description != "" ? (
+                <Text style={[styles.text, { color: "red" }]}>
+                    {description}
+                </Text>
+            ) : null}
+        </Container>
+    )
 }
+
+export default MomoPaymentScreen
 
 const styles = StyleSheet.create({
     container: {

@@ -83,5 +83,13 @@ const auctionApi = {
         const url = `/auction/${auctionId}/fail-auction/`
         return api.post(url, null, config)
     },
+    postMomopay: (data) => {
+        const url = "/momopay/"
+        return api.post(url, data, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+    },
 }
 export default auctionApi

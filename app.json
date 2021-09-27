@@ -1,11 +1,12 @@
 {
-  "expo": {
+    "expo": {
+        "name": "client-app-expo",
+        "slug": "client-app-expo",
+        "version": "1.0.0",
+        "assetBundlePatterns": ["**/*"]
+    },
     "name": "client-app-expo",
-    "slug": "client-app-expo",
-    "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ]
-  },
-  "name": "client-app-expo"
+    "android": {
+        "googleServicesFile": "./google-services.json"
+    }
 }

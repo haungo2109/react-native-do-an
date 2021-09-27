@@ -25,6 +25,14 @@ export const getOneAuctionAction = createAsyncThunk(
         return response
     }
 )
+export const postMomoPayAction = createAsyncThunk(
+    "auction/postMomoPayAction",
+    async (data, thunkAPI) => {
+        const response = await auctionApi.postMomopay(data)
+        thunkAPI.dispatch(changeStatusCommentAuction(response))
+        return response
+    }
+)
 export const getMyAuction = createAsyncThunk(
     "auction/fetchMyAuction",
     async () => {
@@ -241,6 +249,32 @@ const auctionSlice = createSlice({
                 })
             }
         )
+        builder.addCase(postMomoPayAction.fulfilled, (state, action) => {
+            let {
+                auction_id,
+                status_auction,
+                date_success,
+                accept_price,
+                buyer,
+            } = action.payload
+
+            let newState = state.data.map((c) =>
+                c.id != auction_id
+                    ? c
+                    : {
+                          ...c,
+                          status_auction,
+                          date_success,
+                          accept_price,
+                          buyer,
+                      }
+            )
+            state = Object.assign(state, {
+                data: newState,
+                error: "",
+                loading: false,
+            })
+        })
         builder.addCase(updateAuction.rejected, (state, action) => {
             state = Object.assign(state, {
                 error: action.error.message || "Unknow error",
