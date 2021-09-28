@@ -1,15 +1,8 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import styled from "styled-components/native"
-import {
-    Feather,
-    MaterialCommunityIcons,
-    FontAwesome,
-    MaterialIcons,
-    AntDesign,
-} from "@expo/vector-icons"
+import { FontAwesome, MaterialIcons, AntDesign } from "@expo/vector-icons"
 import Colors from "../config/Colors"
 import { useDispatch, useSelector } from "react-redux"
-import { setControllerMenu } from "../redux/reducers/controllerReducer"
 import { deletePostAction } from "../redux/reducers/postReducer"
 import useModelMenu from "../hooks/useModelMenu"
 import { baseURL } from "../api/apiClient"
@@ -26,6 +19,7 @@ import {
     reportAuctionAction,
     reportPostAction,
 } from "../redux/reducers/reportReducer"
+import i18n from "i18n-js"
 
 const ViewCheckEven = styled.TouchableWithoutFeedback`
     flex: 1;
@@ -148,7 +142,7 @@ const ModelMenu = () => {
     const listButton = {
         edit: {
             icon: <AntDesign name="edit" size={25} color="black" />,
-            text: "Chỉnh sửa bài viết",
+            text: i18n.t("btn.model-menu-edit-post"),
             handle: () => {
                 hiddenModelMenu()
                 let newData = Object.assign(data, {})
@@ -172,7 +166,7 @@ const ModelMenu = () => {
         },
         editAuction: {
             icon: <AntDesign name="edit" size={25} color="black" />,
-            text: "Chỉnh sửa bài viết",
+            text: i18n.t("btn.model-menu-edit-auction"),
             handle: () => {
                 hiddenModelMenu()
                 let newData = Object.assign(data, {})
@@ -197,7 +191,7 @@ const ModelMenu = () => {
         },
         delete: {
             icon: <AntDesign name="delete" size={25} color="black" />,
-            text: "Xóa bài viết",
+            text: i18n.t("btn.model-menu-delete-post"),
             handle: () => {
                 dispatch(deletePostAction(id))
                     .unwrap()
@@ -207,7 +201,7 @@ const ModelMenu = () => {
         },
         deleteAuction: {
             icon: <AntDesign name="delete" size={25} color="black" />,
-            text: "Xóa bài viết",
+            text: i18n.t("btn.model-menu-delete-auction"),
             handle: () => {
                 dispatch(deleteAuctionAction(id))
                     .unwrap()
@@ -217,21 +211,21 @@ const ModelMenu = () => {
         },
         report: {
             icon: <MaterialIcons name="report" size={25} color="black" />,
-            text: "Báo cáo bài viết",
+            text: i18n.t("btn.model-menu-report-post"),
             handle: () => {
                 setModalVisible(true)
             },
         },
         reportAuction: {
             icon: <MaterialIcons name="report" size={25} color="black" />,
-            text: "Báo cáo bài viết",
+            text: i18n.t("btn.model-menu-report-auction"),
             handle: () => {
                 setModalVisible(true)
             },
         },
         setFailComment: {
             icon: <AntDesign name="minus" size={25} color={Colors.red5} />,
-            text: "Hủy giao dịch này",
+            text: i18n.t("btn.model-menu-set-fail-comment"),
             handle: () => {
                 dispatch(
                     changeStatusAuctionComment({
@@ -247,7 +241,7 @@ const ModelMenu = () => {
         },
         setSuccessComment: {
             icon: <AntDesign name="check" size={24} color={Colors.green5} />,
-            text: "Giao dịch đã thành công",
+            text: i18n.t("btn.model-menu-set-success-comment"),
             handle: () => {
                 dispatch(
                     changeStatusAuctionComment({
@@ -263,7 +257,7 @@ const ModelMenu = () => {
         },
         setFailAuction: {
             icon: <AntDesign name="close" size={24} color={Colors.red5} />,
-            text: "Hủy đấu giá",
+            text: i18n.t("btn.model-menu-set-fail-auction"),
             handle: () => {
                 dispatch(setFailAuctionAction(id))
                     .unwrap()

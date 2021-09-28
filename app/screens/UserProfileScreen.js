@@ -1,16 +1,16 @@
 import React, { useEffect } from "react"
 import styled from "styled-components/native"
 import Colors from "../config/Colors"
-import { Entypo, Feather, FontAwesome, FontAwesome5 } from "@expo/vector-icons"
+import { Entypo, FontAwesome, FontAwesome5 } from "@expo/vector-icons"
 import { useDispatch, useSelector } from "react-redux"
-import { baseURL, client_secret } from "../api/apiClient"
+import { baseURL } from "../api/apiClient"
 import { getMyPost } from "../redux/reducers/postReducer"
 import ListFeed from "../components/ListFeed"
-import { ScrollView } from "react-native"
 import useModelEdit from "../hooks/useModelEdit"
 import useModelImageSelection from "../hooks/useModelImageSelection"
 import { updateCurrenUserAction } from "../redux/reducers/userReducer"
 import MakerPost from "../components/MakerPost"
+import i18n from "i18n-js"
 
 const Container = styled.SafeAreaView`
     flex: 1;
@@ -86,7 +86,7 @@ function UserProfileScreen(props) {
     const dispatch = useDispatch()
     const user = useSelector((state) => state.user)
     const { images } = useSelector((state) => state.controller.imageSelection)
-    const { showModelEdit } = useModelEdit("Chỉnh sửa thông tin cá nhân")
+    const { showModelEdit } = useModelEdit(i18n.t("btn.edit-profile"))
     const { showModelImageSelection } = useModelImageSelection(1, 1)
 
     useEffect(() => {
@@ -135,7 +135,7 @@ function UserProfileScreen(props) {
                         <FontAwesome name="pencil" size={15} color="white" />
                     </Icon>
                     <TextButtonEditProfile>
-                        Chỉnh sửa thông tin cá nhân
+                        {i18n.t("btn.edit-profile")}
                     </TextButtonEditProfile>
                 </ButtonEditProfile>
                 <WrapperInfo>

@@ -7,6 +7,7 @@ import categoryAuctionReducer from "./categoryAuctionReducer"
 import reportReducer from "./reportReducer"
 import notificationReducer from "./notificationReducer"
 import paymentMethodReducer from "./paymentMethodReducer"
+import settingReducer from "./settingReducer"
 
 const reducers = {
     user: userReducer,
@@ -18,6 +19,7 @@ const reducers = {
     reportType: reportReducer,
     notification: notificationReducer,
     paymentMethod: paymentMethodReducer,
+    setting: settingReducer,
 }
 
 export default reducers

@@ -10,6 +10,7 @@ import PostDetailScreen from "../screens/PostDetailScreen"
 import UserAuctionJoinScreen from "../screens/UserAuctionJoinSreen"
 import CreateEditAuctionScreen from "../screens/CreateEditAuctionScreen"
 import CreateEditPostScreen from "../screens/CreateEditPostScreen"
+import i18n from "i18n-js"
 
 const Tab = createBottomTabNavigator()
 const Stack = createNativeStackNavigator()
@@ -21,7 +22,7 @@ const TabHome = () => (
             component={UserProfileScreen}
             options={{
                 headerShown: false,
-                tabBarLabel: "Thông tin cá nhân",
+                tabBarLabel: i18n.t("navigation.tab-user-info"),
                 tabBarIcon: () => (
                     <AntDesign name="user" size={24} color="black" />
                 ),
@@ -32,7 +33,7 @@ const TabHome = () => (
             component={UserAuctionScreen}
             options={{
                 headerShown: false,
-                tabBarLabel: "Đấu giá của bạn",
+                tabBarLabel: i18n.t("navigation.tab-my-auction"),
                 tabBarIcon: () => (
                     <FontAwesome name="feed" size={24} color="black" />
                 ),
@@ -43,7 +44,7 @@ const TabHome = () => (
             component={UserAuctionJoinScreen}
             options={{
                 headerShown: false,
-                tabBarLabel: "Đấu giá đã tham gia",
+                tabBarLabel: i18n.t("navigation.tab-auction-join"),
                 tabBarIcon: () => (
                     <FontAwesome name="feed" size={24} color="black" />
                 ),
@@ -54,7 +55,7 @@ const TabHome = () => (
             component={NotificationScreen}
             options={{
                 headerShown: false,
-                tabBarLabel: "Thông báo",
+                tabBarLabel: i18n.t("navigation.tab-notification"),
                 tabBarIcon: () => (
                     <Ionicons name="notifications" size={24} color="black" />
                 ),
@@ -71,18 +72,25 @@ const HomeStack = (props) => {
                 component={TabHome}
                 options={{ headerShown: false }}
             />
-            <Stack.Screen name="PostDetail" component={PostDetailScreen} />
+            <Stack.Screen
+                name="PostDetail"
+                component={PostDetailScreen}
+                options={{ title: i18n.t("navigation.login") }}
+            />
             <Stack.Screen
                 name="AuctionDetail"
                 component={AuctionDetailScreen}
+                options={{ title: i18n.t("navigation.auction-detail") }}
             />
             <Stack.Screen
                 name="CreateEditAuction"
                 component={CreateEditAuctionScreen}
+                options={{ title: i18n.t("navigation.create-edit-auction") }}
             />
             <Stack.Screen
                 name="CreateEditPost"
                 component={CreateEditPostScreen}
+                options={{ title: i18n.t("navigation.create-edit-post") }}
             />
         </Stack.Navigator>
     )

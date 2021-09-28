@@ -1,20 +1,14 @@
 import React, { useState } from "react"
 import { Text } from "react-native"
 import { LinearGradient } from "expo-linear-gradient"
-import {
-    ImageBackground,
-    Container,
-    Logo,
-    ButtonLink,
-    TextLink,
-    SmallText,
-} from "./WellcomeScreen"
-import { FontAwesome, Feather } from "@expo/vector-icons"
+import { ImageBackground, Container, Logo } from "./WellcomeScreen"
+import { Feather } from "@expo/vector-icons"
 import styled from "styled-components/native"
 import useModelImageSelection from "../hooks/useModelImageSelection"
 import { useDispatch, useSelector } from "react-redux"
 import { registerUserAction } from "../redux/reducers/userReducer"
 import Colors from "../config/Colors"
+import i18n from "i18n-js"
 
 const WapperInput = styled.View`
     width: 75%;
@@ -131,37 +125,39 @@ function RegisterScreen({ navigation }, props) {
                     />
                     <InputForm
                         icon="edit-3"
-                        placeholder="First name"
+                        placeholder={i18n.t("placeholder.first-name")}
                         value={input.first_name}
                         onChangeText={handleMultiInput("first_name")}
                     />
                     <InputForm
                         icon="edit-3"
-                        placeholder="Last name"
+                        placeholder={i18n.t("placeholder.last-name")}
                         value={input.last_name}
                         onChangeText={handleMultiInput("last_name")}
                     />
                     <InputForm
                         icon="user"
-                        placeholder="Username"
+                        placeholder={i18n.t("placeholder.username")}
                         value={input.username}
                         onChangeText={handleMultiInput("username")}
                     />
                     <InputForm
                         icon="mail"
-                        placeholder="Email"
+                        placeholder={i18n.t("placeholder.email")}
                         value={input.email}
                         onChangeText={handleMultiInput("email")}
                     />
                     <InputForm
                         icon="lock"
-                        placeholder="Password"
+                        placeholder={i18n.t("placeholder.password")}
                         value={input.password}
                         onChangeText={handleMultiInput("password")}
                         secureTextEntry={true}
                     />
                     <ButtonBorder onPress={handleRegister}>
-                        <TextButtonBorder>Register</TextButtonBorder>
+                        <TextButtonBorder>
+                            {i18n.t("btn.register")}
+                        </TextButtonBorder>
                     </ButtonBorder>
                 </GroupButton>
             </Container>
@@ -200,7 +196,7 @@ const InputImageForm = ({ onPress, images }) => {
                 <TextInputImage>
                     {images
                         ? images[0].filename.slice(0, 25)
-                        : "Choose a picture"}
+                        : i18n.t("placeholder.avatar")}
                 </TextInputImage>
             </InputImageButton>
         </WapperInput>

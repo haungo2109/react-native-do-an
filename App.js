@@ -10,6 +10,11 @@ import ModelMenu from "./app/components/ModelMenu"
 import ModelImageSelection from "./app/components/ModelImageSelection"
 import "react-native-gesture-handler"
 import AppContainer from "./app/navigations"
+import i18n from "i18n-js"
+import translations from "./app/assets/locales"
+
+i18n.translations = translations
+i18n.fallbacks = true
 
 const WrapperModel = styled.View`
     flex: 1;

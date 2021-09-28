@@ -1,0 +1,22 @@
+{
+    "login": "Login",
+    "register": "Register",
+    "create-account": "Create account",
+    "reset-pass": "Reset password",
+    "edit-profile": "Edit profile",
+    "comment-post": "comment",
+    "comment-auction": "comment",
+    "post-model": "POST",
+    "back-model-image": "Back",
+    "finish-model-image": "Finish",
+    "model-menu-edit-post": "Edit feed",
+    "model-menu-edit-auction": "Edit auction",
+    "model-menu-delete-post": "Delete feed",
+    "model-menu-delete-auction": "Delete auction",
+    "model-menu-report-post": "Report feed",
+    "model-menu-report-auction": "Report auction",
+    "model-menu-set-fail-comment": "Cancel the transaction",
+    "model-menu-set-success-comment": "Set transaction success",
+    "model-menu-set-fail-auction": "Cancel the auction",
+    "send": "Send"
+}

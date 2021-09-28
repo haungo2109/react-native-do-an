@@ -1,17 +1,13 @@
 import React from "react"
 import styled from "styled-components/native"
-import {
-    Ionicons,
-    Feather,
-    MaterialIcons,
-    MaterialCommunityIcons,
-} from "@expo/vector-icons"
+import { Feather, MaterialIcons } from "@expo/vector-icons"
 
 import AvatarToProfile from "./Avatar"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import { baseURL } from "../api/apiClient"
 import Colors from "../config/Colors"
 import { useNavigation } from "@react-navigation/core"
+import i18n from "i18n-js"
 
 const Container = styled.View`
     width: 100%;
@@ -89,7 +85,7 @@ const MakerPost = () => {
                         >
                             <Input
                                 editable={false}
-                                placeholder="Bạn đang nghĩ gì nào?"
+                                placeholder={i18n.t("placeholder.maker-post")}
                             />
                         </ButtonType>
                     </Row>
@@ -101,7 +97,7 @@ const MakerPost = () => {
                                 size={20}
                                 color="#4CAF50"
                             />
-                            <MenuText>Hình ảnh</MenuText>
+                            <MenuText>{i18n.t("txt.picture")}</MenuText>
                         </Menu>
                         <Separator />
 
@@ -111,7 +107,7 @@ const MakerPost = () => {
                                 size={22}
                                 color={Colors.yellow4}
                             />
-                            <MenuText>Cảm xúc</MenuText>
+                            <MenuText>{i18n.t("txt.emoji")}</MenuText>
                         </Menu>
                         <Separator />
 
@@ -121,7 +117,7 @@ const MakerPost = () => {
                                 size={22}
                                 color={Colors.yellow7}
                             />
-                            <MenuText>Hashtag</MenuText>
+                            <MenuText>{i18n.t("txt.hashtag")}</MenuText>
                         </Menu>
                     </Row>
                 </Container>

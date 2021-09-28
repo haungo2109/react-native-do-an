@@ -5,6 +5,7 @@ import styled from "styled-components"
 import { TextTitle } from "../components/ModelEdit"
 import Colors from "../config/Colors"
 import { removeANotification } from "../redux/reducers/notificationReducer"
+import i18n from "i18n-js"
 
 const Container = styled.SafeAreaView`
     align-items: center;
@@ -50,7 +51,7 @@ function NotificationScreen(props) {
     }
     return (
         <Container>
-            <TextTitle>THÔNG BÁO</TextTitle>
+            <TextTitle>{i18n.t("txt.title-notification")}</TextTitle>
             {data?.length !== 0 &&
                 data.map((c) => (
                     <WrapperItemButton

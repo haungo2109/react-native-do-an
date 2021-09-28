@@ -2,11 +2,10 @@ import React from "react"
 import styled from "styled-components/native"
 import {
     Ionicons,
-    Feather,
     MaterialIcons,
     MaterialCommunityIcons,
 } from "@expo/vector-icons"
-
+import i18n from "i18n-js"
 import AvatarToProfile from "./Avatar"
 import { useDispatch, useSelector } from "react-redux"
 import { baseURL } from "../api/apiClient"
@@ -94,7 +93,9 @@ const MakerAuction = () => {
                         >
                             <Input
                                 editable={false}
-                                placeholder="Hãy tạo đấu giá cho riêng bạn?"
+                                placeholder={i18n.t(
+                                    "placeholder.maker-auction"
+                                )}
                             />
                         </ButtonType>
                     </Row>
@@ -106,7 +107,7 @@ const MakerAuction = () => {
                                 size={20}
                                 color="#4CAF50"
                             />
-                            <MenuText>Hình ảnh</MenuText>
+                            <MenuText>{i18n.t("txt.picture")}</MenuText>
                         </Menu>
                         <Separator />
 
@@ -116,7 +117,7 @@ const MakerAuction = () => {
                                 size={22}
                                 color={Colors.yellow7}
                             />
-                            <MenuText>Nội dung</MenuText>
+                            <MenuText>{i18n.t("txt.content")}</MenuText>
                         </Menu>
                         <Separator />
                         <Menu>
@@ -125,7 +126,7 @@ const MakerAuction = () => {
                                 size={22}
                                 color={Colors.yellow4}
                             />
-                            <MenuText>Giá</MenuText>
+                            <MenuText>{i18n.t("txt.price")}</MenuText>
                         </Menu>
                     </Row>
                 </Container>

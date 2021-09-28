@@ -24,6 +24,7 @@ const persistConfig = {
         "reportType",
         "notification",
         "paymentMethod",
+        "setting",
     ],
 }
 

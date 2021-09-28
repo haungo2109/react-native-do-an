@@ -3,6 +3,7 @@ import { Text } from "react-native"
 import styled from "styled-components/native"
 import { FontAwesome5 } from "@expo/vector-icons"
 import Colors from "../config/Colors"
+import i18n from "i18n-js"
 
 const ImageBackground = styled.ImageBackground`
     flex: 1;
@@ -113,7 +114,7 @@ function WellcomeScreen({ navigation }, props) {
             <Container>
                 <LogoWrapper>
                     <LogoImage source={require("./../assets/logo/logo.png")} />
-                    <LogoText>Connect everyone</LogoText>
+                    <LogoText>{i18n.t("txt.slogan-app")}</LogoText>
                 </LogoWrapper>
                 <GroupButton>
                     <ButtonFacebook onPress={handleLoginFacebook}>
@@ -137,11 +138,11 @@ function WellcomeScreen({ navigation }, props) {
                         <Text>Google</Text>
                     </Button>
                     <ButtonLogin onPress={handleLoginAccount}>
-                        <TextButtonLogin>Login</TextButtonLogin>
+                        <TextButtonLogin>{i18n.t("btn.login")}</TextButtonLogin>
                     </ButtonLogin>
-                    <SmallText>Don't have an account?</SmallText>
+                    <SmallText>{i18n.t("txt.dont-have-account")}</SmallText>
                     <ButtonLink onPress={handleCreate}>
-                        <TextLink>Create account</TextLink>
+                        <TextLink>{i18n.t("btn.create-account")}</TextLink>
                     </ButtonLink>
                 </GroupButton>
             </Container>

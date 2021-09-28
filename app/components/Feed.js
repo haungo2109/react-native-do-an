@@ -17,6 +17,7 @@ import {
     WrapperModelImage,
 } from "./Auction"
 import { useNavigation } from "@react-navigation/core"
+import i18n from "i18n-js"
 
 const Container = styled.View`
     height: ${(props) => props.heightContainer};
@@ -222,7 +223,11 @@ const Feed = ({
                                     color="#424040"
                                 />
                             </Icon>
-                            <Text>{count_comment} comment</Text>
+                            <Text>
+                                {count_comment +
+                                    " " +
+                                    i18n.t("btn.comment-post")}
+                            </Text>
                         </Button>
                     </FooterMenu>
                 </Footer>

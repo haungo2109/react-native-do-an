@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react"
-import { ActivityIndicator, Text } from "react-native"
+import React, { useState } from "react"
+import { Text } from "react-native"
 import { LinearGradient } from "expo-linear-gradient"
 import {
     ImageBackground,
@@ -11,9 +11,9 @@ import {
 } from "./WellcomeScreen"
 import { FontAwesome, Feather } from "@expo/vector-icons"
 import styled from "styled-components/native"
-import converObjToFormData from "../utils/ObjectToFormData"
+import i18n from "i18n-js"
 import { client_id, client_secret } from "../api/apiClient"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import { loginAction } from "../redux/actions"
 import Colors from "../config/Colors"
 import { pushTokenUserAction } from "../redux/reducers/userReducer"
@@ -71,7 +71,6 @@ function LoginScreen({ navigation, route }, props) {
     const dispatch = useDispatch()
 
     const handleLogin = () => {
-        // let formData = converObjToFormData({ username, password, client_secret, client_id });
         let formData = new FormData()
         formData.append("username", username)
         formData.append("password", password)
@@ -106,9 +105,6 @@ function LoginScreen({ navigation, route }, props) {
                 </Logo>
                 <GroupButton colors={["rgba(2,0,36,0)", "rgba(10,9,15,1)"]}>
                     {error !== "" && <ErrorText>{error}</ErrorText>}
-                    {/* {loading && (
-						<ActivityIndicator size="small" color="white" />
-					)} */}
                     <WapperInput>
                         <Icon>
                             <FontAwesome
@@ -120,7 +116,7 @@ function LoginScreen({ navigation, route }, props) {
                         <Input
                             onChangeText={setUsername}
                             value={username}
-                            placeholder="Username"
+                            placeholder={i18n.t("placeholder.username")}
                         />
                     </WapperInput>
                     <WapperInput>
@@ -131,17 +127,17 @@ function LoginScreen({ navigation, route }, props) {
                             secureTextEntry={true}
                             onChangeText={setPassword}
                             value={password}
-                            placeholder="Password"
+                            placeholder={i18n.t("placeholder.password")}
                         />
                     </WapperInput>
                     <ButtonBorder>
                         <TextButtonBorder onPress={handleLogin}>
-                            Login
+                            {i18n.t("btn.login")}
                         </TextButtonBorder>
                     </ButtonBorder>
-                    <SmallText>Forgot your password?</SmallText>
+                    <SmallText>{i18n.t("txt.fogot-pass")}</SmallText>
                     <ButtonLink onPress={handleSetPassword}>
-                        <TextLink>Reset Password</TextLink>
+                        <TextLink>{i18n.t("btn.reset-pass")}</TextLink>
                     </ButtonLink>
                 </GroupButton>
             </Container>

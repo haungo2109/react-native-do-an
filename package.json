@@ -45,5 +45,8 @@
     "devDependencies": {
         "@babel/core": "~7.9.0"
     },
-    "private": true
+    "private": true,
+    "resolutions": {
+        "react-devtools-core": "4.12.4"
+    }
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef } from "react"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { useDispatch, useSelector } from "react-redux"
 import {
@@ -11,7 +11,7 @@ import "react-native-gesture-handler"
 import LoginScreen from "../screens/LoginScreen"
 import RegisterScreen from "../screens/RegisterScreen"
 import WellcomeScreen from "../screens/WellcomeScreen"
-import ChatScreen from "../screens/ChatScreen"
+import Feedback from "../screens/FeedbackScreen"
 import { removeAll } from "../utils/AsyncStorage"
 import { logoutAction } from "../redux/actions"
 import Constants from "expo-constants"
@@ -34,7 +34,14 @@ import { getPaymentMethodAction } from "../redux/reducers/paymentMethodReducer"
 import { getReportTypeAction } from "../redux/reducers/reportReducer"
 import { getCategoryAction } from "../redux/reducers/categoryAuctionReducer"
 import MomoPaymentScreen from "../screens/MomoPaymentScreen"
-import CreateEditAuctionScreen from "../screens/CreateEditAuctionScreen"
+import i18n from "i18n-js"
+import { AntDesign, FontAwesome, MaterialIcons } from "@expo/vector-icons"
+import SettingScreen from "../screens/SettingScreen"
+import { View } from "react-native"
+import Colors from "../config/Colors"
+import TopDrawer from "../components/TopDrawer"
+import * as Localization from "expo-localization"
+import { setLanguage } from "../redux/reducers/settingReducer"
 
 const Stack = createNativeStackNavigator()
 const Drawer = createDrawerNavigator()
@@ -42,10 +49,22 @@ const Drawer = createDrawerNavigator()
 function CustomDrawerContent(props) {
     const dispatch = useDispatch()
     return (
-        <DrawerContentScrollView {...props}>
-            <DrawerItemList {...props} />
+        <View style={{ flex: 1 }}>
+            <DrawerContentScrollView {...props}>
+                <TopDrawer />
+                {/* <DrawerContentScrollView> */}
+                <View style={{ flex: 1 }}>
+                    <DrawerItemList {...props} />
+                </View>
+                {/* </DrawerContentScrollView> */}
+            </DrawerContentScrollView>
             <DrawerItem
-                label="Logout"
+                style={{
+                    marginBottom: 15,
+                    borderTopColor: "#f4f4f4",
+                    borderTopWidth: 1,
+                }}
+                label={i18n.t("navigation.logout")}
                 onPress={() => {
                     dispatch(logoutAction())
                     removeAll()
@@ -54,8 +73,15 @@ function CustomDrawerContent(props) {
                         routes: [{ name: "Wellcome" }],
                     })
                 }}
+                icon={({ focused, size }) => (
+                    <MaterialIcons
+                        name="logout"
+                        color={focused ? "#7cc" : Colors.gray5}
+                        size={size}
+                    />
+                )}
             />
-        </DrawerContentScrollView>
+        </View>
     )
 }
 const AppDrawer = () => {
@@ -73,27 +99,92 @@ const AppDrawer = () => {
             <Drawer.Screen
                 name="HomeStack"
                 component={HomeStack}
-                options={{ headerShown: false }}
+                options={{
+                    headerShown: false,
+                    title: i18n.t("navigation.home-stack"),
+                    drawerIcon: ({ focused, size }) => (
+                        <FontAwesome
+                            name="home"
+                            size={size}
+                            color={focused ? "#7cc" : Colors.gray5}
+                        />
+                    ),
+                }}
             />
             <Drawer.Screen
                 name="PostStack"
                 component={PostStack}
-                options={{ headerShown: false }}
+                options={{
+                    headerShown: false,
+                    title: i18n.t("navigation.post-stack"),
+                    drawerIcon: ({ focused, size }) => (
+                        <FontAwesome
+                            name="feed"
+                            size={size + 3}
+                            color={focused ? "#7cc" : Colors.gray5}
+                        />
+                    ),
+                }}
             />
             <Drawer.Screen
                 name="AuctionStack"
                 component={AuctionStack}
-                options={{ headerShown: false }}
+                options={{
+                    headerShown: false,
+                    title: i18n.t("navigation.auction-stack"),
+                    drawerIcon: ({ focused, size }) => (
+                        <FontAwesome
+                            name="list-alt"
+                            size={size}
+                            color={focused ? "#7cc" : Colors.gray5}
+                        />
+                    ),
+                }}
             />
             <Drawer.Screen
-                name="Chat"
-                component={ChatScreen}
-                options={{ headerShown: false }}
+                name="Feedback"
+                component={Feedback}
+                options={{
+                    headerShown: false,
+                    title: i18n.t("navigation.feedback"),
+                    drawerIcon: ({ focused, size }) => (
+                        <MaterialIcons
+                            name="feedback"
+                            size={size}
+                            color={focused ? "#7cc" : Colors.gray5}
+                        />
+                    ),
+                }}
             />
             <Drawer.Screen
                 name="Introduction"
                 component={IntroductionScreen}
-                options={{ headerShown: false }}
+                options={{
+                    headerShown: false,
+                    title: i18n.t("navigation.introduction"),
+                    drawerIcon: ({ focused, size }) => (
+                        <AntDesign
+                            name="bulb1"
+                            size={size}
+                            color={focused ? "#7cc" : Colors.gray5}
+                        />
+                    ),
+                }}
+            />
+            <Drawer.Screen
+                name="Setting"
+                component={SettingScreen}
+                options={{
+                    headerShown: false,
+                    title: i18n.t("navigation.setting"),
+                    drawerIcon: ({ focused, size }) => (
+                        <AntDesign
+                            name="setting"
+                            size={size}
+                            color={focused ? "#7cc" : Colors.gray5}
+                        />
+                    ),
+                }}
             />
         </Drawer.Navigator>
     )
@@ -112,6 +203,7 @@ const AppContainer = (props) => {
     const dispatch = useDispatch()
     const navigation = useNavigation()
     const push_token = useSelector((s) => s.notification.pushToken)
+    const { language } = useSelector((s) => s.setting)
 
     useEffect(() => {
         if (user?.username && push_token) {
@@ -121,6 +213,14 @@ const AppContainer = (props) => {
         }
     }, [user])
 
+    useEffect(() => {
+        if (!language) {
+            i18n.locale = Localization.locale
+            dispatch(setLanguage(Localization.locale.slice(0, 2)))
+        } else {
+            i18n.locale = language
+        }
+    })
     useEffect(() => {
         dispatch(getPaymentMethodAction())
         dispatch(getReportTypeAction())
@@ -172,15 +272,31 @@ const AppContainer = (props) => {
                 component={WellcomeScreen}
                 options={{ headerShown: false }}
             />
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Register" component={RegisterScreen} />
+            <Stack.Screen
+                name="Login"
+                component={LoginScreen}
+                options={{ title: i18n.t("navigation.login") }}
+            />
+            <Stack.Screen
+                name="Register"
+                component={RegisterScreen}
+                options={{ title: i18n.t("navigation.register") }}
+            />
             <Stack.Screen
                 name="App"
                 component={AppDrawer}
                 options={{ headerShown: false }}
             />
-            <Stack.Screen name="User" component={UserScreen} />
-            <Stack.Screen name="MomoPayment" component={MomoPaymentScreen} />
+            <Stack.Screen
+                name="User"
+                component={UserScreen}
+                options={{ title: i18n.t("navigation.user") }}
+            />
+            <Stack.Screen
+                name="MomoPayment"
+                component={MomoPaymentScreen}
+                options={{ title: i18n.t("navigation.momo") }}
+            />
         </Stack.Navigator>
     )
 }

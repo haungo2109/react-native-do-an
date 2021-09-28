@@ -1,0 +1,15 @@
+{
+    "username": "Tên đăng nhập",
+    "password": "Mật khẩu",
+    "avatar": "Chọn ảnh đại diện",
+    "first-name": "Nhập tên của bạn",
+    "last-name": "Họ và tên đệm",
+    "email": "Địa chỉ Email",
+    "maker-post": "Bạn đang nghĩ gì nào?",
+    "maker-auction": "Hãy tạo đấu giá cho riêng bạn?",
+    "birthday": "Nhập ngày sinh: YYYY-mm--DD",
+    "phone": "Nhập số điện thoại",
+    "address": "Địa chỉ nhà bạn.",
+    "exam-title-feedback": "Vd: Phần UI",
+    "exam-content-feedback": "Vd: Thiếu nút xóa comment"
+}

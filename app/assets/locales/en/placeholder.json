@@ -1,0 +1,15 @@
+{
+    "username": "Username",
+    "password": "Password",
+    "avatar": "Choose a avatar",
+    "first-name": "First name",
+    "last-name": "Last name",
+    "email": "Email",
+    "maker-post": "What are you thinking? ",
+    "maker-auction": "Create your own auction? ",
+    "birthday": "Enter date of birth: YYYY-mm--DD",
+    "phone": "Enter your phone",
+    "address": "Enter your address",
+    "exam-title-feedback": "Ex: About UI",
+    "exam-content-feedback": "Ex: There is not button to delete comment"
+}

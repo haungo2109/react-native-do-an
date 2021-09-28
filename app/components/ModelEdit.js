@@ -22,6 +22,7 @@ import {
     updateAuction,
 } from "../redux/reducers/auctionReducer"
 import { Picker } from "@react-native-picker/picker"
+import i18n from "i18n-js"
 
 const Row = styled.View`
     width: 95%;
@@ -300,7 +301,7 @@ const ModelEdit = () => {
             <Container>
                 <FormView>
                     <Row>
-                        <TextTitle>{title || "Title"}</TextTitle>
+                        <TextTitle>{title || ""}</TextTitle>
                         <WrapperButtonClose>
                             <ButtonClose onPress={hiddenModelEdit}>
                                 <AntDesign
@@ -389,7 +390,7 @@ const ModelEdit = () => {
                             <TextInput
                                 onChangeText={handleMultiInput("first_name")}
                                 value={input.first_name}
-                                placeholder="Nhập tên của bạn"
+                                placeholder={i18n.t("placeholder.first-name")}
                             />
                         </Field>
                     )}
@@ -405,7 +406,7 @@ const ModelEdit = () => {
                             <TextInput
                                 onChangeText={handleMultiInput("last_name")}
                                 value={input.last_name}
-                                placeholder="Nhập họ của bạn"
+                                placeholder={i18n.t("placeholder.last-name")}
                             />
                         </Field>
                     )}
@@ -421,7 +422,7 @@ const ModelEdit = () => {
                             <TextInput
                                 onChangeText={handleMultiInput("birthday")}
                                 value={input.birthday}
-                                placeholder="Nhập ngày sinh: YYYY-mm--DD"
+                                placeholder={i18n.t("placeholder.birthday")}
                             />
                         </Field>
                     )}
@@ -437,7 +438,7 @@ const ModelEdit = () => {
                             <TextInput
                                 onChangeText={handleMultiInput("email")}
                                 value={input["email"]}
-                                placeholder="Nhập địa chỉ email của bạn."
+                                placeholder={i18n.t("placeholder.email")}
                             />
                         </Field>
                     )}
@@ -453,7 +454,7 @@ const ModelEdit = () => {
                             <TextInput
                                 onChangeText={handleMultiInput("phone")}
                                 value={input["phone"]}
-                                placeholder="Nhập số điện thoại của bạn."
+                                placeholder={i18n.t("placeholder.phone")}
                             />
                         </Field>
                     )}
@@ -469,7 +470,7 @@ const ModelEdit = () => {
                             <TextInput
                                 onChangeText={handleMultiInput("address")}
                                 value={input["address"]}
-                                placeholder="Nhập địa chỉ hiện nay của bạn."
+                                placeholder={i18n.t("placeholder.address")}
                             />
                         </Field>
                     )}
@@ -561,7 +562,9 @@ const ModelEdit = () => {
                         </FieldImage>
                     )}
                     <SubmitButton onPress={mapHandleSubmit[handleSubmit]}>
-                        <TextSubmitButton>ĐĂNG</TextSubmitButton>
+                        <TextSubmitButton>
+                            {i18n.t("btn.post-model")}
+                        </TextSubmitButton>
                     </SubmitButton>
                 </FormView>
             </Container>

@@ -1,0 +1,22 @@
+{
+    "login": "Đăng nhập",
+    "register": "Đăng ký",
+    "create-account": "Tạo tài khoản",
+    "reset-pass": "Đặt lại mật khẩu",
+    "edit-profile": "Chỉnh sửa thông tin cá nhân",
+    "comment-post": "bình luận",
+    "comment-auction": "bình luận",
+    "post-model": "ĐĂNG",
+    "back-model-image": "Trở về",
+    "finish-model-image": "Xong",
+    "model-menu-edit-post": "Chỉnh sửa bài viết",
+    "model-menu-edit-auction": "Chỉnh sửa đấu giá",
+    "model-menu-delete-post": "Xóa bài viết",
+    "model-menu-delete-auction": "Xóa đấu giá",
+    "model-menu-report-post": "Báo cáo bài viết",
+    "model-menu-report-auction": "Báo cáo đấu giá",
+    "model-menu-set-fail-comment": "Hủy giao dịch này",
+    "model-menu-set-success-comment": "Giao dịch đã thành công",
+    "model-menu-set-fail-auction": "Hủy đấu giá",
+    "send": "GỬI"
+}

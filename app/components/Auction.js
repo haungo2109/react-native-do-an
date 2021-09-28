@@ -9,7 +9,7 @@ import Avatar from "./Avatar"
 import { baseURL } from "../api/apiClient"
 import { Dimensions, FlatList, Modal, View } from "react-native"
 import { useNavigation } from "@react-navigation/core"
-import ImageModal from "react-native-image-modal"
+import i18n from "i18n-js"
 const { width: windowWidth } = Dimensions.get("window")
 
 const ColorStatusAuction = {
@@ -233,29 +233,45 @@ function Auction({
                 <WrapperText status={status_auction}>
                     <TextTitle>{title}</TextTitle>
                     <TextContent>{content}</TextContent>
-                    <TextContent>Điều kiện: {condition}</TextContent>
-                    <TextContent>Giá cơ bản: {base_price}</TextContent>
+                    <TextContent>
+                        {i18n.t("txt.condition") + ": " + condition}
+                    </TextContent>
+                    <TextContent>
+                        {i18n.t("txt.base-price") + ": " + base_price}
+                    </TextContent>
                     {showAll === true ? (
                         <>
                             <TextContent>
-                                Hạn đấu giá: {deadline.slice(0, 10)}
+                                {i18n.t("txt.deadline") +
+                                    ": " +
+                                    deadline.slice(0, 10)}
                             </TextContent>
                             <TextContent>
-                                Phương thức thanh toán: {payment_method}
+                                {i18n.t("txt.payment-method") +
+                                    ": " +
+                                    payment_method}
                             </TextContent>
                             <TextContent>
-                                Trạng thái: {status_auction}
+                                {i18n.t("txt.status-auction") +
+                                    ": " +
+                                    status_auction}
                             </TextContent>
                             {status_auction === "succ" ? (
                                 <>
                                     <TextContent>
-                                        Ngày hoàn thành: {date_success}
+                                        {i18n.t("txt.date-success") +
+                                            ": " +
+                                            date_success}
                                     </TextContent>
                                     <TextContent>
-                                        Người mua: {buyer.full_name}
+                                        {i18n.t("txt.buyer") +
+                                            ": " +
+                                            buyer.full_name}
                                     </TextContent>
                                     <TextContent>
-                                        Giá bán được: {accept_price}
+                                        {i18n.t("txt.accept-price") +
+                                            ": " +
+                                            accept_price}
                                     </TextContent>
                                 </>
                             ) : null}
@@ -328,7 +344,11 @@ function Auction({
                                     color="#424040"
                                 />
                             </Icon>
-                            <Text>{count_comment} comment</Text>
+                            <Text>
+                                {count_comment +
+                                    " " +
+                                    i18n.t("btn.comment-auction")}
+                            </Text>
                         </Button>
                     </FooterMenu>
                 </Footer>
