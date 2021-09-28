@@ -8,6 +8,20 @@ export const getReportTypeAction = createAsyncThunk(
         return response
     }
 )
+export const reportPostAction = createAsyncThunk(
+    "report/reportPostAction",
+    async (data) => {
+        const response = await reportApi.postReportPost(data)
+        return response
+    }
+)
+export const reportAuctionAction = createAsyncThunk(
+    "report/reportAuctionAction",
+    async (data) => {
+        const response = await reportApi.postReportAuction(data)
+        return response
+    }
+)
 
 const reportTypeSlice = createSlice({
     name: "reportType",

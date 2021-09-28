@@ -98,7 +98,10 @@ const TextInfo = styled.Text`
 function AuctionDetailScreen({ route, navigation }) {
     const dispatch = useDispatch()
 
-    const [item, setItem] = useState(route.params)
+    // const [item, setItem] = useState(route.params)
+    const item = useSelector((s) =>
+        s.auction.data.find((c) => c.id == route.params.id)
+    )
 
     const { data } = useSelector((state) => state.comment)
     const user = useSelector((state) => state.user)
@@ -106,16 +109,18 @@ function AuctionDetailScreen({ route, navigation }) {
     const { showModelMenu } = useModelMenu()
 
     useEffect(() => {
-        dispatch(fetchAuctionComment(item.id))
+        dispatch(fetchAuctionComment(route.params.id))
         if (!item?.user) {
-            dispatch(getOneAuctionAction(item.id))
+            dispatch(getOneAuctionAction(route.params.id))
                 .unwrap()
-                .then((res) => {
-                    setItem(res)
-                })
                 .catch((err) => Alert.alert("Lỗi", err.message))
         }
     }, [])
+
+    // useEffect(() => {
+    //     let currentItem = items.)
+    //     if (currentItem && !item?.user) setItem(currentItem)
+    // }, [items])
 
     const handlePressMenu = (uid, auction) => {
         let comment = data.find(
@@ -149,7 +154,12 @@ function AuctionDetailScreen({ route, navigation }) {
         let index = parseInt(id) - 1
         return payment[index].name
     }
-
+    const checkLiked = (like = []) => {
+        if (user) {
+            return like.includes(user.id)
+        }
+        return false
+    }
     const paywithMomo = () => {
         let comment = data.find((c) => c.status_transaction == "in process")
         if (comment === undefined) return
@@ -190,10 +200,11 @@ function AuctionDetailScreen({ route, navigation }) {
     }
     return (
         <ScrollView>
-            {item.payment_method !== undefined && (
+            {item?.payment_method && (
                 <Auction
                     showAll={true}
                     {...item}
+                    isLike={checkLiked(item.like)}
                     payment_method={getNamePaymentMethod(item.payment_method)}
                     handlePressMenu={handlePressMenu}
                 />
@@ -216,7 +227,7 @@ function AuctionDetailScreen({ route, navigation }) {
                             <SelectStatusComment
                                 data={data}
                                 auctionId={item.id}
-                                setItem={setItem}
+                                // setItem={setItem}
                             />
                         ) : null
                     ) : (
@@ -295,7 +306,7 @@ const ItemComment = ({ user, content, price, status_transaction }) => {
 const SelectStatusComment = ({
     data,
     auctionId,
-    setItem,
+    // setItem,
     statusComment = "in_process",
 }) => {
     const dispatch = useDispatch()
@@ -309,9 +320,10 @@ const SelectStatusComment = ({
             })
         )
             .unwrap()
-            .then((res) => {
-                setItem((s) => ({ ...s, status_auction: res.status_auction }))
-            })
+            .catch((err) => Alert.alert("Lỗi", err.message))
+        // .then((res) => {
+        //     setItem((s) => ({ ...s, status_auction: res.status_auction }))
+        // })
     }
     return (
         <>
@@ -330,7 +342,7 @@ const SelectStatusComment = ({
                         style={{ color: Colors.gray5 }}
                     />
                     {data.map((c, i) =>
-                        c.status_transaction === "being auctioned" ? (
+                        c.status_transaction === "none" ? (
                             <Picker.Item
                                 key={i}
                                 label={c.content + " " + c.price}
@@ -347,5 +359,4 @@ const SelectStatusComment = ({
     )
 }
 
-//diango để hỏi có chắc k
 export default AuctionDetailScreen

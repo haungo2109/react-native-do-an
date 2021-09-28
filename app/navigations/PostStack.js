@@ -5,6 +5,7 @@ import UserScreen from "../screens/UserScreen"
 import PostDetailScreen from "../screens/PostDetailScreen"
 import SearchSreen from "../screens/SearchSreen"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import CreateEditPostScreen from "../screens/CreateEditPostScreen"
 
 const Stack = createNativeStackNavigator()
 
@@ -18,6 +19,10 @@ const PostStack = (props) => {
             />
             <Stack.Screen name="PostDetail" component={PostDetailScreen} />
             <Stack.Screen name="Search" component={SearchSreen} />
+            <Stack.Screen
+                name="CreateEditPost"
+                component={CreateEditPostScreen}
+            />
         </Stack.Navigator>
     )
 }

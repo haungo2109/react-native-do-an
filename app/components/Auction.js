@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { useDispatch } from "react-redux"
 import styled from "styled-components"
 import Colors from "../config/Colors"
@@ -7,9 +7,10 @@ import { dislikeAuction, likeAuction } from "../redux/reducers/auctionReducer"
 import { Entypo, AntDesign, MaterialCommunityIcons } from "@expo/vector-icons"
 import Avatar from "./Avatar"
 import { baseURL } from "../api/apiClient"
-import { Dimensions, FlatList, Image, View } from "react-native"
+import { Dimensions, FlatList, Modal, View } from "react-native"
 import { useNavigation } from "@react-navigation/core"
-const { width: windowWidth, height: windowHeight } = Dimensions.get("window")
+import ImageModal from "react-native-image-modal"
+const { width: windowWidth } = Dimensions.get("window")
 
 const ColorStatusAuction = {
     "being auctioned": Colors.gray1,
@@ -68,7 +69,7 @@ export const Photo = styled.Image`
     flex: 1;
 `
 
-export const WrapperImage = styled.View`
+export const WrapperImage = styled.Pressable`
     max-height: 500px;
     min-height: 400px;
     width: ${windowWidth}px;
@@ -105,6 +106,25 @@ const ButtonMenu = styled.TouchableOpacity`
     padding: 7px;
     border-radius: 5px;
 `
+export const WrapperModelImage = styled.View`
+    flex: 1;
+`
+export const FullImage = styled.Image`
+    /* flex: 1; */
+    height: 100%;
+    width: ${windowWidth}px;
+`
+export const WrapperButtonClose = styled.View`
+    position: absolute;
+    right: 7px;
+    top: 7px;
+    z-index: 2;
+`
+export const ButtonClose = styled.TouchableOpacity`
+    border-radius: 100px;
+    padding: 5px;
+    background-color: ${Colors.gray2};
+`
 function Auction({
     content,
     create_at,
@@ -129,7 +149,10 @@ function Auction({
 }) {
     const dispatch = useDispatch()
     const navigation = useNavigation()
-
+    const [managePressImage, setManagePressImage] = useState({
+        show: false,
+        uri: "",
+    })
     const handleLikeButton = () => {
         dispatch(likeAuction(id))
     }
@@ -137,114 +160,48 @@ function Auction({
     const handleDislikeButton = () => {
         dispatch(dislikeAuction(id))
     }
-    return (
-        <Container
-            heightContainer={auction_images.length === 0 ? "200px" : "700px"}
-        >
-            <Header>
-                <Row>
-                    <Avatar
-                        source={{
-                            uri: baseURL + user.avatar,
-                        }}
-                        user_id={user.id}
-                    />
-                    <View style={{ paddingLeft: 10 }}>
-                        <User>{user.full_name}</User>
-                        <Row>
-                            <Time>{create_at}</Time>
-                            <Entypo
-                                name="dot-single"
-                                size={12}
-                                color="#747476"
-                            />
-                            <Entypo name="globe" size={10} color="#747476" />
-                        </Row>
-                    </View>
-                </Row>
-                <ButtonMenu
-                    onPress={() =>
-                        handlePressMenu(user.id, {
-                            id,
-                            title,
-                            content,
-                            base_price,
-                            condition,
-                            deadline,
-                            category,
-                            auction_images,
-                            status_auction,
-                            category,
-                        })
-                    }
-                >
-                    <Entypo
-                        name="dots-three-horizontal"
-                        size={15}
-                        color="#222121"
-                    />
-                </ButtonMenu>
-            </Header>
-            <WrapperText status={status_auction}>
-                <TextTitle>{title}</TextTitle>
-                <TextContent>{content}</TextContent>
-                <TextContent>Điều kiện: {condition}</TextContent>
-                <TextContent>Giá cơ bản: {base_price}</TextContent>
-                {showAll === true ? (
-                    <>
-                        <TextContent>
-                            Hạn đấu giá: {deadline.slice(0, 10)}
-                        </TextContent>
-                        <TextContent>
-                            Phương thức thanh toán: {payment_method}
-                        </TextContent>
-                        <TextContent>Trạng thái: {status_auction}</TextContent>
-                    </>
-                ) : null}
-                {/* {date_success ? (
-                    <>
-                        <TextTitle>{date_success}</TextTitle>
-                        <TextTitle>{buyer}</TextTitle>
-                        <TextTitle>{accept_price}</TextTitle>
-                    </>
-                ) : null} */}
-            </WrapperText>
-            {auction_images?.length !== 0 ? (
-                <FlatList
-                    data={auction_images}
-                    keyExtractor={(_, index) => index.toString()}
-                    horizontal
-                    pagingEnabled
-                    style={{ flex: 1 }}
-                    showsHorizontalScrollIndicator={false}
-                    renderItem={({ item }) => (
-                        <WrapperImage>
-                            <Photo source={{ uri: baseURL + item }} />
-                        </WrapperImage>
-                    )}
-                />
-            ) : null}
-            <Footer>
-                <Separator />
-                <FooterMenu>
-                    <Button
-                        onPress={
-                            isLike ? handleDislikeButton : handleLikeButton
-                        }
-                    >
-                        <Icon>
-                            <AntDesign
-                                name="like2"
-                                size={20}
-                                color={isLike ? "blue" : "#424040"}
-                            />
-                        </Icon>
-                        <Text>{like.length}</Text>
-                    </Button>
 
-                    <Button
-                        onPress={() => {
-                            navigation.navigate("AuctionDetail", {
+    const handlePressImage = (uri) => {
+        setManagePressImage({
+            show: true,
+            uri,
+        })
+    }
+    return (
+        <>
+            <Container
+                heightContainer={
+                    auction_images.length === 0 ? "200px" : "700px"
+                }
+            >
+                <Header>
+                    <Row>
+                        <Avatar
+                            source={{
+                                uri: baseURL + user.avatar,
+                            }}
+                            user_id={user.id}
+                        />
+                        <View style={{ paddingLeft: 10 }}>
+                            <User>{user.full_name}</User>
+                            <Row>
+                                <Time>{create_at}</Time>
+                                <Entypo
+                                    name="dot-single"
+                                    size={12}
+                                    color="#747476"
+                                />
+                                <Entypo
+                                    name="globe"
+                                    size={10}
+                                    color="#747476"
+                                />
+                            </Row>
+                        </View>
+                    </Row>
+                    <ButtonMenu
+                        onPress={() =>
+                            handlePressMenu(user.id, {
                                 content,
                                 create_at,
                                 id,
@@ -260,21 +217,148 @@ function Auction({
                                 status_auction,
                                 category,
                                 payment_method,
+                                date_success,
+                                buyer,
+                                accept_price,
                             })
-                        }}
+                        }
                     >
-                        <Icon>
-                            <MaterialCommunityIcons
-                                name="comment-outline"
-                                size={20}
-                                color="#424040"
+                        <Entypo
+                            name="dots-three-horizontal"
+                            size={15}
+                            color="#222121"
+                        />
+                    </ButtonMenu>
+                </Header>
+                <WrapperText status={status_auction}>
+                    <TextTitle>{title}</TextTitle>
+                    <TextContent>{content}</TextContent>
+                    <TextContent>Điều kiện: {condition}</TextContent>
+                    <TextContent>Giá cơ bản: {base_price}</TextContent>
+                    {showAll === true ? (
+                        <>
+                            <TextContent>
+                                Hạn đấu giá: {deadline.slice(0, 10)}
+                            </TextContent>
+                            <TextContent>
+                                Phương thức thanh toán: {payment_method}
+                            </TextContent>
+                            <TextContent>
+                                Trạng thái: {status_auction}
+                            </TextContent>
+                            {status_auction === "succ" ? (
+                                <>
+                                    <TextContent>
+                                        Ngày hoàn thành: {date_success}
+                                    </TextContent>
+                                    <TextContent>
+                                        Người mua: {buyer.full_name}
+                                    </TextContent>
+                                    <TextContent>
+                                        Giá bán được: {accept_price}
+                                    </TextContent>
+                                </>
+                            ) : null}
+                        </>
+                    ) : null}
+                </WrapperText>
+                {auction_images?.length !== 0 ? (
+                    <FlatList
+                        data={auction_images}
+                        keyExtractor={(_, index) => index.toString()}
+                        horizontal
+                        pagingEnabled
+                        style={{ flex: 1 }}
+                        showsHorizontalScrollIndicator={false}
+                        renderItem={({ item }) => (
+                            <WrapperImage
+                                onPress={() => handlePressImage(item)}
+                            >
+                                <Photo source={{ uri: baseURL + item }} />
+                            </WrapperImage>
+                        )}
+                    />
+                ) : null}
+                <Footer>
+                    <Separator />
+                    <FooterMenu>
+                        <Button
+                            onPress={
+                                isLike ? handleDislikeButton : handleLikeButton
+                            }
+                        >
+                            <Icon>
+                                <AntDesign
+                                    name="like2"
+                                    size={20}
+                                    color={isLike ? "blue" : "#424040"}
+                                />
+                            </Icon>
+                            <Text>{like.length}</Text>
+                        </Button>
+
+                        <Button
+                            onPress={() => {
+                                navigation.navigate("AuctionDetail", {
+                                    content,
+                                    create_at,
+                                    id,
+                                    like,
+                                    isLike,
+                                    auction_images,
+                                    user,
+                                    count_comment,
+                                    title,
+                                    base_price,
+                                    condition,
+                                    deadline,
+                                    status_auction,
+                                    category,
+                                    payment_method,
+                                    date_success,
+                                    buyer,
+                                    accept_price,
+                                })
+                            }}
+                        >
+                            <Icon>
+                                <MaterialCommunityIcons
+                                    name="comment-outline"
+                                    size={20}
+                                    color="#424040"
+                                />
+                            </Icon>
+                            <Text>{count_comment} comment</Text>
+                        </Button>
+                    </FooterMenu>
+                </Footer>
+            </Container>
+            <Modal
+                animationType="fade"
+                transparent={false}
+                visible={managePressImage["show"]}
+            >
+                <WrapperModelImage>
+                    <WrapperButtonClose>
+                        <ButtonClose
+                            onPress={() =>
+                                setManagePressImage({ uri: "", show: false })
+                            }
+                        >
+                            <AntDesign
+                                name="close"
+                                size={28}
+                                color={Colors.gray6}
                             />
-                        </Icon>
-                        <Text>{count_comment} comment</Text>
-                    </Button>
-                </FooterMenu>
-            </Footer>
-        </Container>
+                        </ButtonClose>
+                    </WrapperButtonClose>
+                    <FullImage
+                        resizeMode={"contain"}
+                        source={{ uri: baseURL + managePressImage["uri"] }}
+                    />
+                </WrapperModelImage>
+            </Modal>
+        </>
     )
 }
 

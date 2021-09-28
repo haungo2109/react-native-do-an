@@ -166,9 +166,7 @@ const AppContainer = (props) => {
     }, [])
 
     return (
-        <Stack.Navigator
-            initialRouteName={user.username ? "CreateEditAuction" : "Wellcome"}
-        >
+        <Stack.Navigator initialRouteName={user.username ? "App" : "Wellcome"}>
             <Stack.Screen
                 name="Wellcome"
                 component={WellcomeScreen}
@@ -183,10 +181,6 @@ const AppContainer = (props) => {
             />
             <Stack.Screen name="User" component={UserScreen} />
             <Stack.Screen name="MomoPayment" component={MomoPaymentScreen} />
-            <Stack.Screen
-                name="CreateEditAuction"
-                component={CreateEditAuctionScreen}
-            />
         </Stack.Navigator>
     )
 }

@@ -11,7 +11,6 @@ import Colors from "../config/Colors"
 import { useDispatch, useSelector } from "react-redux"
 import { setControllerMenu } from "../redux/reducers/controllerReducer"
 import { deletePostAction } from "../redux/reducers/postReducer"
-import useModelEdit from "../hooks/useModelEdit"
 import useModelMenu from "../hooks/useModelMenu"
 import { baseURL } from "../api/apiClient"
 import {
@@ -19,9 +18,14 @@ import {
     deleteAuctionAction,
     setFailAuctionAction,
 } from "../redux/reducers/auctionReducer"
-import { Alert, Modal } from "react-native"
+import { Alert, Modal, ToastAndroid } from "react-native"
 import { Picker } from "@react-native-picker/picker"
 import Font from "../config/Font"
+import { useNavigation } from "@react-navigation/core"
+import {
+    reportAuctionAction,
+    reportPostAction,
+} from "../redux/reducers/reportReducer"
 
 const ViewCheckEven = styled.TouchableWithoutFeedback`
     flex: 1;
@@ -59,7 +63,7 @@ const Button = styled.TouchableOpacity`
     background: ${Colors.gray2};
 `
 const Field = styled.View`
-    height: 50px;
+    height: ${(props) => props.height || "50px"};
     width: 95%;
     flex-direction: row;
     border-radius: 10px;
@@ -129,15 +133,16 @@ const ButtonClose = styled.TouchableWithoutFeedback`
 `
 const ModelMenu = () => {
     const dispatch = useDispatch()
+    const navigation = useNavigation()
+
     const [modalVisible, setModalVisible] = useState(false)
-    const [report, setReport] = useState({ type: "", id: "", content: "" })
-    const listCategory = useSelector((s) => s.categoryAuction)
+    const [report, setReport] = useState({ type: "", content: "" })
     const listRepostType = useSelector((s) => s.reportType)
 
     const { id, show, listChoose, data } = useSelector(
         (s) => s.controller.menuPost
     )
-    const { showModelEdit } = useModelEdit("Chỉnh sửa bài viết")
+
     const { hiddenModelMenu } = useModelMenu()
 
     const listButton = {
@@ -158,8 +163,7 @@ const ModelMenu = () => {
                         uri: baseURL + c,
                     }))
                 }
-                showModelEdit({
-                    listChoose: ["content", "hashtag", "images"],
+                navigation.navigate("CreateEditPost", {
                     id,
                     handleSubmit: "editPost",
                     data: { ...newData, hashtag, post_images },
@@ -184,8 +188,7 @@ const ModelMenu = () => {
 
                 let base_price = newData.base_price
                 base_price = base_price.toString()
-
-                showModelEdit({
+                navigation.navigate("CreateEditAuction", {
                     id,
                     handleSubmit: "editAuction",
                     data: { ...newData, auction_images, category, base_price },
@@ -227,7 +230,7 @@ const ModelMenu = () => {
             },
         },
         setFailComment: {
-            icon: <AntDesign name="minus" size={25} color="black" />,
+            icon: <AntDesign name="minus" size={25} color={Colors.red5} />,
             text: "Hủy giao dịch này",
             handle: () => {
                 dispatch(
@@ -243,7 +246,7 @@ const ModelMenu = () => {
             },
         },
         setSuccessComment: {
-            icon: <AntDesign name="check" size={24} color="black" />,
+            icon: <AntDesign name="check" size={24} color={Colors.green5} />,
             text: "Giao dịch đã thành công",
             handle: () => {
                 dispatch(
@@ -259,7 +262,7 @@ const ModelMenu = () => {
             },
         },
         setFailAuction: {
-            icon: <AntDesign name="close" size={24} color="black" />,
+            icon: <AntDesign name="close" size={24} color={Colors.red5} />,
             text: "Hủy đấu giá",
             handle: () => {
                 dispatch(setFailAuctionAction(id))
@@ -269,9 +272,41 @@ const ModelMenu = () => {
             },
         },
     }
+    const handleError = (err) => {
+        ToastAndroid.show("Đã gửi thất bại", ToastAndroid.SHORT)
+    }
+    const handleSuccess = () => {
+        ToastAndroid.show("Đã gửi thành công", ToastAndroid.SHORT)
+        setModalVisible(false)
+        setReport({ type: "", content: "" })
+        hiddenModelEdit()
+    }
     const handleMultiInput = (name) => {
         return (value) => {
             setReport((preState) => ({ ...preState, [name]: value }))
+        }
+    }
+    const handleReport = () => {
+        if (data.category) {
+            dispatch(
+                reportAuctionAction({
+                    auction: data.id,
+                    ...report,
+                })
+            )
+                .unwrap()
+                .then(handleSuccess)
+                .catch(handleError)
+        } else if (data.hashtag) {
+            dispatch(
+                reportPostAction({
+                    post: data.id,
+                    ...report,
+                })
+            )
+                .unwrap()
+                .then(handleSuccess)
+                .catch(handleError)
         }
     }
     if (show)
@@ -312,7 +347,7 @@ const ModelMenu = () => {
                                     </ButtonClose>
                                 </WrapperButtonClose>
                             </Row>
-                            <Field>
+                            <Field height={"70px"}>
                                 <Icon>
                                     <FontAwesome
                                         name="pencil"
@@ -335,10 +370,16 @@ const ModelMenu = () => {
                                     />
                                 </Icon>
                                 <Picker
-                                    selectedValue={"1"}
-                                    onValueChange={(val) => setReport(val)}
+                                    selectedValue={report["type"] || "default"}
+                                    onValueChange={handleMultiInput("type")}
                                     style={{ flex: 1 }}
                                 >
+                                    <Picker.Item
+                                        value={"default"}
+                                        label="Chọn loại báo cáo"
+                                        enabled={false}
+                                        style={{ color: Colors.gray5 }}
+                                    />
                                     {listRepostType.map((c, i) => (
                                         <Picker.Item
                                             key={i}
@@ -348,7 +389,7 @@ const ModelMenu = () => {
                                     ))}
                                 </Picker>
                             </Field>
-                            <SubmitButton>
+                            <SubmitButton onPress={handleReport}>
                                 <TextSubmitButton>GỬI</TextSubmitButton>
                             </SubmitButton>
                         </FormView>

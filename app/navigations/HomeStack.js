@@ -8,6 +8,8 @@ import NotificationScreen from "../screens/NotificationScreen"
 import AuctionDetailScreen from "../screens/AuctionDetailScreen"
 import PostDetailScreen from "../screens/PostDetailScreen"
 import UserAuctionJoinScreen from "../screens/UserAuctionJoinSreen"
+import CreateEditAuctionScreen from "../screens/CreateEditAuctionScreen"
+import CreateEditPostScreen from "../screens/CreateEditPostScreen"
 
 const Tab = createBottomTabNavigator()
 const Stack = createNativeStackNavigator()
@@ -73,6 +75,14 @@ const HomeStack = (props) => {
             <Stack.Screen
                 name="AuctionDetail"
                 component={AuctionDetailScreen}
+            />
+            <Stack.Screen
+                name="CreateEditAuction"
+                component={CreateEditAuctionScreen}
+            />
+            <Stack.Screen
+                name="CreateEditPost"
+                component={CreateEditPostScreen}
             />
         </Stack.Navigator>
     )

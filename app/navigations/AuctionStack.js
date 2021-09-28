@@ -4,6 +4,7 @@ import AuctionScreen from "../screens/AuctionSreen"
 import AuctionDetailScreen from "../screens/AuctionDetailScreen"
 import SearchSreen from "../screens/SearchSreen"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import CreateEditAuctionScreen from "../screens/CreateEditAuctionScreen"
 
 const Stack = createNativeStackNavigator()
 
@@ -20,6 +21,10 @@ const AuctionStack = (props) => {
                 component={AuctionDetailScreen}
             />
             <Stack.Screen name="Search" component={SearchSreen} />
+            <Stack.Screen
+                name="CreateEditAuction"
+                component={CreateEditAuctionScreen}
+            />
         </Stack.Navigator>
     )
 }

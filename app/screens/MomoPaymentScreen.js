@@ -71,6 +71,8 @@ const TextCurrency = styled.Text`
 const MomoPaymentScreen = ({ route }) => {
     const [description, setDescription] = useState("")
     const [processing, setProcessing] = useState(false)
+    const [isPaySuccess, setIsPaySuccess] = useState(false)
+
     const { comment_id, auction_id, amount } = route.params
 
     const dispatch = useDispatch()
@@ -151,9 +153,8 @@ const MomoPaymentScreen = ({ route }) => {
     const momoHandleResponse = async (response) => {
         try {
             if (response && response.status === 0) {
-                let fromapp = response.fromapp //ALWAYS:: fromapp==momotransfer
                 setDescription(JSON.stringify(response))
-                setProcessing(false)
+                setProcessing(true)
 
                 let momo_token = response.data
                 let phonenumber = response.phonenumber
@@ -172,7 +173,8 @@ const MomoPaymentScreen = ({ route }) => {
                     .then((res) => {
                         console.log("Success: ", res)
                         setDescription(res.message)
-                        setProcessing(true)
+                        setProcessing(false)
+                        setIsPaySuccess(true)
                     })
                     .catch((error) => {
                         setDescription(error.message)
@@ -206,7 +208,11 @@ const MomoPaymentScreen = ({ route }) => {
                 </TotalBar>
             </View>
 
-            <TouchableOpacity onPress={onPress} style={styles.button}>
+            <TouchableOpacity
+                onPress={onPress}
+                style={styles.button}
+                disabled={processing || isPaySuccess}
+            >
                 {processing ? (
                     <Text style={styles.textGrey}>Vui lòng đợi...</Text>
                 ) : (

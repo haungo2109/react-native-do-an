@@ -36,12 +36,12 @@ export default function App() {
                 <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
                 <NavigationContainer>
                     <AppContainer />
+                    <WrapperModel>
+                        <ModelMenu />
+                        <ModelEdit />
+                        <ModelImageSelection />
+                    </WrapperModel>
                 </NavigationContainer>
-                <WrapperModel>
-                    <ModelMenu />
-                    <ModelEdit />
-                    <ModelImageSelection />
-                </WrapperModel>
             </PersistGate>
         </Provider>
     )

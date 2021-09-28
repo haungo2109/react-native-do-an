@@ -33,7 +33,7 @@ const Button = styled.TouchableOpacity`
 
 const AppBar = ({ navigation, route }) => {
     const handleButton = () => {
-        if (route.name === "HomeStack") {
+        if (route.name === "PostStack") {
             navigation.navigate("Search", { type: "post" })
         } else if (route.name === "AuctionStack") {
             navigation.navigate("Search", { type: "auction" })

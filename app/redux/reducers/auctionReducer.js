@@ -130,6 +130,13 @@ const auctionSlice = createSlice({
                 error: "",
             })
         })
+        builder.addCase(getOneAuctionAction.fulfilled, (state, action) => {
+            state = Object.assign(state, {
+                data: [...state.data, action.payload],
+                loading: false,
+                error: "",
+            })
+        })
         builder.addCase(getMyAuction.fulfilled, (state, action) => {
             state = Object.assign(state, {
                 data: action.payload,
@@ -232,15 +239,10 @@ const auctionSlice = createSlice({
         builder.addCase(
             changeStatusAuctionComment.fulfilled,
             (state, action) => {
-                let {
-                    auction_id,
-                    comment_id,
-                    status_auction,
-                    status_transaction,
-                } = action.payload
-
+                let { comment_id, status_transaction, auction_id, ...rest } =
+                    action.payload
                 let newState = state.data.map((c) =>
-                    c.id != auction_id ? c : { ...c, status_auction }
+                    c.id != auction_id ? c : { ...c, ...rest }
                 )
                 state = Object.assign(state, {
                     data: newState,

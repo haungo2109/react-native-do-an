@@ -10,8 +10,8 @@ import {
 import AvatarToProfile from "./Avatar"
 import { useDispatch, useSelector } from "react-redux"
 import { baseURL } from "../api/apiClient"
-import useModelEdit from "../hooks/useModelEdit"
 import Colors from "../config/Colors"
+import { useNavigation } from "@react-navigation/core"
 
 const Container = styled.View`
     width: 100%;
@@ -62,7 +62,7 @@ const ButtonType = styled.TouchableOpacity`
 
 const MakerPost = () => {
     const user = useSelector((state) => state.user)
-    const { showModelEdit } = useModelEdit("Tạo bài đăng")
+    const navigation = useNavigation()
 
     if (!user) {
         ;<></>
@@ -76,13 +76,8 @@ const MakerPost = () => {
                             user_id={user.id}
                         />
                         <ButtonType
-                            onPress={() =>
-                                showModelEdit({
-                                    listChoose: [
-                                        "content",
-                                        "hashtag",
-                                        "images",
-                                    ],
+                            onPress={() => {
+                                navigation.navigate("CreateEditPost", {
                                     handleSubmit: "addPost",
                                     data: {
                                         content: "",
@@ -90,7 +85,7 @@ const MakerPost = () => {
                                         post_images: [],
                                     },
                                 })
-                            }
+                            }}
                         >
                             <Input
                                 editable={false}

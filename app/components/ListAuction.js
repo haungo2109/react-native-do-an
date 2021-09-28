@@ -6,6 +6,7 @@ import useModelMenu from "../hooks/useModelMenu"
 import {
     getAllAuctionAction,
     getMoreAuctionAction,
+    getMyAuction,
 } from "../redux/reducers/auctionReducer"
 import Auction from "./Auction"
 
@@ -20,7 +21,6 @@ function ListAuction({ handleRefresh, headerComponent }) {
     const [refreshing, setRefreshing] = useState(false)
     const [hasScrolled, setHasScrolled] = useState(false)
 
-    const paymentMethod = useSelector((state) => state.paymentMethod)
     const user = useSelector((state) => state.user)
     const { data, nextPage } = useSelector((state) => state.auction)
     const { showModelMenu } = useModelMenu()
@@ -61,13 +61,9 @@ function ListAuction({ handleRefresh, headerComponent }) {
     const onRefresh = useCallback(async () => {
         setRefreshing(true)
         if (handleRefresh) await handleRefresh()
-        else await dispatch(getMyAuction())
+        else await dispatch(getAllAuctionAction())
         setRefreshing(false)
     }, [])
-    const getPaymentMethod = (id) => {
-        if (paymentMethod) return paymentMethod[id]
-        else return "offline"
-    }
     return (
         <FlatList
             refreshing={refreshing}
@@ -90,9 +86,6 @@ function ListAuction({ handleRefresh, headerComponent }) {
                     return (
                         <Auction
                             {...item}
-                            // payment_method={getPaymentMethod(
-                            //     item.payment_method
-                            // )}
                             isLike={checkLiked(item.like)}
                             handlePressMenu={handlePressMenu}
                         />

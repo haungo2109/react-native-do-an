@@ -1,0 +1,31 @@
+{
+    "btn": {
+        "login": "Đăng nhập",
+        "register": "Đăng ký",
+        "create-account": "Tạo tài khoản",
+        "reset-pass": "Đặt lại mật khẩu"
+    },
+    "txt": {
+        "slogan-app": "Kết nối, san sẻ",
+        "dont-have-account": "Bạn chưa có tài khoản?",
+        "fogot-pass": "Bạn đã quên mật khẩu?"
+    },
+    "placeholder": {
+        "username": "Tên đăng nhập",
+        "password": "Mật khẩu",
+        "image": "Chọn ảnh đại diện",
+        "first-name": "Tên",
+        "last-name": "Họ và tên đệm",
+        "email": "Địa chỉ Email"
+    },
+    "navigation": {
+        "welcome": "Chào mừng",
+        "login": "Đăng nhập",
+        "register": "Đăng ký",
+        "home": "Màn hình chính",
+        "detail": "Chi tiết",
+        "go_to_detail": "Đi đến màn hình chi tiết",
+        "back": "Trở lại",
+        "setting": "Cấu hình"
+    }
+}

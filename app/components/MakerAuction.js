@@ -10,8 +10,8 @@ import {
 import AvatarToProfile from "./Avatar"
 import { useDispatch, useSelector } from "react-redux"
 import { baseURL } from "../api/apiClient"
-import useModelEdit from "../hooks/useModelEdit"
 import Colors from "../config/Colors"
+import { useNavigation } from "@react-navigation/core"
 
 const Container = styled.View`
     width: 100%;
@@ -62,7 +62,7 @@ const ButtonType = styled.TouchableOpacity`
 
 const MakerAuction = () => {
     const user = useSelector((state) => state.user)
-    const { showModelEdit } = useModelEdit("Tạo đấu giá...")
+    const navigation = useNavigation()
 
     if (!user) {
         ;<></>
@@ -76,8 +76,8 @@ const MakerAuction = () => {
                             user_id={user.id}
                         />
                         <ButtonType
-                            onPress={() =>
-                                showModelEdit({
+                            onPress={() => {
+                                navigation.navigate("CreateEditAuction", {
                                     handleSubmit: "addAuction",
                                     data: {
                                         title: "",
@@ -86,10 +86,11 @@ const MakerAuction = () => {
                                         base_price: "",
                                         condition: "",
                                         deadline: "",
-                                        category: "0",
+                                        payment_method: "default",
+                                        category: "default",
                                     },
                                 })
-                            }
+                            }}
                         >
                             <Input
                                 editable={false}

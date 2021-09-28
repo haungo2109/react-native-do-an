@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components/native"
 import {
-    Entypo,
     FontAwesome,
-    FontAwesome5,
     Ionicons,
     MaterialIcons,
     MaterialCommunityIcons,
@@ -12,32 +10,14 @@ import {
 import Colors from "../config/Colors"
 import { useDispatch, useSelector } from "react-redux"
 import Font from "../config/Font"
-import useModelEdit from "../hooks/useModelEdit"
-import { Alert, Platform } from "react-native"
+import { Platform, ToastAndroid } from "react-native"
 import ImageInput from "../components/ImageInput"
 import {
-    getAllAuctionAction,
-    getMyAuction,
     postAuctionAction,
     updateAuction,
 } from "../redux/reducers/auctionReducer"
 import { Picker } from "@react-native-picker/picker"
 
-const Row = styled.View`
-    width: 95%;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-`
-const WrapperButtonClose = styled.View`
-    position: absolute;
-    right: 0;
-    top: 0;
-`
-const ButtonClose = styled.TouchableWithoutFeedback`
-    border-radius: 10px;
-    background-color: ${Colors.gray9};
-`
 export const TextTitle = styled.Text`
     font-size: ${Font.bigger};
     color: ${Colors.gray8};
@@ -101,18 +81,13 @@ const ErrorText = styled.Text`
     border-radius: 2px;
     background-color: ${Colors.red5};
 `
-const CreateEditAuctionScreen = () => {
+const CreateEditAuctionScreen = ({ navigation, route }) => {
     const dispatch = useDispatch()
-    show = true
-    title = "Tạo đấu giá"
-    handleSubmit = "handelSubmitEditAuction"
-    const data = useSelector((s) => s.auction.data[0])
+    const { data, handleSubmit } = route.params
     const listCategory = useSelector((s) => s.categoryAuction)
     const paymentMethod = useSelector((s) => s.paymentMethod)
     const [error, setError] = useState("")
     const [input, setInput] = useState({ ...data })
-
-    const { hiddenModelEdit } = useModelEdit()
 
     const handleMultiInput = (name) => {
         return (value) => {
@@ -120,12 +95,11 @@ const CreateEditAuctionScreen = () => {
         }
     }
     useEffect(() => {
-        setInput({ ...data })
-        // dispatch(getAllAuctionAction())
+        if (data !== undefined && input.id !== data.id) setInput({ ...data })
     }, [data])
-    useEffect(() => {
-        dispatch(getAllAuctionAction())
-    }, [])
+    // useEffect(() => {
+    //     dispatch(getAllAuctionAction())
+    // }, [])
 
     const mapHandleSubmit = {
         addAuction: () => {
@@ -137,6 +111,7 @@ const CreateEditAuctionScreen = () => {
     }
     const handelSubmitEditAuction = () => {
         const {
+            id,
             content,
             auction_images,
             base_price,
@@ -144,6 +119,7 @@ const CreateEditAuctionScreen = () => {
             deadline,
             category,
             title,
+            payment_method,
         } = input
         const data = new FormData()
         if (auction_images?.length)
@@ -159,16 +135,14 @@ const CreateEditAuctionScreen = () => {
                     name: item.filename || `filename${i}.jpg`,
                 })
             })
-        if (content && content != data.content) data.append("content", content)
-        if (category && category != data.category)
-            data.append("category", parseInt(category))
-        if (base_price && base_price != data.base_price)
-            data.append("base_price", parseFloat(base_price))
-        if (condition && condition != data.condition)
-            data.append("condition", condition)
-        if (deadline && deadline != data.deadline)
-            data.append("deadline", deadline)
-        if (title && title != data.title) data.append("title", title)
+
+        data.append("content", content)
+        data.append("category", parseInt(category))
+        data.append("base_price", parseFloat(base_price))
+        data.append("condition", condition)
+        data.append("deadline", deadline)
+        data.append("payment_method", parseInt(payment_method))
+        data.append("title", title)
 
         dispatch(updateAuction({ id, data }))
             .unwrap()
@@ -184,6 +158,7 @@ const CreateEditAuctionScreen = () => {
             deadline,
             category,
             title,
+            payment_method,
         } = input
         const data = new FormData()
         if (auction_images.length !== 0)
@@ -206,6 +181,7 @@ const CreateEditAuctionScreen = () => {
         data.append("condition", condition)
         data.append("deadline", deadline)
         data.append("category", parseInt(category))
+        data.append("payment_method", parseInt(payment_method))
 
         dispatch(postAuctionAction(data))
             .unwrap()
@@ -214,26 +190,17 @@ const CreateEditAuctionScreen = () => {
     }
     const handleError = (err) => {
         setError(err.message)
+        ToastAndroid.show("Đăng không thành công", ToastAndroid.SHORT)
     }
     const handleSuccess = () => {
         setError("")
-        hiddenModelEdit()
+        ToastAndroid.show("Đăng thành công", ToastAndroid.SHORT)
+        navigation.goBack()
     }
-    if (show)
+    if (data && data?.category)
         return (
             <Container>
                 <FormView>
-                    <Row>
-                        <WrapperButtonClose>
-                            <ButtonClose onPress={hiddenModelEdit}>
-                                <AntDesign
-                                    name="close"
-                                    size={25}
-                                    color={Colors.gray6}
-                                />
-                            </ButtonClose>
-                        </WrapperButtonClose>
-                    </Row>
                     {error !== "" && <ErrorText>{error}</ErrorText>}
                     {input["title"] !== undefined && (
                         <Field>
@@ -329,16 +296,18 @@ const CreateEditAuctionScreen = () => {
                                 />
                             </Icon>
                             <Picker
-                                selectedValue={
-                                    input["payment_method"].toString() ||
-                                    "default"
-                                }
+                                selectedValue={input[
+                                    "payment_method"
+                                ].toString()}
+                                onValueChange={handleMultiInput(
+                                    "payment_method"
+                                )}
                                 style={{ flex: 1 }}
                             >
                                 <Picker.Item
                                     value={"default"}
+                                    label="Chọn phương thức thanh toán"
                                     enabled={false}
-                                    label="Chọn thể loại đấu giá"
                                     style={{ color: Colors.gray5 }}
                                 />
                                 {paymentMethod.map((c, i) => (
@@ -365,6 +334,12 @@ const CreateEditAuctionScreen = () => {
                                 onValueChange={handleMultiInput("category")}
                                 style={{ flex: 1 }}
                             >
+                                <Picker.Item
+                                    label="Loại sản phẩm đấu giá"
+                                    value="default"
+                                    enabled={false}
+                                    style={{ color: Colors.gray5 }}
+                                />
                                 {listCategory.map((c, i) => (
                                     <Picker.Item
                                         key={i}
@@ -396,7 +371,20 @@ const CreateEditAuctionScreen = () => {
                 </FormView>
             </Container>
         )
-    else return null
+    else
+        return (
+            <Container>
+                <FormView>
+                    <SubmitButton
+                        onPress={() => {
+                            navigation.navigate("App")
+                        }}
+                    >
+                        <TextSubmitButton>Quay lại</TextSubmitButton>
+                    </SubmitButton>
+                </FormView>
+            </Container>
+        )
 }
 
 export default CreateEditAuctionScreen

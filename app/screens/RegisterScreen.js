@@ -113,7 +113,9 @@ function RegisterScreen({ navigation }, props) {
     }
 
     return (
-        <ImageBackground source={require("./../assets/story2.jpg")}>
+        <ImageBackground
+            source={require("./../assets/images/background/story2.jpg")}
+        >
             <Container>
                 <Logo>
                     <Text>RegsterScreen view ahihi</Text>
