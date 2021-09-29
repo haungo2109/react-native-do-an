@@ -2,14 +2,23 @@ import { useNavigation } from "@react-navigation/core"
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
-import { TextTitle } from "../components/ModelEdit"
+import { TextTitle } from "./CreateEditAuctionScreen"
 import Colors from "../config/Colors"
 import { removeANotification } from "../redux/reducers/notificationReducer"
 import i18n from "i18n-js"
+import {
+    bgBack,
+    bgItem,
+    bgView,
+    colorText,
+    colorTextTitle,
+} from "../config/PropertyCss"
 
 const Container = styled.SafeAreaView`
+    flex: 1;
     align-items: center;
     padding-top: 10px;
+    background-color: ${bgView};
 `
 const WrapperItemButton = styled.TouchableOpacity`
     height: 70px;
@@ -21,13 +30,17 @@ const WrapperItemButton = styled.TouchableOpacity`
 `
 const TextTitleCus = styled(TextTitle)`
     margin-bottom: 5px;
+    color: ${colorTextTitle};
 `
-const TextContent = styled.Text``
+const TextContent = styled.Text`
+    color: ${colorText};
+`
 
 function NotificationScreen(props) {
     const navigation = useNavigation()
     const dispatch = useDispatch()
     const data = useSelector((s) => s.notification.data)
+    const theme = useSelector((s) => s.setting.theme)
 
     useEffect(() => {}, [data])
     const handlePress = (item) => {
@@ -50,17 +63,24 @@ function NotificationScreen(props) {
         }
     }
     return (
-        <Container>
-            <TextTitle>{i18n.t("txt.title-notification")}</TextTitle>
+        <Container themeColor={theme === "light"}>
+            <TextTitle themeColor={theme === "light"}>
+                {i18n.t("txt.title-notification")}
+            </TextTitle>
             {data?.length !== 0 &&
                 data.map((c) => (
                     <WrapperItemButton
                         onPress={() => handlePress(c)}
                         key={c.id}
-                        bgcolor={c.isSeen == true ? Colors.gray : Colors.blue2}
+                        bgcolor={c.isSeen === false ? bgItem : bgView}
+                        themeColor={theme === "light"}
                     >
-                        <TextTitleCus>{c.title}</TextTitleCus>
-                        <TextContent>{c.body}</TextContent>
+                        <TextTitleCus themeColor={theme === "light"}>
+                            {c.title}
+                        </TextTitleCus>
+                        <TextContent themeColor={theme === "light"}>
+                            {c.body}
+                        </TextContent>
                     </WrapperItemButton>
                 ))}
         </Container>

@@ -19,6 +19,19 @@ import {
     changeStatusAuctionComment,
     getOneAuctionAction,
 } from "../redux/reducers/auctionReducer"
+import {
+    bgBack,
+    bgBtn,
+    bgItem,
+    colorBtn,
+    colorIcon,
+    colorPlaceholder,
+    colorText,
+} from "../config/PropertyCss"
+
+const Container = styled.ScrollView`
+    background-color: ${bgBack};
+`
 
 const WrapperComment = styled.View`
     padding: 0px 11px;
@@ -37,7 +50,8 @@ const CommentText = styled.Text`
     height: 100%;
     padding: 5px;
     margin-left: 8px;
-    background-color: ${Colors.gray2};
+    color: ${colorText};
+    background-color: ${bgItem};
 `
 const CommentPriceText = styled.Text`
     font-size: ${Font.nomal};
@@ -45,7 +59,8 @@ const CommentPriceText = styled.Text`
     height: 100%;
     padding: 5px;
     margin-left: 8px;
-    background-color: ${Colors.gray2};
+    color: ${colorText};
+    background-color: ${bgItem};
 `
 const TextInput = styled.TextInput`
     flex: 1;
@@ -54,7 +69,8 @@ const TextInput = styled.TextInput`
     height: 100%;
     padding: 5px;
     margin-left: 8px;
-    background-color: ${Colors.gray2};
+    color: ${colorText};
+    background-color: ${bgItem};
 `
 const PriceInput = styled.TextInput`
     flex: 1;
@@ -63,7 +79,8 @@ const PriceInput = styled.TextInput`
     height: 100%;
     padding: 5px;
     margin-left: 8px;
-    background-color: ${Colors.gray2};
+    color: ${colorText};
+    background-color: ${bgItem};
 `
 const WrapperInput = styled.View`
     flex: 1;
@@ -83,22 +100,27 @@ const TextStatusComment = styled.Text`
     padding: 2px;
     background-color: ${Colors.red5};
 `
-const ButtonPayment = styled(SubmitButton)``
-const TextButtonPayment = styled(TextSubmitButton)``
+const ButtonPayment = styled(SubmitButton)`
+    background-color: ${bgBtn};
+`
+const TextButtonPayment = styled(TextSubmitButton)`
+    color: ${colorBtn};
+`
 const WrapperTextInfo = styled.View`
     margin-top: 5px;
     margin-bottom: 10px;
     justify-content: center;
     align-items: center;
+    background-color: ${bgBtn};
 `
 const TextInfo = styled.Text`
     font-size: ${Font.big};
+    color: ${colorText};
 `
 
 function AuctionDetailScreen({ route, navigation }) {
     const dispatch = useDispatch()
 
-    // const [item, setItem] = useState(route.params)
     const item = useSelector((s) =>
         s.auction.data.find((c) => c.id == route.params.id)
     )
@@ -106,6 +128,7 @@ function AuctionDetailScreen({ route, navigation }) {
     const { data } = useSelector((state) => state.comment)
     const user = useSelector((state) => state.user)
     const payment = useSelector((state) => state.paymentMethod)
+    const theme = useSelector((s) => s.setting.theme)
     const { showModelMenu } = useModelMenu()
 
     useEffect(() => {
@@ -116,11 +139,6 @@ function AuctionDetailScreen({ route, navigation }) {
                 .catch((err) => Alert.alert("Lỗi", err.message))
         }
     }, [])
-
-    // useEffect(() => {
-    //     let currentItem = items.)
-    //     if (currentItem && !item?.user) setItem(currentItem)
-    // }, [items])
 
     const handlePressMenu = (uid, auction) => {
         let comment = data.find(
@@ -178,16 +196,19 @@ function AuctionDetailScreen({ route, navigation }) {
             case "in process":
                 if (item.payment_method === 1)
                     return (
-                        <ButtonPayment>
-                            <TextButtonPayment onPress={paywithMomo}>
+                        <ButtonPayment themeColor={theme === "light"}>
+                            <TextButtonPayment
+                                onPress={paywithMomo}
+                                themeColor={theme === "light"}
+                            >
                                 Thanh toán bằng Momo
                             </TextButtonPayment>
                         </ButtonPayment>
                     )
                 else {
                     return (
-                        <WrapperTextInfo>
-                            <TextInfo>
+                        <WrapperTextInfo themeColor={theme === "light"}>
+                            <TextInfo themeColor={theme === "light"}>
                                 Vui lòng liên hệ với {item.user.full_name} để
                                 thanh toán
                             </TextInfo>
@@ -195,11 +216,17 @@ function AuctionDetailScreen({ route, navigation }) {
                     )
                 }
             default:
-                return <InputCommentForm user={user} auctionId={item.id} />
+                return (
+                    <InputCommentForm
+                        user={user}
+                        auctionId={item.id}
+                        theme={theme}
+                    />
+                )
         }
     }
     return (
-        <ScrollView>
+        <Container themeColor={theme === "light"}>
             {item?.payment_method && (
                 <Auction
                     showAll={true}
@@ -219,6 +246,7 @@ function AuctionDetailScreen({ route, navigation }) {
                             price={c.price}
                             status_transaction={c.status_transaction}
                             key={c.id}
+                            theme={theme}
                         />
                     ))}
                     {/* RENDER ACTION FOR OWNER AND BUYLER */}
@@ -227,7 +255,7 @@ function AuctionDetailScreen({ route, navigation }) {
                             <SelectStatusComment
                                 data={data}
                                 auctionId={item.id}
-                                // setItem={setItem}
+                                theme={theme}
                             />
                         ) : null
                     ) : (
@@ -235,10 +263,10 @@ function AuctionDetailScreen({ route, navigation }) {
                     )}
                 </WrapperComment>
             )}
-        </ScrollView>
+        </Container>
     )
 }
-const InputCommentForm = ({ user, auctionId }) => {
+const InputCommentForm = ({ user, auctionId, theme }) => {
     const [inputComment, setInputComment] = useState("")
     const [inputPrice, setInputPrice] = useState("")
     const dispatch = useDispatch()
@@ -265,22 +293,34 @@ const InputCommentForm = ({ user, auctionId }) => {
                     onChangeText={setInputComment}
                     value={inputComment}
                     placeholder="Nhập bình luận..."
+                    placeholderTextColor={colorPlaceholder({
+                        themeColor: theme === "light",
+                    })}
+                    themeColor={theme === "light"}
                 />
                 <PriceInput
                     onChangeText={setInputPrice}
                     value={inputPrice}
                     placeholder="Nhập định giá của bạn..."
+                    placeholderTextColor={colorPlaceholder({
+                        themeColor: theme === "light",
+                    })}
+                    themeColor={theme === "light"}
                 />
             </WrapperInput>
             <ButtonSendComment onPress={handleSendComment}>
                 <Icon>
-                    <FontAwesome name="send" size={24} color="black" />
+                    <FontAwesome
+                        name="send"
+                        size={24}
+                        color={colorIcon(theme === "light")}
+                    />
                 </Icon>
             </ButtonSendComment>
         </WrapperInputComment>
     )
 }
-const ItemComment = ({ user, content, price, status_transaction }) => {
+const ItemComment = ({ user, content, price, status_transaction, theme }) => {
     return (
         <>
             <WrapperInputComment>
@@ -290,7 +330,7 @@ const ItemComment = ({ user, content, price, status_transaction }) => {
                     }}
                     user_id={user.id}
                 />
-                <CommentText>
+                <CommentText themeColor={theme === "light"}>
                     {content}
                     {status_transaction !== "none" && (
                         <TextStatusComment>
@@ -298,7 +338,9 @@ const ItemComment = ({ user, content, price, status_transaction }) => {
                         </TextStatusComment>
                     )}
                 </CommentText>
-                <CommentPriceText>{price}</CommentPriceText>
+                <CommentPriceText themeColor={theme === "light"}>
+                    {price}
+                </CommentPriceText>
             </WrapperInputComment>
         </>
     )
@@ -306,7 +348,6 @@ const ItemComment = ({ user, content, price, status_transaction }) => {
 const SelectStatusComment = ({
     data,
     auctionId,
-    // setItem,
     statusComment = "in_process",
 }) => {
     const dispatch = useDispatch()
@@ -321,9 +362,6 @@ const SelectStatusComment = ({
         )
             .unwrap()
             .catch((err) => Alert.alert("Lỗi", err.message))
-        // .then((res) => {
-        //     setItem((s) => ({ ...s, status_auction: res.status_auction }))
-        // })
     }
     return (
         <>

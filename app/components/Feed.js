@@ -4,7 +4,7 @@ import styled from "styled-components/native"
 import { Entypo, AntDesign, MaterialCommunityIcons } from "@expo/vector-icons"
 import Avatar from "./Avatar"
 import { baseURL } from "../api/apiClient"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { dislikePost, likePost } from "../redux/reducers/postReducer"
 import Colors from "../config/Colors"
 import Font from "../config/Font"
@@ -18,11 +18,20 @@ import {
 } from "./Auction"
 import { useNavigation } from "@react-navigation/core"
 import i18n from "i18n-js"
+import {
+    bgBtn,
+    bgItem,
+    bgView,
+    colorBtn,
+    colorCaption,
+    colorPlaceholder,
+    colorText,
+} from "../config/PropertyCss"
 
 const Container = styled.View`
     height: ${(props) => props.heightContainer};
     margin-bottom: 10px;
-    background-color: ${Colors.gray};
+    background-color: ${bgView};
     justify-content: space-between;
 `
 const Header = styled.View`
@@ -40,15 +49,15 @@ const Row = styled.View`
 const User = styled.Text`
     font-size: ${Font.big};
     font-weight: bold;
-    color: ${Colors.gray8};
+    color: ${colorText};
 `
 const Time = styled.Text`
     font-size: ${Font.small};
-    color: ${Colors.gray5};
+    color: ${colorCaption};
 `
 const Post = styled.Text`
     font-size: ${Font.nomal};
-    color: ${Colors.gray7};
+    color: ${colorText};
     line-height: 20px;
     padding: 0 11px;
     margin: 3px 0;
@@ -70,14 +79,14 @@ const Button = styled.TouchableOpacity`
     flex-direction: row;
     padding: 5px;
     border-radius: 7px;
-    background-color: ${Colors.gray2};
+    background-color: ${bgBtn};
 `
 const Icon = styled.View`
     margin-right: 6px;
 `
 const Text = styled.Text`
     font-size: ${Font.small};
-    color: ${Colors.gray7};
+    color: ${colorBtn};
 `
 const ButtonMenu = styled.TouchableOpacity`
     padding: 7px;
@@ -98,6 +107,8 @@ const Feed = ({
 }) => {
     const dispatch = useDispatch()
     const navigation = useNavigation()
+    const theme = useSelector((s) => s.setting.theme)
+
     const [managePressImage, setManagePressImage] = useState({
         show: false,
         uri: "",
@@ -119,6 +130,7 @@ const Feed = ({
     return (
         <>
             <Container
+                themeColor={theme === "light"}
                 heightContainer={post_images.length === 0 ? "180px" : "500px"}
             >
                 <Header>
@@ -130,9 +142,13 @@ const Feed = ({
                             user_id={user.id}
                         />
                         <View style={{ paddingLeft: 10 }}>
-                            <User>{user.full_name}</User>
+                            <User themeColor={theme === "light"}>
+                                {user.full_name}
+                            </User>
                             <Row>
-                                <Time>{create_at}</Time>
+                                <Time themeColor={theme === "light"}>
+                                    {create_at}
+                                </Time>
                                 <Entypo
                                     name="dot-single"
                                     size={12}
@@ -164,7 +180,7 @@ const Feed = ({
                     </ButtonMenu>
                 </Header>
 
-                <Post>{content}</Post>
+                <Post themeColor={theme === "light"}>{content}</Post>
                 {post_images?.length !== 0 ? (
                     <FlatList
                         data={post_images}
@@ -184,12 +200,12 @@ const Feed = ({
                 ) : null}
 
                 <Footer>
-                    <Separator />
                     <FooterMenu>
                         <Button
                             onPress={
                                 isLike ? handleDislikeButton : handleLikeButton
                             }
+                            themeColor={theme === "light"}
                         >
                             <Icon>
                                 <AntDesign
@@ -198,7 +214,9 @@ const Feed = ({
                                     color={isLike ? "blue" : "#424040"}
                                 />
                             </Icon>
-                            <Text>{like.length}</Text>
+                            <Text themeColor={theme === "light"}>
+                                {like.length}
+                            </Text>
                         </Button>
 
                         <Button
@@ -215,6 +233,7 @@ const Feed = ({
                                     count_comment,
                                 })
                             }}
+                            themeColor={theme === "light"}
                         >
                             <Icon>
                                 <MaterialCommunityIcons
@@ -223,7 +242,7 @@ const Feed = ({
                                     color="#424040"
                                 />
                             </Icon>
-                            <Text>
+                            <Text themeColor={theme === "light"}>
                                 {count_comment +
                                     " " +
                                     i18n.t("btn.comment-post")}

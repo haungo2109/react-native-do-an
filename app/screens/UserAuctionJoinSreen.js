@@ -1,19 +1,18 @@
 import React, { useEffect } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import ListAuction from "../components/ListAuction"
-import MakerAuction from "../components/MakerAuction"
-import {
-    getAuctionYouJoin,
-    getMyAuction,
-} from "../redux/reducers/auctionReducer"
+import { bgBack } from "../config/PropertyCss"
+import { getAuctionYouJoin } from "../redux/reducers/auctionReducer"
 
 const Container = styled.SafeAreaView`
     flex: 1;
+    background-color: ${bgBack};
 `
 
 function UserAuctionJoinScreen(props) {
     const dispatch = useDispatch()
+    const theme = useSelector((s) => s.setting.theme)
 
     useEffect(() => {
         dispatch(getAuctionYouJoin())
@@ -23,7 +22,7 @@ function UserAuctionJoinScreen(props) {
         return dispatch(getAuctionYouJoin())
     }
     return (
-        <Container>
+        <Container themeColor={theme === "light"}>
             <ListAuction handleRefresh={handleRefresh} />
         </Container>
     )

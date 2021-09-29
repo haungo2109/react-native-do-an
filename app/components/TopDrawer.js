@@ -1,4 +1,5 @@
 import React from "react"
+import Colors from "../config/Colors"
 import { useSelector } from "react-redux"
 import styled from "styled-components"
 import { baseURL } from "../api/apiClient"
@@ -24,10 +25,12 @@ const TextName = styled.Text`
     font-size: 16px;
     margin-top: 3px;
     font-weight: bold;
+    color: ${(p) => (!p.themeColor ? Colors.gray3 : Colors.gray5)};
 `
 const Caption = styled.Text`
     font-size: 14px;
     line-height: 14px;
+    color: ${(p) => (!p.themeColor ? Colors.gray3 : Colors.gray5)};
 `
 const WrapperExtraInfo = styled.View`
     margin-top: 20px;
@@ -47,20 +50,21 @@ const TextFigure = styled.Text`
 `
 function TopDrawer(props) {
     const user = useSelector((s) => s.user)
+    const theme = useSelector((s) => s.setting.theme)
 
     return (
         <>
-            <Container>
+            <Container themeColor={theme === "light"}>
                 <WrapperAvatar>
                     <Avatar source={{ uri: baseURL + user.avatar }} />
 
                     <WrapperTextAvatar
                         style={{ marginLeft: 15, flexDirection: "column" }}
                     >
-                        <TextName>
+                        <TextName themeColor={theme === "light"}>
                             {user.first_name + " " + user.last_name}
                         </TextName>
-                        <Caption>@KanJ</Caption>
+                        <Caption themeColor={theme === "light"}>@KanJ</Caption>
                     </WrapperTextAvatar>
                 </WrapperAvatar>
                 {/* <WrapperExtraInfo>

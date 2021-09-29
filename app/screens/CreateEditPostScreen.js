@@ -2,12 +2,21 @@ import React, { useEffect, useState } from "react"
 import styled from "styled-components/native"
 import { FontAwesome } from "@expo/vector-icons"
 import Colors from "../config/Colors"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import Font from "../config/Font"
 import { Alert, Platform, ToastAndroid } from "react-native"
 import ImageInput from "../components/ImageInput"
 import { postPostAction, updatePost } from "../redux/reducers/postReducer"
 import findHashtags from "../utils/FindHashTag"
+import {
+    bgBack,
+    bgBtnSubmit,
+    bgItem,
+    bgView,
+    colorBtnSubmit,
+    colorIcon,
+    colorPlaceholder,
+} from "../config/PropertyCss"
 
 export const TextTitle = styled.Text`
     font-size: ${Font.bigger};
@@ -21,11 +30,10 @@ const FormView = styled.View`
     justify-content: center;
     align-items: center;
     padding: 10px 10px;
-    background-color: ${Colors.gray1};
 `
 const Container = styled.View`
     flex: 1;
-    background-color: ${Colors.gray6o5};
+    background-color: ${bgBack};
 `
 const TextInput = styled.TextInput`
     flex: 1;
@@ -43,7 +51,7 @@ export const Field = styled.View`
     align-items: center;
     padding-left: 10px;
     margin-bottom: 3px;
-    background: ${Colors.gray2};
+    background: ${bgItem};
 `
 const FieldImage = styled(Field)`
     height: 150px;
@@ -58,10 +66,10 @@ export const SubmitButton = styled.TouchableOpacity`
     margin-bottom: 3px;
     justify-content: center;
     margin-top: 10px;
-    background-color: ${Colors.facebookColor};
+    background-color: ${bgBtnSubmit};
 `
 export const TextSubmitButton = styled.Text`
-    color: ${Colors.gray2};
+    color: ${colorBtnSubmit};
     font-weight: bold;
 `
 
@@ -69,7 +77,7 @@ const CreateEditPostScreen = ({ navigation, route }) => {
     const dispatch = useDispatch()
     const { data, handleSubmit } = route.params
     const [input, setInput] = useState({ ...data })
-
+    const theme = useSelector((s) => s.setting.theme)
     const handleMultiInput = (name) => {
         return (value) => {
             setInput((preState) => ({ ...preState, [name]: value }))
@@ -154,15 +162,15 @@ const CreateEditPostScreen = ({ navigation, route }) => {
     }
     if (data && data?.content !== undefined)
         return (
-            <Container>
+            <Container themeColor={theme === "light"}>
                 <FormView>
                     {input["content"] !== undefined && (
-                        <Field height={"110px"}>
+                        <Field height={"110px"} themeColor={theme === "light"}>
                             <Icon>
                                 <FontAwesome
                                     name="pencil"
                                     size={25}
-                                    color={Colors.gray6}
+                                    color={colorIcon(theme === "light")}
                                 />
                             </Icon>
                             <TextInput
@@ -171,32 +179,20 @@ const CreateEditPostScreen = ({ navigation, route }) => {
                                 onChangeText={handleMultiInput("content")}
                                 value={input["content"]}
                                 placeholder="Nhập nội dung bài viết"
+                                themeColor={theme === "light"}
+                                placeholderTextColor={colorPlaceholder({
+                                    themeColor: theme === "light",
+                                })}
                             />
                         </Field>
                     )}
-                    {/* {input["hashtag"] !== undefined && (
-                        <Field>
-                            <Icon>
-                                <FontAwesome
-                                    name="hashtag"
-                                    size={25}
-                                    color={Colors.gray6}
-                                />
-                            </Icon>
-                            <TextInput
-                                onChangeText={handleMultiInput("hashtag")}
-                                value={input["hashtag"]}
-                                placeholder="Thêm hashtag"
-                            />
-                        </Field>
-                    )} */}
                     {input["post_images"] !== undefined && (
-                        <FieldImage>
+                        <FieldImage themeColor={theme === "light"}>
                             <Icon>
                                 <FontAwesome
                                     name="image"
                                     size={24}
-                                    color={Colors.gray6}
+                                    color={colorIcon(theme === "light")}
                                 />
                             </Icon>
                             <ImageInput
@@ -205,8 +201,13 @@ const CreateEditPostScreen = ({ navigation, route }) => {
                             />
                         </FieldImage>
                     )}
-                    <SubmitButton onPress={mapHandleSubmit[handleSubmit]}>
-                        <TextSubmitButton>ĐĂNG</TextSubmitButton>
+                    <SubmitButton
+                        onPress={mapHandleSubmit[handleSubmit]}
+                        themeColor={theme === "light"}
+                    >
+                        <TextSubmitButton themeColor={theme === "light"}>
+                            ĐĂNG
+                        </TextSubmitButton>
                     </SubmitButton>
                 </FormView>
             </Container>

@@ -42,26 +42,39 @@ import Colors from "../config/Colors"
 import TopDrawer from "../components/TopDrawer"
 import * as Localization from "expo-localization"
 import { setLanguage } from "../redux/reducers/settingReducer"
+import {
+    colorIconDrawDark,
+    colorIconDrawLight,
+    colorText,
+} from "../config/PropertyCss"
 
 const Stack = createNativeStackNavigator()
 const Drawer = createDrawerNavigator()
 
 function CustomDrawerContent(props) {
     const dispatch = useDispatch()
+    const theme = useSelector((s) => s.setting.theme)
     return (
-        <View style={{ flex: 1 }}>
+        <View
+            style={{
+                flex: 1,
+                backgroundColor: theme === "light" ? Colors.gray : Colors.gray6,
+            }}
+        >
             <DrawerContentScrollView {...props}>
                 <TopDrawer />
-                {/* <DrawerContentScrollView> */}
                 <View style={{ flex: 1 }}>
                     <DrawerItemList {...props} />
                 </View>
-                {/* </DrawerContentScrollView> */}
             </DrawerContentScrollView>
             <DrawerItem
+                labelStyle={{
+                    color: colorText({ themeColor: theme === "light" }),
+                }}
                 style={{
                     marginBottom: 15,
-                    borderTopColor: "#f4f4f4",
+                    borderTopColor:
+                        theme === "light" ? Colors.gray : Colors.gray5,
                     borderTopWidth: 1,
                 }}
                 label={i18n.t("navigation.logout")}
@@ -76,7 +89,11 @@ function CustomDrawerContent(props) {
                 icon={({ focused, size }) => (
                     <MaterialIcons
                         name="logout"
-                        color={focused ? "#7cc" : Colors.gray5}
+                        color={
+                            theme == "dark"
+                                ? colorIconDrawDark(focused)
+                                : colorIconDrawLight(focused)
+                        }
                         size={size}
                     />
                 )}
@@ -86,7 +103,16 @@ function CustomDrawerContent(props) {
 }
 const AppDrawer = () => {
     const dispatch = useDispatch()
+    const theme = useSelector((s) => s.setting.theme)
 
+    const color = (focused) =>
+        theme == "dark"
+            ? colorIconDrawDark(focused)
+            : colorIconDrawLight(focused)
+
+    const drawerLabelStyle = {
+        color: colorText({ themeColor: theme === "light" }),
+    }
     useEffect(() => {
         dispatch(getCurrenUserAction())
     }, [])
@@ -106,9 +132,10 @@ const AppDrawer = () => {
                         <FontAwesome
                             name="home"
                             size={size}
-                            color={focused ? "#7cc" : Colors.gray5}
+                            color={color(focused)}
                         />
                     ),
+                    drawerLabelStyle,
                 }}
             />
             <Drawer.Screen
@@ -121,9 +148,10 @@ const AppDrawer = () => {
                         <FontAwesome
                             name="feed"
                             size={size + 3}
-                            color={focused ? "#7cc" : Colors.gray5}
+                            color={color(focused)}
                         />
                     ),
+                    drawerLabelStyle,
                 }}
             />
             <Drawer.Screen
@@ -136,9 +164,10 @@ const AppDrawer = () => {
                         <FontAwesome
                             name="list-alt"
                             size={size}
-                            color={focused ? "#7cc" : Colors.gray5}
+                            color={color(focused)}
                         />
                     ),
+                    drawerLabelStyle,
                 }}
             />
             <Drawer.Screen
@@ -151,9 +180,10 @@ const AppDrawer = () => {
                         <MaterialIcons
                             name="feedback"
                             size={size}
-                            color={focused ? "#7cc" : Colors.gray5}
+                            color={color(focused)}
                         />
                     ),
+                    drawerLabelStyle,
                 }}
             />
             <Drawer.Screen
@@ -166,9 +196,10 @@ const AppDrawer = () => {
                         <AntDesign
                             name="bulb1"
                             size={size}
-                            color={focused ? "#7cc" : Colors.gray5}
+                            color={color(focused)}
                         />
                     ),
+                    drawerLabelStyle,
                 }}
             />
             <Drawer.Screen
@@ -181,9 +212,10 @@ const AppDrawer = () => {
                         <AntDesign
                             name="setting"
                             size={size}
-                            color={focused ? "#7cc" : Colors.gray5}
+                            color={color(focused)}
                         />
                     ),
+                    drawerLabelStyle,
                 }}
             />
         </Drawer.Navigator>

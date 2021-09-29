@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import Colors from "../config/Colors"
 import Font from "../config/Font"
@@ -10,10 +10,20 @@ import { baseURL } from "../api/apiClient"
 import { Dimensions, FlatList, Modal, View } from "react-native"
 import { useNavigation } from "@react-navigation/core"
 import i18n from "i18n-js"
+import {
+    bgBack,
+    bgBtn,
+    bgItem,
+    bgView,
+    colorBtn,
+    colorCaption,
+    colorText,
+    colorTextTitle,
+} from "../config/PropertyCss"
 const { width: windowWidth } = Dimensions.get("window")
 
 const ColorStatusAuction = {
-    "being auctioned": Colors.gray1,
+    "being auctioned": "transparent",
     "in process": Colors.yellow5,
     succ: Colors.green5,
     fail: Colors.red5,
@@ -22,7 +32,7 @@ const ColorStatusAuction = {
 const Container = styled.View`
     height: ${(props) => props.heightContainer};
     margin-bottom: 10px;
-    background-color: ${Colors.gray};
+    background-color: ${bgView};
     justify-content: space-between;
 `
 const Header = styled.View`
@@ -40,11 +50,11 @@ const Row = styled.View`
 const User = styled.Text`
     font-size: ${Font.big};
     font-weight: bold;
-    color: ${Colors.gray8};
+    color: ${colorTextTitle};
 `
 const Time = styled.Text`
     font-size: ${Font.small};
-    color: ${Colors.gray5};
+    color: ${colorCaption};
 `
 const WrapperText = styled.View`
     padding: 0 11px;
@@ -54,13 +64,14 @@ const WrapperText = styled.View`
 `
 const TextContent = styled.Text`
     font-size: ${Font.nomal};
-    color: ${Colors.gray7};
+    color: ${colorText};
     line-height: 20px;
     margin: 3px 0;
 `
 const TextTitle = styled.Text`
     font-size: ${Font.big};
     font-weight: bold;
+    color: ${colorTextTitle};
 `
 
 export const Photo = styled.Image`
@@ -93,14 +104,14 @@ const Button = styled.TouchableOpacity`
     flex-direction: row;
     padding: 5px;
     border-radius: 7px;
-    background-color: ${Colors.gray2};
+    background-color: ${bgBtn};
 `
 const Icon = styled.View`
     margin-right: 6px;
 `
 const Text = styled.Text`
     font-size: ${Font.small};
-    color: ${Colors.gray7};
+    color: ${colorBtn};
 `
 const ButtonMenu = styled.TouchableOpacity`
     padding: 7px;
@@ -108,9 +119,9 @@ const ButtonMenu = styled.TouchableOpacity`
 `
 export const WrapperModelImage = styled.View`
     flex: 1;
+    background-color: ${bgBack};
 `
 export const FullImage = styled.Image`
-    /* flex: 1; */
     height: 100%;
     width: ${windowWidth}px;
 `
@@ -123,7 +134,7 @@ export const WrapperButtonClose = styled.View`
 export const ButtonClose = styled.TouchableOpacity`
     border-radius: 100px;
     padding: 5px;
-    background-color: ${Colors.gray2};
+    background-color: ${bgBtn};
 `
 function Auction({
     content,
@@ -149,6 +160,7 @@ function Auction({
 }) {
     const dispatch = useDispatch()
     const navigation = useNavigation()
+    const theme = useSelector((s) => s.setting.theme)
     const [managePressImage, setManagePressImage] = useState({
         show: false,
         uri: "",
@@ -173,6 +185,7 @@ function Auction({
                 heightContainer={
                     auction_images.length === 0 ? "200px" : "700px"
                 }
+                themeColor={theme === "light"}
             >
                 <Header>
                     <Row>
@@ -183,9 +196,13 @@ function Auction({
                             user_id={user.id}
                         />
                         <View style={{ paddingLeft: 10 }}>
-                            <User>{user.full_name}</User>
+                            <User themeColor={theme === "light"}>
+                                {user.full_name}
+                            </User>
                             <Row>
-                                <Time>{create_at}</Time>
+                                <Time themeColor={theme === "light"}>
+                                    {create_at}
+                                </Time>
                                 <Entypo
                                     name="dot-single"
                                     size={12}
@@ -231,44 +248,48 @@ function Auction({
                     </ButtonMenu>
                 </Header>
                 <WrapperText status={status_auction}>
-                    <TextTitle>{title}</TextTitle>
-                    <TextContent>{content}</TextContent>
-                    <TextContent>
+                    <TextTitle themeColor={theme === "light"}>
+                        {title}
+                    </TextTitle>
+                    <TextContent themeColor={theme === "light"}>
+                        {content}
+                    </TextContent>
+                    <TextContent themeColor={theme === "light"}>
                         {i18n.t("txt.condition") + ": " + condition}
                     </TextContent>
-                    <TextContent>
+                    <TextContent themeColor={theme === "light"}>
                         {i18n.t("txt.base-price") + ": " + base_price}
                     </TextContent>
                     {showAll === true ? (
                         <>
-                            <TextContent>
+                            <TextContent themeColor={theme === "light"}>
                                 {i18n.t("txt.deadline") +
                                     ": " +
                                     deadline.slice(0, 10)}
                             </TextContent>
-                            <TextContent>
+                            <TextContent themeColor={theme === "light"}>
                                 {i18n.t("txt.payment-method") +
                                     ": " +
                                     payment_method}
                             </TextContent>
-                            <TextContent>
+                            <TextContent themeColor={theme === "light"}>
                                 {i18n.t("txt.status-auction") +
                                     ": " +
                                     status_auction}
                             </TextContent>
                             {status_auction === "succ" ? (
                                 <>
-                                    <TextContent>
+                                    <TextContent themeColor={theme === "light"}>
                                         {i18n.t("txt.date-success") +
                                             ": " +
                                             date_success}
                                     </TextContent>
-                                    <TextContent>
+                                    <TextContent themeColor={theme === "light"}>
                                         {i18n.t("txt.buyer") +
                                             ": " +
                                             buyer.full_name}
                                     </TextContent>
-                                    <TextContent>
+                                    <TextContent themeColor={theme === "light"}>
                                         {i18n.t("txt.accept-price") +
                                             ": " +
                                             accept_price}
@@ -296,12 +317,12 @@ function Auction({
                     />
                 ) : null}
                 <Footer>
-                    <Separator />
                     <FooterMenu>
                         <Button
                             onPress={
                                 isLike ? handleDislikeButton : handleLikeButton
                             }
+                            themeColor={theme === "light"}
                         >
                             <Icon>
                                 <AntDesign
@@ -310,7 +331,9 @@ function Auction({
                                     color={isLike ? "blue" : "#424040"}
                                 />
                             </Icon>
-                            <Text>{like.length}</Text>
+                            <Text themeColor={theme === "light"}>
+                                {like.length}
+                            </Text>
                         </Button>
 
                         <Button
@@ -336,6 +359,7 @@ function Auction({
                                     accept_price,
                                 })
                             }}
+                            themeColor={theme === "light"}
                         >
                             <Icon>
                                 <MaterialCommunityIcons
@@ -344,7 +368,7 @@ function Auction({
                                     color="#424040"
                                 />
                             </Icon>
-                            <Text>
+                            <Text themeColor={theme === "light"}>
                                 {count_comment +
                                     " " +
                                     i18n.t("btn.comment-auction")}
@@ -358,7 +382,7 @@ function Auction({
                 transparent={false}
                 visible={managePressImage["show"]}
             >
-                <WrapperModelImage>
+                <WrapperModelImage themeColor={theme === "light"}>
                     <WrapperButtonClose>
                         <ButtonClose
                             onPress={() =>

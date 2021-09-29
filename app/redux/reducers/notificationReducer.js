@@ -26,7 +26,7 @@ const notificationSlice = createSlice({
             state = Object.assign(state, { ...state, data })
         },
         addNotification: (state, action) => {
-            let data = [...state.data, action.payload]
+            let data = [action.payload, ...state.data]
             state = Object.assign(state, { ...state, data })
         },
         removeANotification: (state, action) => {

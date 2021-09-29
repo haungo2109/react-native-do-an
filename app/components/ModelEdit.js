@@ -1,28 +1,31 @@
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useEffect, useState } from "react"
 import styled from "styled-components/native"
 import {
     Entypo,
     FontAwesome,
     FontAwesome5,
-    Ionicons,
-    MaterialIcons,
-    MaterialCommunityIcons,
     AntDesign,
 } from "@expo/vector-icons"
 import Colors from "../config/Colors"
 import { useDispatch, useSelector } from "react-redux"
 import Font from "../config/Font"
 import useModelEdit from "../hooks/useModelEdit"
-import { Alert, Platform } from "react-native"
-import ImageInput from "./ImageInput"
-import { postPostAction, updatePost } from "../redux/reducers/postReducer"
 import { updateCurrenUserAction } from "../redux/reducers/userReducer"
-import {
-    postAuctionAction,
-    updateAuction,
-} from "../redux/reducers/auctionReducer"
-import { Picker } from "@react-native-picker/picker"
 import i18n from "i18n-js"
+import {
+    bgBack,
+    bgBtn,
+    bgBtnSubmit,
+    bgItem,
+    bgModel,
+    bgView,
+    colorBtnSubmit,
+    colorCaption,
+    colorIcon,
+    colorPlaceholder,
+    colorText,
+    colorTextTitle,
+} from "../config/PropertyCss"
 
 const Row = styled.View`
     width: 95%;
@@ -37,11 +40,11 @@ const WrapperButtonClose = styled.View`
 `
 const ButtonClose = styled.TouchableWithoutFeedback`
     border-radius: 10px;
-    background-color: ${Colors.gray9};
+    background-color: ${bgBtn};
 `
 export const TextTitle = styled.Text`
     font-size: ${Font.bigger};
-    color: ${Colors.gray8};
+    color: ${colorTextTitle};
     font-weight: bold;
     margin-bottom: 15px;
 `
@@ -50,8 +53,10 @@ const FormView = styled.View`
     justify-content: center;
     align-items: center;
     padding: 20px 10px;
-    background-color: ${Colors.gray1};
+    background-color: ${bgView};
     border-radius: 10px;
+    border: 1px;
+    border-color: ${colorCaption};
 `
 const Container = styled.View`
     position: absolute;
@@ -60,11 +65,11 @@ const Container = styled.View`
     height: 100%;
     justify-content: center;
     align-items: center;
-    background-color: ${Colors.gray6o5};
+    background-color: ${bgModel};
 `
 const TextInput = styled.TextInput`
     flex: 1;
-    color: ${Colors.gray7};
+    color: ${colorText};
     font-size: ${Font.big};
 `
 const Icon = styled.View`
@@ -78,10 +83,7 @@ export const Field = styled.View`
     align-items: center;
     padding-left: 10px;
     margin-bottom: 3px;
-    background: ${Colors.gray2};
-`
-const FieldImage = styled(Field)`
-    height: 150px;
+    background: ${bgItem};
 `
 export const SubmitButton = styled.TouchableOpacity`
     height: 42px;
@@ -93,10 +95,10 @@ export const SubmitButton = styled.TouchableOpacity`
     margin-bottom: 3px;
     justify-content: center;
     margin-top: 10px;
-    background-color: ${Colors.facebookColor};
+    background-color: ${bgBtnSubmit};
 `
 export const TextSubmitButton = styled.Text`
-    color: ${Colors.gray2};
+    color: ${colorBtnSubmit};
     font-weight: bold;
 `
 const ErrorText = styled.Text`
@@ -111,10 +113,9 @@ const ModelEdit = () => {
     const { id, show, title, data, handleSubmit } = useSelector(
         (s) => s.controller.editPost
     )
-    const listCategory = useSelector((s) => s.categoryAuction)
     const [error, setError] = useState("")
     const [input, setInput] = useState({ ...data })
-
+    const theme = useSelector((s) => s.setting.theme)
     const { hiddenModelEdit } = useModelEdit()
 
     const handleMultiInput = (name) => {
@@ -129,18 +130,6 @@ const ModelEdit = () => {
     const mapHandleSubmit = {
         editProfile: () => {
             handleSubmitProfile()
-        },
-        addPost: () => {
-            handelSubmitAddPost()
-        },
-        addAuction: () => {
-            handelSubmitAddAuction()
-        },
-        editPost: () => {
-            handelSubmitEditPost()
-        },
-        editAuction: () => {
-            handelSubmitEditAuction()
         },
     }
 
@@ -159,136 +148,6 @@ const ModelEdit = () => {
             .then(handleSuccess)
             .catch(handleError)
     }
-    const handelSubmitEditPost = () => {
-        const { content, post_images, hashtag } = input
-        const data = new FormData()
-        if (post_images?.length && post_images !== data.post_images)
-            post_images.forEach((item, i) => {
-                data.append("images", {
-                    uri:
-                        Platform.OS === "ios"
-                            ? item.uri.replace("file://", "")
-                            : item.uri,
-                    type:
-                        "image/" +
-                        item.uri.slice(item.uri.lastIndexOf(".") + 1),
-                    name: item.filename || `filename${i}.jpg`,
-                })
-            })
-        if (content && content !== data.content) data.append("content", content)
-        if (hashtag && hashtag !== data.hashtag) data.append("hashtag", hashtag)
-
-        dispatch(updatePost({ id, data }))
-            .unwrap()
-            .then(handleSuccess)
-            .catch(handleError)
-    }
-    const handelSubmitEditAuction = () => {
-        const {
-            content,
-            auction_images,
-            base_price,
-            condition,
-            deadline,
-            category,
-            title,
-        } = input
-        const data = new FormData()
-        if (auction_images?.length)
-            auction_images.forEach((item, i) => {
-                data.append("images", {
-                    uri:
-                        Platform.OS === "ios"
-                            ? item.uri.replace("file://", "")
-                            : item.uri,
-                    type:
-                        "image/" +
-                        item.uri.slice(item.uri.lastIndexOf(".") + 1),
-                    name: item.filename || `filename${i}.jpg`,
-                })
-            })
-        if (content && content != data.content) data.append("content", content)
-        if (category && category != data.category)
-            data.append("category", parseInt(category))
-        if (base_price && base_price != data.base_price)
-            data.append("base_price", parseFloat(base_price))
-        if (condition && condition != data.condition)
-            data.append("condition", condition)
-        if (deadline && deadline != data.deadline)
-            data.append("deadline", deadline)
-        if (title && title != data.title) data.append("title", title)
-
-        dispatch(updateAuction({ id, data }))
-            .unwrap()
-            .then(handleSuccess)
-            .catch(handleError)
-    }
-    const handelSubmitAddPost = () => {
-        const { content, post_images, hashtag } = input
-        const data = new FormData()
-        if (post_images.length !== 0)
-            post_images.forEach((item, i) => {
-                data.append("images", {
-                    uri:
-                        Platform.OS === "ios"
-                            ? item.uri.replace("file://", "")
-                            : item.uri,
-                    type:
-                        "image/" +
-                        item.uri.slice(item.uri.lastIndexOf(".") + 1),
-                    name: item.filename || `filename${i}.jpg`,
-                })
-            })
-        if (content !== "") data.append("content", content)
-        if (content === "" && post_images.length === 0)
-            return Alert.alert(
-                "Lưu ý:",
-                "Bạn phải có nội dung hoặc hình ảnh để đăng."
-            )
-        if (hashtag !== "") data.append("hashtag", hashtag)
-
-        dispatch(postPostAction(data))
-            .unwrap()
-            .then(handleSuccess)
-            .catch(handleError)
-    }
-    const handelSubmitAddAuction = () => {
-        const {
-            content,
-            auction_images,
-            base_price,
-            condition,
-            deadline,
-            category,
-            title,
-        } = input
-        const data = new FormData()
-        if (auction_images.length !== 0)
-            auction_images.forEach((item, i) => {
-                data.append("images", {
-                    uri:
-                        Platform.OS === "ios"
-                            ? item.uri.replace("file://", "")
-                            : item.uri,
-                    type:
-                        "image/" +
-                        item.uri.slice(item.uri.lastIndexOf(".") + 1),
-                    name: item.filename || `filename${i}.jpg`,
-                })
-            })
-
-        data.append("title", title)
-        data.append("content", content)
-        data.append("base_price", parseFloat(base_price))
-        data.append("condition", condition)
-        data.append("deadline", deadline)
-        data.append("category", parseInt(category))
-
-        dispatch(postAuctionAction(data))
-            .unwrap()
-            .then(handleSuccess)
-            .catch(handleError)
-    }
     const handleError = (err) => {
         setError(err.message)
     }
@@ -298,96 +157,37 @@ const ModelEdit = () => {
     }
     if (show)
         return (
-            <Container>
-                <FormView>
+            <Container themeColor={theme === "light"}>
+                <FormView themeColor={theme === "light"}>
                     <Row>
-                        <TextTitle>{title || ""}</TextTitle>
+                        <TextTitle themeColor={theme === "light"}>
+                            {title || ""}
+                        </TextTitle>
                         <WrapperButtonClose>
                             <ButtonClose onPress={hiddenModelEdit}>
                                 <AntDesign
                                     name="close"
                                     size={25}
-                                    color={Colors.gray6}
+                                    color={colorIcon(theme == "light")}
                                 />
                             </ButtonClose>
                         </WrapperButtonClose>
                     </Row>
                     {error !== "" && <ErrorText>{error}</ErrorText>}
-                    {input["title"] !== undefined && (
-                        <Field>
-                            <Icon>
-                                <MaterialIcons
-                                    name="title"
-                                    size={25}
-                                    color={Colors.gray6}
-                                />
-                            </Icon>
-                            <TextInput
-                                onChangeText={handleMultiInput("title")}
-                                value={input["title"]}
-                                placeholder="Nhập tiêu đề đấu giá..."
-                            />
-                        </Field>
-                    )}
-                    {input["content"] !== undefined && (
-                        <Field>
-                            <Icon>
-                                <FontAwesome
-                                    name="pencil"
-                                    size={25}
-                                    color={Colors.gray6}
-                                />
-                            </Icon>
-                            <TextInput
-                                multiline={true}
-                                numberOfLines={5}
-                                onChangeText={handleMultiInput("content")}
-                                value={input["content"]}
-                                placeholder="Nhập nội dung bài viết"
-                            />
-                        </Field>
-                    )}
-                    {input["hashtag"] !== undefined && (
-                        <Field>
-                            <Icon>
-                                <FontAwesome
-                                    name="hashtag"
-                                    size={25}
-                                    color={Colors.gray6}
-                                />
-                            </Icon>
-                            <TextInput
-                                onChangeText={handleMultiInput("hashtag")}
-                                value={input["hashtag"]}
-                                placeholder="Thêm hashtag"
-                            />
-                        </Field>
-                    )}
-                    {input["post_images"] !== undefined && (
-                        <FieldImage>
-                            <Icon>
-                                <FontAwesome
-                                    name="image"
-                                    size={24}
-                                    color={Colors.gray6}
-                                />
-                            </Icon>
-                            <ImageInput
-                                photo={input["post_images"]}
-                                setPhoto={handleMultiInput("post_images")}
-                            />
-                        </FieldImage>
-                    )}
                     {input["first_name"] !== undefined && (
-                        <Field>
+                        <Field themeColor={theme === "light"}>
                             <Icon>
                                 <AntDesign
                                     name="edit"
                                     size={25}
-                                    color={Colors.gray6}
+                                    color={colorIcon(theme == "light")}
                                 />
                             </Icon>
                             <TextInput
+                                placeholderTextColor={colorPlaceholder({
+                                    themeColor: theme === "light",
+                                })}
+                                themeColor={theme === "light"}
                                 onChangeText={handleMultiInput("first_name")}
                                 value={input.first_name}
                                 placeholder={i18n.t("placeholder.first-name")}
@@ -395,15 +195,19 @@ const ModelEdit = () => {
                         </Field>
                     )}
                     {input["last_name"] !== undefined && (
-                        <Field>
+                        <Field themeColor={theme === "light"}>
                             <Icon>
                                 <AntDesign
                                     name="edit"
                                     size={25}
-                                    color={Colors.gray6}
+                                    color={colorIcon(theme == "light")}
                                 />
                             </Icon>
                             <TextInput
+                                placeholderTextColor={colorPlaceholder({
+                                    themeColor: theme === "light",
+                                })}
+                                themeColor={theme === "light"}
                                 onChangeText={handleMultiInput("last_name")}
                                 value={input.last_name}
                                 placeholder={i18n.t("placeholder.last-name")}
@@ -411,15 +215,19 @@ const ModelEdit = () => {
                         </Field>
                     )}
                     {input["birthday"] !== undefined && (
-                        <Field>
+                        <Field themeColor={theme === "light"}>
                             <Icon>
                                 <FontAwesome
                                     name="birthday-cake"
                                     size={25}
-                                    color={Colors.gray6}
+                                    color={colorIcon(theme == "light")}
                                 />
                             </Icon>
                             <TextInput
+                                placeholderTextColor={colorPlaceholder({
+                                    themeColor: theme === "light",
+                                })}
+                                themeColor={theme === "light"}
                                 onChangeText={handleMultiInput("birthday")}
                                 value={input.birthday}
                                 placeholder={i18n.t("placeholder.birthday")}
@@ -427,15 +235,19 @@ const ModelEdit = () => {
                         </Field>
                     )}
                     {input["email"] !== undefined && (
-                        <Field>
+                        <Field themeColor={theme === "light"}>
                             <Icon>
                                 <Entypo
                                     name="email"
                                     size={25}
-                                    color={Colors.gray6}
+                                    color={colorIcon(theme == "light")}
                                 />
                             </Icon>
                             <TextInput
+                                placeholderTextColor={colorPlaceholder({
+                                    themeColor: theme === "light",
+                                })}
+                                themeColor={theme === "light"}
                                 onChangeText={handleMultiInput("email")}
                                 value={input["email"]}
                                 placeholder={i18n.t("placeholder.email")}
@@ -443,15 +255,19 @@ const ModelEdit = () => {
                         </Field>
                     )}
                     {input["phone"] !== undefined && (
-                        <Field>
+                        <Field themeColor={theme === "light"}>
                             <Icon>
                                 <FontAwesome
                                     name="phone"
                                     size={25}
-                                    color={Colors.gray6}
+                                    color={colorIcon(theme == "light")}
                                 />
                             </Icon>
                             <TextInput
+                                placeholderTextColor={colorPlaceholder({
+                                    themeColor: theme === "light",
+                                })}
+                                themeColor={theme === "light"}
                                 onChangeText={handleMultiInput("phone")}
                                 value={input["phone"]}
                                 placeholder={i18n.t("placeholder.phone")}
@@ -459,110 +275,30 @@ const ModelEdit = () => {
                         </Field>
                     )}
                     {input["address"] !== undefined && (
-                        <Field>
+                        <Field themeColor={theme === "light"}>
                             <Icon>
                                 <FontAwesome5
                                     name="home"
                                     size={25}
-                                    color={Colors.gray6}
+                                    color={colorIcon(theme == "light")}
                                 />
                             </Icon>
                             <TextInput
+                                placeholderTextColor={colorPlaceholder({
+                                    themeColor: theme === "light",
+                                })}
+                                themeColor={theme === "light"}
                                 onChangeText={handleMultiInput("address")}
                                 value={input["address"]}
                                 placeholder={i18n.t("placeholder.address")}
                             />
                         </Field>
                     )}
-                    {input["base_price"] !== undefined && (
-                        <Field>
-                            <Icon>
-                                <MaterialCommunityIcons
-                                    name="currency-usd"
-                                    size={25}
-                                    color={Colors.gray6}
-                                />
-                            </Icon>
-                            <TextInput
-                                onChangeText={handleMultiInput("base_price")}
-                                value={input["base_price"]}
-                                placeholder="Nhập giá thấp nhất của sản phẩm..."
-                            />
-                        </Field>
-                    )}
-                    {input["condition"] !== undefined && (
-                        <Field>
-                            <Icon>
-                                <AntDesign
-                                    name="filetext1"
-                                    size={25}
-                                    color={Colors.gray6}
-                                />
-                            </Icon>
-                            <TextInput
-                                onChangeText={handleMultiInput("condition")}
-                                value={input["condition"]}
-                                placeholder="Nhập điều kiện đấu giá..."
-                            />
-                        </Field>
-                    )}
-                    {input["deadline"] !== undefined && (
-                        <Field>
-                            <Icon>
-                                <Ionicons
-                                    name="timer"
-                                    size={25}
-                                    color={Colors.gray6}
-                                />
-                            </Icon>
-                            <TextInput
-                                onChangeText={handleMultiInput("deadline")}
-                                value={input["deadline"]}
-                                placeholder="Nhập thời hạn đấu giá..."
-                            />
-                        </Field>
-                    )}
-                    {input["category"] !== undefined && (
-                        <Field>
-                            <Icon>
-                                <MaterialIcons
-                                    name="category"
-                                    size={25}
-                                    color={Colors.gray6}
-                                />
-                            </Icon>
-                            <Picker
-                                selectedValue={input["category"].toString()}
-                                onValueChange={handleMultiInput("category")}
-                                style={{ flex: 1 }}
-                            >
-                                {listCategory.map((c, i) => (
-                                    <Picker.Item
-                                        key={i}
-                                        label={c.name}
-                                        value={c.id.toString()}
-                                    />
-                                ))}
-                            </Picker>
-                        </Field>
-                    )}
-                    {input["auction_images"] !== undefined && (
-                        <FieldImage>
-                            <Icon>
-                                <FontAwesome
-                                    name="image"
-                                    size={24}
-                                    color={Colors.gray6}
-                                />
-                            </Icon>
-                            <ImageInput
-                                photo={input["auction_images"]}
-                                setPhoto={handleMultiInput("auction_images")}
-                            />
-                        </FieldImage>
-                    )}
-                    <SubmitButton onPress={mapHandleSubmit[handleSubmit]}>
-                        <TextSubmitButton>
+                    <SubmitButton
+                        onPress={mapHandleSubmit[handleSubmit]}
+                        themeColor={theme === "light"}
+                    >
+                        <TextSubmitButton themeColor={theme === "light"}>
                             {i18n.t("btn.post-model")}
                         </TextSubmitButton>
                     </SubmitButton>

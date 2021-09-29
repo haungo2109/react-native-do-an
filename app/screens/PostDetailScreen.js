@@ -14,6 +14,17 @@ import {
     sendPostComment,
 } from "../redux/reducers/commentReducer"
 import { getOnePostAction } from "../redux/reducers/postReducer"
+import {
+    bgBack,
+    bgItem,
+    colorIcon,
+    colorPlaceholder,
+    colorText,
+} from "../config/PropertyCss"
+
+const Container = styled.ScrollView`
+    background-color: ${bgBack};
+`
 
 const WrapperComment = styled.View`
     padding: 0px 11px;
@@ -25,9 +36,6 @@ const ItemComment = styled.View`
     align-items: center;
     margin: 5px 0;
 `
-const ItemCommentReply = styled(ItemComment)`
-    padding-left: 10%;
-`
 const CommentText = styled.Text`
     flex: 1;
     font-size: ${Font.nomal};
@@ -35,7 +43,8 @@ const CommentText = styled.Text`
     height: 100%;
     padding: 5px;
     margin-left: 8px;
-    background-color: ${Colors.gray2};
+    color: ${colorText};
+    background-color: ${bgItem};
 `
 const TextInput = styled.TextInput`
     flex: 1;
@@ -44,7 +53,7 @@ const TextInput = styled.TextInput`
     height: 100%;
     padding: 5px;
     margin-left: 8px;
-    background-color: ${Colors.gray2};
+    background-color: ${bgItem};
 `
 const ButtonSendComment = styled.TouchableOpacity``
 const Icon = styled.View`
@@ -54,7 +63,7 @@ function PostDetailScreen({ route, navigation }) {
     const dispatch = useDispatch()
 
     const [item, setItem] = useState(route.params)
-
+    const theme = useSelector((s) => s.setting.theme)
     const { data } = useSelector((state) => state.comment)
     const user = useSelector((state) => state.user)
     const [inputComment, setInputComment] = useState("")
@@ -88,11 +97,16 @@ function PostDetailScreen({ route, navigation }) {
         })
     }
     return (
-        <ScrollView>
+        <Container>
             {item?.user && <Feed {...item} handlePressMenu={handlePressMenu} />}
-            <WrapperComment>
+            <WrapperComment themeColor={theme === "light"}>
                 {data.map((c) => (
-                    <Item user={c.user} content={c.content} key={c.id} />
+                    <Item
+                        user={c.user}
+                        content={c.content}
+                        key={c.id}
+                        theme={theme}
+                    />
                 ))}
                 <ItemComment>
                     <AvatarToProfile
@@ -105,28 +119,35 @@ function PostDetailScreen({ route, navigation }) {
                         onChangeText={setInputComment}
                         value={inputComment}
                         placeholder="Nhập bình luận..."
+                        placeholderTextColor={colorPlaceholder({
+                            themeColor: theme === "light",
+                        })}
                     />
                     <ButtonSendComment onPress={handleSendComment}>
                         <Icon>
-                            <FontAwesome name="send" size={24} color="black" />
+                            <FontAwesome
+                                name="send"
+                                size={24}
+                                color={colorIcon(theme === "light")}
+                            />
                         </Icon>
                     </ButtonSendComment>
                 </ItemComment>
             </WrapperComment>
-        </ScrollView>
+        </Container>
     )
 }
 
-const Item = ({ user, content }) => {
+const Item = ({ user, content, theme }) => {
     return (
-        <ItemComment>
+        <ItemComment themeColor={theme === "light"}>
             <AvatarToProfile
                 source={{
                     uri: baseURL + user.avatar,
                 }}
                 user_id={user.id}
             />
-            <CommentText>{content}</CommentText>
+            <CommentText themeColor={theme === "light"}>{content}</CommentText>
         </ItemComment>
     )
 }

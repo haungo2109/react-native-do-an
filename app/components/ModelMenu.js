@@ -20,6 +20,7 @@ import {
     reportPostAction,
 } from "../redux/reducers/reportReducer"
 import i18n from "i18n-js"
+import { bgBack, bgView, colorIcon, colorText } from "../config/PropertyCss"
 
 const ViewCheckEven = styled.TouchableWithoutFeedback`
     flex: 1;
@@ -37,10 +38,10 @@ const Container = styled.View`
     padding: 10px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    background-color: ${Colors.gray1};
+    background-color: ${bgBack};
 `
 const Text = styled.Text`
-    color: ${Colors.gray7};
+    color: ${colorText};
     font-weight: bold;
 `
 const Icon = styled.View`
@@ -54,7 +55,7 @@ const Button = styled.TouchableOpacity`
     align-items: center;
     padding-left: 10px;
     margin-bottom: 3px;
-    background: ${Colors.gray2};
+    background: ${bgView};
 `
 const Field = styled.View`
     height: ${(props) => props.height || "50px"};
@@ -132,7 +133,7 @@ const ModelMenu = () => {
     const [modalVisible, setModalVisible] = useState(false)
     const [report, setReport] = useState({ type: "", content: "" })
     const listRepostType = useSelector((s) => s.reportType)
-
+    const theme = useSelector((s) => s.setting.theme)
     const { id, show, listChoose, data } = useSelector(
         (s) => s.controller.menuPost
     )
@@ -141,7 +142,13 @@ const ModelMenu = () => {
 
     const listButton = {
         edit: {
-            icon: <AntDesign name="edit" size={25} color="black" />,
+            icon: (
+                <AntDesign
+                    name="edit"
+                    size={25}
+                    color={colorIcon(theme === "light")}
+                />
+            ),
             text: i18n.t("btn.model-menu-edit-post"),
             handle: () => {
                 hiddenModelMenu()
@@ -165,7 +172,13 @@ const ModelMenu = () => {
             },
         },
         editAuction: {
-            icon: <AntDesign name="edit" size={25} color="black" />,
+            icon: (
+                <AntDesign
+                    name="edit"
+                    size={25}
+                    color={colorIcon(theme === "light")}
+                />
+            ),
             text: i18n.t("btn.model-menu-edit-auction"),
             handle: () => {
                 hiddenModelMenu()
@@ -190,7 +203,13 @@ const ModelMenu = () => {
             },
         },
         delete: {
-            icon: <AntDesign name="delete" size={25} color="black" />,
+            icon: (
+                <AntDesign
+                    name="delete"
+                    size={25}
+                    color={colorIcon(theme === "light")}
+                />
+            ),
             text: i18n.t("btn.model-menu-delete-post"),
             handle: () => {
                 dispatch(deletePostAction(id))
@@ -200,7 +219,13 @@ const ModelMenu = () => {
             },
         },
         deleteAuction: {
-            icon: <AntDesign name="delete" size={25} color="black" />,
+            icon: (
+                <AntDesign
+                    name="delete"
+                    size={25}
+                    color={colorIcon(theme === "light")}
+                />
+            ),
             text: i18n.t("btn.model-menu-delete-auction"),
             handle: () => {
                 dispatch(deleteAuctionAction(id))
@@ -210,14 +235,26 @@ const ModelMenu = () => {
             },
         },
         report: {
-            icon: <MaterialIcons name="report" size={25} color="black" />,
+            icon: (
+                <MaterialIcons
+                    name="report"
+                    size={25}
+                    color={colorIcon(theme === "light")}
+                />
+            ),
             text: i18n.t("btn.model-menu-report-post"),
             handle: () => {
                 setModalVisible(true)
             },
         },
         reportAuction: {
-            icon: <MaterialIcons name="report" size={25} color="black" />,
+            icon: (
+                <MaterialIcons
+                    name="report"
+                    size={25}
+                    color={colorIcon(theme === "light")}
+                />
+            ),
             text: i18n.t("btn.model-menu-report-auction"),
             handle: () => {
                 setModalVisible(true)
@@ -309,12 +346,18 @@ const ModelMenu = () => {
                 <ViewCheckEven onPress={() => hiddenModelMenu(false)}>
                     <ViewNone />
                 </ViewCheckEven>
-                <Container>
+                <Container themeColor={theme === "light"}>
                     {listChoose &&
                         listChoose.map((c, i) => (
-                            <Button onPress={listButton[c].handle} key={i}>
+                            <Button
+                                onPress={listButton[c].handle}
+                                key={i}
+                                themeColor={theme === "light"}
+                            >
                                 <Icon>{listButton[c].icon}</Icon>
-                                <Text>{listButton[c].text}</Text>
+                                <Text themeColor={theme === "light"}>
+                                    {listButton[c].text}
+                                </Text>
                             </Button>
                         ))}
                 </Container>

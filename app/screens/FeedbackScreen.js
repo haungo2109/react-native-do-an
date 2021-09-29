@@ -15,19 +15,28 @@ import {
 } from "./CreateEditAuctionScreen"
 import Font from "../config/Font"
 import i18n from "i18n-js"
+import { useSelector } from "react-redux"
+import {
+    bgBack,
+    bgItem,
+    bgView,
+    colorCaption,
+    colorPlaceholder,
+    colorText,
+} from "../config/PropertyCss"
 
 const Container = styled.View`
     flex: 1;
     justify-content: center;
     align-items: center;
-    background-color: ${Colors.gray6o5};
+    background-color: ${bgBack};
 `
 const FormView = styled.View`
     width: 95%;
     justify-content: center;
     align-items: center;
     padding: 20px 10px;
-    background-color: ${Colors.gray1};
+    background-color: ${bgView};
     border-radius: 10px;
 `
 const Row = styled.View`
@@ -47,27 +56,33 @@ const WrapperLabel = styled.View`
 const LabelField = styled.Text`
     justify-content: center;
     align-items: flex-start;
+    color: ${colorText};
 `
 const TextInput = styled.TextInput`
     flex: 1;
     padding: 7px 0;
-    color: ${Colors.gray7};
+    color: ${colorText};
     font-size: ${Font.big};
 `
 function FeedbackScreen(props) {
     const [content, setContent] = useState("")
     const [title, setTitle] = useState("")
+    const theme = useSelector((s) => s.setting.theme)
 
     return (
-        <Container>
-            <FormView>
+        <Container themeColor={theme === "light"}>
+            <FormView themeColor={theme === "light"}>
                 <Row>
-                    <TextTitle>{i18n.t("txt.title-feedback")}</TextTitle>
+                    <TextTitle themeColor={theme === "light"}>
+                        {i18n.t("txt.title-feedback")}
+                    </TextTitle>
                 </Row>
                 <WrapperLabel>
-                    <LabelField>{i18n.t("txt.label-title")}</LabelField>
+                    <LabelField themeColor={theme === "light"}>
+                        {i18n.t("txt.label-title")}
+                    </LabelField>
                 </WrapperLabel>
-                <Field>
+                <Field themeColor={theme === "light"}>
                     <Icon>
                         <MaterialIcons
                             name="title"
@@ -79,12 +94,18 @@ function FeedbackScreen(props) {
                         onChangeText={setTitle}
                         value={title}
                         placeholder={i18n.t("placeholder.exam-title-feedback")}
+                        themeColor={theme === "light"}
+                        placeholderTextColor={colorPlaceholder({
+                            themeColor: theme === "light",
+                        })}
                     />
                 </Field>
                 <WrapperLabel>
-                    <LabelField>{i18n.t("txt.label-content")}</LabelField>
+                    <LabelField themeColor={theme === "light"}>
+                        {i18n.t("txt.label-content")}
+                    </LabelField>
                 </WrapperLabel>
-                <Field height={"200px"}>
+                <Field height={"200px"} themeColor={theme === "light"}>
                     <Icon>
                         <FontAwesome
                             name="pencil"
@@ -100,10 +121,16 @@ function FeedbackScreen(props) {
                         placeholder={i18n.t(
                             "placeholder.exam-content-feedback"
                         )}
+                        themeColor={theme === "light"}
+                        placeholderTextColor={colorPlaceholder({
+                            themeColor: theme === "light",
+                        })}
                     />
                 </Field>
-                <SubmitButton>
-                    <TextSubmitButton>GỬI</TextSubmitButton>
+                <SubmitButton themeColor={theme === "light"}>
+                    <TextSubmitButton themeColor={theme === "light"}>
+                        GỬI
+                    </TextSubmitButton>
                 </SubmitButton>
             </FormView>
         </Container>

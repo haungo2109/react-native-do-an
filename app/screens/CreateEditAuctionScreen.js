@@ -17,10 +17,23 @@ import {
     updateAuction,
 } from "../redux/reducers/auctionReducer"
 import { Picker } from "@react-native-picker/picker"
+import {
+    bgBack,
+    bgBtnSubmit,
+    bgItem,
+    bgModel,
+    bgView,
+    colorBtnSubmit,
+    colorCaption,
+    colorIcon,
+    colorPlaceholder,
+    colorText,
+    colorTextTitle,
+} from "../config/PropertyCss"
 
 export const TextTitle = styled.Text`
     font-size: ${Font.bigger};
-    color: ${Colors.gray8};
+    color: ${colorTextTitle};
     font-weight: bold;
     margin-bottom: 15px;
 `
@@ -30,16 +43,16 @@ const FormView = styled.View`
     justify-content: center;
     align-items: center;
     padding: 10px 10px;
-    background-color: ${Colors.gray1};
+    /* background-color: ${bgItem}; */
 `
 const Container = styled.ScrollView`
     flex: 1;
-    background-color: ${Colors.gray6o5};
+    background-color: ${bgBack};
 `
 const TextInput = styled.TextInput`
     flex: 1;
     padding: 7px 0;
-    color: ${Colors.gray7};
+    color: ${colorText};
     font-size: ${Font.big};
 `
 const Icon = styled.View`
@@ -53,7 +66,7 @@ export const Field = styled.View`
     align-items: center;
     padding-left: 10px;
     margin-bottom: 3px;
-    background: ${Colors.gray2};
+    background: ${bgItem};
 `
 const FieldImage = styled(Field)`
     height: 150px;
@@ -68,10 +81,10 @@ export const SubmitButton = styled.TouchableOpacity`
     margin-bottom: 3px;
     justify-content: center;
     margin-top: 10px;
-    background-color: ${Colors.facebookColor};
+    background-color: ${bgBtnSubmit};
 `
 export const TextSubmitButton = styled.Text`
-    color: ${Colors.gray2};
+    color: ${colorBtnSubmit};
     font-weight: bold;
 `
 const ErrorText = styled.Text`
@@ -88,6 +101,7 @@ const CreateEditAuctionScreen = ({ navigation, route }) => {
     const paymentMethod = useSelector((s) => s.paymentMethod)
     const [error, setError] = useState("")
     const [input, setInput] = useState({ ...data })
+    const theme = useSelector((s) => s.setting.theme)
 
     const handleMultiInput = (name) => {
         return (value) => {
@@ -97,9 +111,6 @@ const CreateEditAuctionScreen = ({ navigation, route }) => {
     useEffect(() => {
         if (data !== undefined && input.id !== data.id) setInput({ ...data })
     }, [data])
-    // useEffect(() => {
-    //     dispatch(getAllAuctionAction())
-    // }, [])
 
     const mapHandleSubmit = {
         addAuction: () => {
@@ -199,8 +210,8 @@ const CreateEditAuctionScreen = ({ navigation, route }) => {
     }
     if (data && data?.category)
         return (
-            <Container>
-                <FormView>
+            <Container themeColor={theme === "light"}>
+                <FormView themeColor={theme === "light"}>
                     {error !== "" && <ErrorText>{error}</ErrorText>}
                     {input["title"] !== undefined && (
                         <Field>
@@ -208,10 +219,13 @@ const CreateEditAuctionScreen = ({ navigation, route }) => {
                                 <MaterialIcons
                                     name="title"
                                     size={25}
-                                    color={Colors.gray6}
+                                    color={colorIcon(theme === "light")}
                                 />
                             </Icon>
                             <TextInput
+                                placeholderTextColor={colorPlaceholder({
+                                    themeColor: theme === "light",
+                                })}
                                 onChangeText={handleMultiInput("title")}
                                 value={input["title"]}
                                 placeholder="Nhập tiêu đề đấu giá..."
@@ -224,10 +238,13 @@ const CreateEditAuctionScreen = ({ navigation, route }) => {
                                 <FontAwesome
                                     name="pencil"
                                     size={25}
-                                    color={Colors.gray6}
+                                    color={colorIcon(theme === "light")}
                                 />
                             </Icon>
                             <TextInput
+                                placeholderTextColor={colorPlaceholder({
+                                    themeColor: theme === "light",
+                                })}
                                 multiline={true}
                                 numberOfLines={5}
                                 onChangeText={handleMultiInput("content")}
@@ -242,10 +259,13 @@ const CreateEditAuctionScreen = ({ navigation, route }) => {
                                 <MaterialCommunityIcons
                                     name="currency-usd"
                                     size={25}
-                                    color={Colors.gray6}
+                                    color={colorIcon(theme === "light")}
                                 />
                             </Icon>
                             <TextInput
+                                placeholderTextColor={colorPlaceholder({
+                                    themeColor: theme === "light",
+                                })}
                                 onChangeText={handleMultiInput("base_price")}
                                 value={input["base_price"].toString()}
                                 placeholder="Nhập giá thấp nhất của sản phẩm..."
@@ -258,10 +278,13 @@ const CreateEditAuctionScreen = ({ navigation, route }) => {
                                 <AntDesign
                                     name="filetext1"
                                     size={25}
-                                    color={Colors.gray6}
+                                    color={colorIcon(theme === "light")}
                                 />
                             </Icon>
                             <TextInput
+                                placeholderTextColor={colorPlaceholder({
+                                    themeColor: theme === "light",
+                                })}
                                 multiline={true}
                                 numberOfLines={3}
                                 onChangeText={handleMultiInput("condition")}
@@ -276,10 +299,13 @@ const CreateEditAuctionScreen = ({ navigation, route }) => {
                                 <Ionicons
                                     name="timer"
                                     size={25}
-                                    color={Colors.gray6}
+                                    color={colorIcon(theme === "light")}
                                 />
                             </Icon>
                             <TextInput
+                                placeholderTextColor={colorPlaceholder({
+                                    themeColor: theme === "light",
+                                })}
                                 onChangeText={handleMultiInput("deadline")}
                                 value={input["deadline"]}
                                 placeholder="Nhập thời hạn đấu giá..."
@@ -292,7 +318,7 @@ const CreateEditAuctionScreen = ({ navigation, route }) => {
                                 <MaterialIcons
                                     name="category"
                                     size={25}
-                                    color={Colors.gray6}
+                                    color={colorIcon(theme === "light")}
                                 />
                             </Icon>
                             <Picker
@@ -302,7 +328,12 @@ const CreateEditAuctionScreen = ({ navigation, route }) => {
                                 onValueChange={handleMultiInput(
                                     "payment_method"
                                 )}
-                                style={{ flex: 1 }}
+                                style={{
+                                    flex: 1,
+                                    color: colorText({
+                                        themeColor: theme === "light",
+                                    }),
+                                }}
                             >
                                 <Picker.Item
                                     value={"default"}
@@ -326,19 +357,23 @@ const CreateEditAuctionScreen = ({ navigation, route }) => {
                                 <MaterialIcons
                                     name="category"
                                     size={25}
-                                    color={Colors.gray6}
+                                    color={colorIcon(theme === "light")}
                                 />
                             </Icon>
                             <Picker
                                 selectedValue={input["category"].toString()}
                                 onValueChange={handleMultiInput("category")}
-                                style={{ flex: 1 }}
+                                style={{
+                                    flex: 1,
+                                    color: colorText({
+                                        themeColor: theme === "light",
+                                    }),
+                                }}
                             >
                                 <Picker.Item
                                     label="Loại sản phẩm đấu giá"
                                     value="default"
                                     enabled={false}
-                                    style={{ color: Colors.gray5 }}
                                 />
                                 {listCategory.map((c, i) => (
                                     <Picker.Item
@@ -356,7 +391,7 @@ const CreateEditAuctionScreen = ({ navigation, route }) => {
                                 <FontAwesome
                                     name="image"
                                     size={24}
-                                    color={Colors.gray6}
+                                    color={colorIcon(theme === "light")}
                                 />
                             </Icon>
                             <ImageInput

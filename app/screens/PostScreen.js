@@ -1,21 +1,20 @@
-import React, { useCallback, useEffect, useState } from "react"
-import { RefreshControl, ScrollView } from "react-native"
-import AppBar from "../components/AppBar"
+import React, { useEffect } from "react"
 import ListFeed from "../components/ListFeed"
 import MakerPost from "../components/MakerPost"
 import Users from "../components/Users"
 import styled from "styled-components/native"
 import { useDispatch, useSelector } from "react-redux"
 import { getAllPostAction } from "../redux/reducers/postReducer"
-import Colors from "../config/Colors"
+import { bgBack } from "../config/PropertyCss"
 
 const WrapperList = styled.View`
-    background-color: ${Colors.gray2};
+    background-color: ${bgBack};
     flex: 1;
 `
 
 function PostScreen(props) {
     const dispatch = useDispatch()
+    const theme = useSelector((s) => s.setting.theme)
 
     useEffect(() => {
         dispatch(getAllPostAction())
@@ -23,12 +22,12 @@ function PostScreen(props) {
     const renderHeaderListAuction = () => (
         <>
             <MakerPost />
-            <Users />
+            {/* <Users /> */}
         </>
     )
 
     return (
-        <WrapperList>
+        <WrapperList themeColor={theme === "light"}>
             <ListFeed headerComponent={renderHeaderListAuction} />
         </WrapperList>
     )

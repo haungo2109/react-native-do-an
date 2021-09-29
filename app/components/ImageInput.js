@@ -5,6 +5,15 @@ import Colors from "../config/Colors"
 import { AssetsSelector } from "expo-images-picker"
 import { MediaType } from "expo-media-library"
 import { Modal } from "react-native"
+import { useSelector } from "react-redux"
+import {
+    bgBack,
+    bgBtn,
+    bgItem,
+    bgView,
+    colorBtn,
+    colorText,
+} from "../config/PropertyCss"
 
 const Container = styled.View`
     justify-content: flex-start;
@@ -37,11 +46,11 @@ const ButtonAddImage = styled.TouchableOpacity`
     justify-content: center;
     align-items: center;
     border-radius: 7px;
-    background-color: ${Colors.gray1};
+    background-color: ${bgView};
 `
 const ImageInput = ({ photo, setPhoto }) => {
     const [modalVisible, setModalVisible] = useState(false)
-
+    const theme = useSelector((s) => s.setting.theme)
     const widgetSettings = useMemo(
         () => ({
             getImageMetaData: false,
@@ -69,7 +78,7 @@ const ImageInput = ({ photo, setPhoto }) => {
     const widgetStyles = useMemo(
         () => ({
             margin: 2,
-            bgColor: Colors.gray1,
+            bgColor: bgBack({ themeColor: theme === "light" }),
             spinnerColor: Colors.blue6,
             widgetWidth: 99,
             videoIcon: {
@@ -95,13 +104,13 @@ const ImageInput = ({ photo, setPhoto }) => {
                 back: "back",
                 selected: "selected",
             },
-            midTextColor: Colors.gray8,
+            midTextColor: colorText({ themeColor: theme === "light" }),
             minSelection: 1,
             buttonTextStyle: {
-                color: Colors.gray2,
+                color: colorBtn({ themeColor: theme === "light" }),
             },
             buttonStyle: {
-                backgroundColor: "orange",
+                backgroundColor: bgBtn({ themeColor: theme === "light" }),
                 borderRadius: 5,
             },
             onBack: () => setModalVisible(false),
@@ -118,7 +127,10 @@ const ImageInput = ({ photo, setPhoto }) => {
     return (
         <Container>
             <WrapperListImage horizontal showsHorizontalScrollIndicator={false}>
-                <ButtonAddImage onPress={() => setModalVisible(true)}>
+                <ButtonAddImage
+                    onPress={() => setModalVisible(true)}
+                    themeColor={theme === "light"}
+                >
                     <AntDesign name="plus" size={24} color="black" />
                 </ButtonAddImage>
                 {photo !== undefined &&

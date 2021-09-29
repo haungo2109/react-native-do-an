@@ -3,13 +3,13 @@ import { Feather } from "@expo/vector-icons"
 import styled from "styled-components"
 import { Picker } from "@react-native-picker/picker"
 import Font from "../config/Font"
-import Colors from "../config/Colors"
 import { useDispatch, useSelector } from "react-redux"
 import { getAllAuctionAction } from "../redux/reducers/auctionReducer"
 import { getAllPostAction } from "../redux/reducers/postReducer"
 import ListAuction from "../components/ListAuction"
 import ListFeed from "../components/ListFeed"
 import { ScrollView } from "react-native-gesture-handler"
+import { bgBack, bgItem, bgView, colorText } from "../config/PropertyCss"
 
 const ItemComment = styled.View`
     flex-direction: row;
@@ -17,6 +17,7 @@ const ItemComment = styled.View`
     width: 100%;
     align-items: center;
     margin: 5px 0;
+    /* background-color: ${bgView}; */
 `
 const TextInput = styled.TextInput`
     flex: 1;
@@ -25,11 +26,15 @@ const TextInput = styled.TextInput`
     height: 100%;
     padding: 5px;
     margin-left: 8px;
-    background-color: ${Colors.gray2};
+    color: ${colorText};
 `
 const ButtonSendComment = styled.TouchableOpacity``
 const Icon = styled.View`
     margin: 0 10px;
+`
+const Container = styled.View`
+    flex: 1;
+    background-color: ${bgBack};
 `
 const typeSearch = {
     post: {
@@ -43,6 +48,7 @@ function SearchSreen(props) {
     const { params } = props.route
     const [input, setInput] = useState("")
     const [type, setType] = useState(typeSearch[params.type].type[0])
+    const theme = useSelector((s) => s.setting.theme)
     const listCategory = useSelector((s) => s.categoryAuction)
     const dispatch = useDispatch()
 
@@ -62,12 +68,19 @@ function SearchSreen(props) {
         dispatch(getAllPostAction(params))
     }
     return (
-        <>
-            <ItemComment>
+        <Container themeColor={theme === "light"}>
+            <ItemComment themeColor={theme === "light"}>
                 <Picker
                     selectedValue={type}
                     onValueChange={(val) => setType(val)}
-                    style={{ flex: 1 }}
+                    style={{
+                        flex: 1,
+                        color: colorText({ themeColor: theme === "light" }),
+                        backgroundColor: bgItem({
+                            themeColor: theme === "light",
+                        }),
+                    }}
+                    mode="dropdown"
                 >
                     {typeSearch[params.type].type.map((c, i) => (
                         <Picker.Item key={i} label={c} value={c} />
@@ -100,14 +113,8 @@ function SearchSreen(props) {
                     </Icon>
                 </ButtonSendComment>
             </ItemComment>
-            {params.type === "post" ? (
-                <ScrollView>
-                    <ListFeed />
-                </ScrollView>
-            ) : (
-                <ListAuction />
-            )}
-        </>
+            {params.type === "post" ? <ListFeed /> : <ListAuction />}
+        </Container>
     )
 }
 

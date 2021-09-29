@@ -3,16 +3,20 @@ import styled from "styled-components/native"
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons"
 import { useNavigation } from "@react-navigation/core"
 import Colors from "../config/Colors"
+import { useSelector } from "react-redux"
+import { bgItem, bgView } from "../config/PropertyCss"
 
 const Container = styled.View`
     width: 100%;
     align-items: center;
     flex-direction: row;
     justify-content: space-between;
+    /* background-color: ${bgView}; */
 `
 const ButtonDrawer = styled.TouchableOpacity``
 const Text = styled.Text`
-    color: ${Colors.facebookColor};
+    color: ${(props) =>
+        props.themeColor ? Colors.facebookColor : Colors.blue4};
     font-size: 25px;
     font-weight: bold;
     letter-spacing: -0.3px;
@@ -24,7 +28,7 @@ const Row = styled.View`
 `
 const Button = styled.TouchableOpacity`
     border-radius: 21px;
-    background: #eeeeee;
+    background: ${bgItem};
     align-items: center;
     justify-content: center;
     margin-right: 16px;
@@ -32,6 +36,8 @@ const Button = styled.TouchableOpacity`
 `
 
 const AppBar = ({ navigation, route }) => {
+    const theme = useSelector((s) => s.setting.theme)
+
     const handleButton = () => {
         if (route.name === "PostStack") {
             navigation.navigate("Search", { type: "post" })
@@ -46,10 +52,10 @@ const AppBar = ({ navigation, route }) => {
                     navigation.toggleDrawer()
                 }}
             >
-                <Text>Kanj</Text>
+                <Text themeColor={theme === "light"}>Kanj</Text>
             </ButtonDrawer>
             <Row>
-                <Button onPress={handleButton}>
+                <Button onPress={handleButton} themeColor={theme === "light"}>
                     <Feather name="search" size={27} color="black" />
                 </Button>
             </Row>

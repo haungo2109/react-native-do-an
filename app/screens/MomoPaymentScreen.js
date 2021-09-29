@@ -3,12 +3,7 @@ import {
     Platform,
     StyleSheet,
     Text,
-    View,
     TouchableOpacity,
-    TextInput,
-    DeviceEventEmitter,
-    SafeAreaView,
-    Image,
     NativeModules,
     NativeEventEmitter,
     ActivityIndicator,
@@ -16,9 +11,15 @@ import {
 import RNMomosdk from "react-native-momosdk"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
-import auctionApi from "../api/auctionApi"
 import Colors from "../config/Colors"
 import Font from "../config/Font"
+import {
+    bgBack,
+    bgItem,
+    bgView,
+    colorText,
+    colorTextTitle,
+} from "../config/PropertyCss"
 import { postMomoPayAction } from "../redux/reducers/auctionReducer"
 import formatNumberToMoney from "../utils/FormatNumberToMoney"
 const RNMoMoPaymentModule = NativeModules.RNMomosdk
@@ -35,11 +36,12 @@ const TextContent = styled.Text`
     font-size: ${Font.big};
     margin-left: 10px;
     padding: 10px 0;
+    color: ${colorText};
 `
 const Container = styled.SafeAreaView`
     flex: 1;
-    margin-top: 50px;
-    background-color: transparent;
+    padding-top: 50px;
+    background-color: ${bgBack};
 `
 const WrapperLogoMomo = styled.View`
     height: 100px;
@@ -56,23 +58,25 @@ const TotalBar = styled.View`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    background-color: ${Colors.gray3};
+    background-color: ${bgView};
 `
 const TextTotalBar = styled.Text`
     flex: 1;
     font-size: ${Font.bigger};
     margin-left: 10px;
+    color: ${colorTextTitle};
 `
 const TextCurrency = styled.Text`
     position: absolute;
     right: 20px;
     font-size: ${Font.huge};
+    color: ${colorText};
 `
 const MomoPaymentScreen = ({ route }) => {
     const [description, setDescription] = useState("")
     const [processing, setProcessing] = useState(false)
     const [isPaySuccess, setIsPaySuccess] = useState(false)
-
+    const theme = useSelector((s) => s.setting.theme)
     const { comment_id, auction_id, amount } = route.params
 
     const dispatch = useDispatch()
@@ -191,22 +195,31 @@ const MomoPaymentScreen = ({ route }) => {
     }
 
     return (
-        <Container>
+        <Container themeColor={theme === "light"}>
             <WrapperLogoMomo>
                 <LogoImage source={require("../assets/icon/momo-icon.png")} />
             </WrapperLogoMomo>
-            <TextContent>{"Mã thanh toán: " + merchantcode}</TextContent>
-            <TextContent>{"Tên đơn hàng: " + merchantname}</TextContent>
-            <TextContent>{"Mô tả: " + billdescription}</TextContent>
-            <View>
-                <TotalBar>
-                    <TextTotalBar>{"Tổng thanh toán:"}</TextTotalBar>
-                    <TextTotalBar>
-                        {formatNumberToMoney(amount, null, "")}
-                    </TextTotalBar>
-                    <TextCurrency>{"đ"}</TextCurrency>
-                </TotalBar>
-            </View>
+            <TextContent themeColor={theme === "light"}>
+                {"Mã thanh toán: " + merchantcode}
+            </TextContent>
+            <TextContent themeColor={theme === "light"}>
+                {"Tên đơn hàng: " + merchantname}
+            </TextContent>
+            <TextContent themeColor={theme === "light"}>
+                {"Mô tả: " + billdescription}
+            </TextContent>
+
+            <TotalBar themeColor={theme === "light"}>
+                <TextTotalBar themeColor={theme === "light"}>
+                    {"Tổng thanh toán:"}
+                </TextTotalBar>
+                <TextTotalBar themeColor={theme === "light"}>
+                    {formatNumberToMoney(amount, null, "")}
+                </TextTotalBar>
+                <TextCurrency themeColor={theme === "light"}>
+                    {"đ"}
+                </TextCurrency>
+            </TotalBar>
 
             <TouchableOpacity
                 onPress={onPress}
