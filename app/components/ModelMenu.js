@@ -3,14 +3,14 @@ import styled from "styled-components/native"
 import { FontAwesome, MaterialIcons, AntDesign } from "@expo/vector-icons"
 import Colors from "../config/Colors"
 import { useDispatch, useSelector } from "react-redux"
-import { deletePostAction } from "../redux/reducers/postReducer"
+import { deletePostAction } from "../redux/actions"
 import useModelMenu from "../hooks/useModelMenu"
 import { baseURL } from "../api/apiClient"
 import {
     changeStatusAuctionComment,
     deleteAuctionAction,
     setFailAuctionAction,
-} from "../redux/reducers/auctionReducer"
+} from "../redux/actions"
 import { Alert, Modal, ToastAndroid } from "react-native"
 import { Picker } from "@react-native-picker/picker"
 import Font from "../config/Font"

@@ -3,17 +3,16 @@ import {
     changeStatusAuctionComment,
     deleteAuctionAction,
     dislikeAuction,
-    getAllAuctionAction,
-    getMoreAuctionAction,
-    getOneAuctionAction,
+    getMoreMyAuctionAction,
+    getMyAuction,
     likeAuction,
     postAuctionAction,
     setFailAuctionAction,
     updateAuction,
 } from "../actions"
 
-const auctionSlice = createSlice({
-    name: "auction",
+const myAuctionSlice = createSlice({
+    name: "myAuction",
     initialState: {
         page: 1,
         data: [],
@@ -22,15 +21,7 @@ const auctionSlice = createSlice({
         nextPage: "",
     },
     extraReducers: (builder) => {
-        builder.addCase(getAllAuctionAction.fulfilled, (state, action) => {
-            state = Object.assign(state, {
-                data: action.payload.results,
-                nextPage: action.payload.next,
-                loading: false,
-                error: "",
-            })
-        })
-        builder.addCase(getMoreAuctionAction.fulfilled, (state, action) => {
+        builder.addCase(getMoreMyAuctionAction.fulfilled, (state, action) => {
             state = Object.assign(state, {
                 data: [...state.data, ...action.payload.results],
                 nextPage: action.payload.next,
@@ -38,20 +29,21 @@ const auctionSlice = createSlice({
                 error: "",
             })
         })
-        builder.addCase(getOneAuctionAction.fulfilled, (state, action) => {
+        builder.addCase(getMyAuction.fulfilled, (state, action) => {
             state = Object.assign(state, {
-                data: [...state.data, action.payload],
+                data: action.payload.results,
+                nextPage: action.payload.next,
                 loading: false,
                 error: "",
             })
         })
-        builder.addCase(getAllAuctionAction.rejected, (state, action) => {
+        builder.addCase(getMyAuction.rejected, (state, action) => {
             state = Object.assign(state, {
                 error: action.error.message || "Unknown error.",
                 loading: false,
             })
         })
-        builder.addCase(getAllAuctionAction.pending, (state, action) => {
+        builder.addCase(getMyAuction.pending, (state, action) => {
             state = Object.assign(state, {
                 loading: true,
             })
@@ -146,4 +138,4 @@ const auctionSlice = createSlice({
     },
 })
 
-export default auctionSlice.reducer
+export default myAuctionSlice.reducer

@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { logoutAction } from "../actions"
 
 const initState = {
     pushToken: "",
@@ -36,11 +35,6 @@ const notificationSlice = createSlice({
             )
             state = Object.assign(state, { ...state, data })
         },
-    },
-    extraReducers: (builder) => {
-        builder.addCase(logoutAction, (state) => {
-            state = initState
-        })
     },
 })
 

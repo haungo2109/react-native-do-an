@@ -2,14 +2,14 @@ import { createSlice } from "@reduxjs/toolkit"
 import {
     deletePostAction,
     dislikePostAction,
-    getAllPostAction,
-    getMorePostAction,
+    getMoreMyPostAction,
+    getMyPostAction,
     likePostAction,
     postPostAction,
     updatePostAction,
 } from "../actions"
 
-const postSlice = createSlice({
+const myPostSlice = createSlice({
     name: "post",
     initialState: {
         page: 1,
@@ -19,15 +19,7 @@ const postSlice = createSlice({
         nextPage: "",
     },
     extraReducers: (builder) => {
-        builder.addCase(getAllPostAction.fulfilled, (state, action) => {
-            state = Object.assign(state, {
-                data: action.payload.results,
-                nextPage: action.payload.next,
-                loading: false,
-                error: "",
-            })
-        })
-        builder.addCase(getMorePostAction.fulfilled, (state, action) => {
+        builder.addCase(getMoreMyPostAction.fulfilled, (state, action) => {
             state = Object.assign(state, {
                 data: [...state.data, ...action.payload.results],
                 nextPage: action.payload.next,
@@ -35,13 +27,21 @@ const postSlice = createSlice({
                 error: "",
             })
         })
-        builder.addCase(getAllPostAction.rejected, (state, action) => {
+        builder.addCase(getMyPostAction.fulfilled, (state, action) => {
+            state = Object.assign(state, {
+                data: action.payload.results,
+                nextPage: action.payload.next,
+                loading: false,
+                error: "",
+            })
+        })
+        builder.addCase(getMyPostAction.rejected, (state, action) => {
             state = Object.assign(state, {
                 error: action.error.message || "Unknown error.",
                 loading: false,
             })
         })
-        builder.addCase(getAllPostAction.pending, (state, action) => {
+        builder.addCase(getMyPostAction.pending, (state, action) => {
             state = Object.assign(state, {
                 loading: true,
             })
@@ -110,4 +110,4 @@ const postSlice = createSlice({
     },
 })
 
-export default postSlice.reducer
+export default myPostSlice.reducer

@@ -25,6 +25,9 @@ const persistConfig = {
         "notification",
         "paymentMethod",
         "setting",
+        "auctionJoin",
+        "myAuction",
+        "myPost",
     ],
 }
 

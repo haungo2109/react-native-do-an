@@ -3,7 +3,7 @@ import styled from "styled-components/native"
 import Colors from "../config/Colors"
 import { useDispatch, useSelector } from "react-redux"
 import { baseURL } from "../api/apiClient"
-import { getMyPost } from "../redux/reducers/postReducer"
+import { getMyPost as getMyPostAction } from "../redux/actions"
 import ListFeed from "../components/ListFeed"
 import { ScrollView } from "react-native"
 import { getUserBaseInfoAction } from "../redux/reducers/userReducer"
@@ -50,7 +50,7 @@ function UserScreen(props) {
             .then((res) => {
                 setUser(res)
             })
-        dispatch(getMyPost())
+        dispatch(getMyPostAction())
     }, [user_id])
 
     const renderHeader = () => (

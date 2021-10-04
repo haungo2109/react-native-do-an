@@ -18,7 +18,7 @@ import { Field, SubmitButton, TextSubmitButton } from "../components/ModelEdit"
 import {
     changeStatusAuctionComment,
     getOneAuctionAction,
-} from "../redux/reducers/auctionReducer"
+} from "../redux/actions"
 import {
     bgBack,
     bgBtn,

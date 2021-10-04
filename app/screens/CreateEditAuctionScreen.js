@@ -12,10 +12,7 @@ import { useDispatch, useSelector } from "react-redux"
 import Font from "../config/Font"
 import { Platform, ToastAndroid } from "react-native"
 import ImageInput from "../components/ImageInput"
-import {
-    postAuctionAction,
-    updateAuction,
-} from "../redux/reducers/auctionReducer"
+import { postAuctionAction, updateAuction } from "../redux/actions"
 import { Picker } from "@react-native-picker/picker"
 import {
     bgBack,
@@ -214,7 +211,7 @@ const CreateEditAuctionScreen = ({ navigation, route }) => {
                 <FormView themeColor={theme === "light"}>
                     {error !== "" && <ErrorText>{error}</ErrorText>}
                     {input["title"] !== undefined && (
-                        <Field>
+                        <Field themeColor={theme === "light"}>
                             <Icon>
                                 <MaterialIcons
                                     name="title"
@@ -233,7 +230,7 @@ const CreateEditAuctionScreen = ({ navigation, route }) => {
                         </Field>
                     )}
                     {input["content"] !== undefined && (
-                        <Field height={"110px"}>
+                        <Field height={"110px"} themeColor={theme === "light"}>
                             <Icon>
                                 <FontAwesome
                                     name="pencil"
@@ -254,7 +251,7 @@ const CreateEditAuctionScreen = ({ navigation, route }) => {
                         </Field>
                     )}
                     {input["base_price"] !== undefined && (
-                        <Field>
+                        <Field themeColor={theme === "light"}>
                             <Icon>
                                 <MaterialCommunityIcons
                                     name="currency-usd"
@@ -273,7 +270,7 @@ const CreateEditAuctionScreen = ({ navigation, route }) => {
                         </Field>
                     )}
                     {input["condition"] !== undefined && (
-                        <Field height={"70px"}>
+                        <Field height={"70px"} themeColor={theme === "light"}>
                             <Icon>
                                 <AntDesign
                                     name="filetext1"
@@ -294,7 +291,7 @@ const CreateEditAuctionScreen = ({ navigation, route }) => {
                         </Field>
                     )}
                     {input["deadline"] !== undefined && (
-                        <Field>
+                        <Field themeColor={theme === "light"}>
                             <Icon>
                                 <Ionicons
                                     name="timer"
@@ -313,7 +310,7 @@ const CreateEditAuctionScreen = ({ navigation, route }) => {
                         </Field>
                     )}
                     {input["payment_method"] !== undefined && (
-                        <Field>
+                        <Field themeColor={theme === "light"}>
                             <Icon>
                                 <MaterialIcons
                                     name="category"
@@ -352,7 +349,7 @@ const CreateEditAuctionScreen = ({ navigation, route }) => {
                         </Field>
                     )}
                     {input["category"] !== undefined && (
-                        <Field>
+                        <Field themeColor={theme === "light"}>
                             <Icon>
                                 <MaterialIcons
                                     name="category"
@@ -386,7 +383,7 @@ const CreateEditAuctionScreen = ({ navigation, route }) => {
                         </Field>
                     )}
                     {input["auction_images"] !== undefined && (
-                        <FieldImage>
+                        <FieldImage themeColor={theme === "light"}>
                             <Icon>
                                 <FontAwesome
                                     name="image"
@@ -400,8 +397,13 @@ const CreateEditAuctionScreen = ({ navigation, route }) => {
                             />
                         </FieldImage>
                     )}
-                    <SubmitButton onPress={mapHandleSubmit[handleSubmit]}>
-                        <TextSubmitButton>ĐĂNG</TextSubmitButton>
+                    <SubmitButton
+                        onPress={mapHandleSubmit[handleSubmit]}
+                        themeColor={theme === "light"}
+                    >
+                        <TextSubmitButton themeColor={theme === "light"}>
+                            ĐĂNG
+                        </TextSubmitButton>
                     </SubmitButton>
                 </FormView>
             </Container>

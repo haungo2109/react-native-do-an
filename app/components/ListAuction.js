@@ -3,11 +3,7 @@ import { ActivityIndicator, FlatList } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import useModelMenu from "../hooks/useModelMenu"
-import {
-    getAllAuctionAction,
-    getMoreAuctionAction,
-    getMyAuction,
-} from "../redux/reducers/auctionReducer"
+import { getAllAuctionAction, getMoreAuctionAction } from "../redux/actions"
 import Auction from "./Auction"
 
 const WrapperActivityIndicator = styled.View`
@@ -16,13 +12,17 @@ const WrapperActivityIndicator = styled.View`
     margin: 10px 0px;
 `
 
-function ListAuction({ handleRefresh, headerComponent }) {
-    const dispatch = useDispatch()
+function ListAuction({
+    handleRefresh,
+    headerComponent,
+    data,
+    handleLoadMore,
+    nextPage,
+}) {
     const [refreshing, setRefreshing] = useState(false)
     const [hasScrolled, setHasScrolled] = useState(false)
 
     const user = useSelector((state) => state.user)
-    const { data, nextPage } = useSelector((state) => state.auction)
     const { showModelMenu } = useModelMenu()
 
     const handlePressMenu = (uid, auction) => {
@@ -45,11 +45,13 @@ function ListAuction({ handleRefresh, headerComponent }) {
         }
         return false
     }
-    const handleLoadMore = () => {
+    const checkLoadMore = () => {
         if (!hasScrolled) {
             return null
         }
-        if (nextPage) dispatch(getMoreAuctionAction(nextPage))
+        if (nextPage && handleLoadMore) {
+            handleLoadMore()
+        }
     }
     const renderFooter = () => {
         return nextPage ? (
@@ -61,7 +63,6 @@ function ListAuction({ handleRefresh, headerComponent }) {
     const onRefresh = useCallback(async () => {
         setRefreshing(true)
         if (handleRefresh) await handleRefresh()
-        else await dispatch(getAllAuctionAction())
         setRefreshing(false)
     }, [])
     return (
@@ -72,13 +73,12 @@ function ListAuction({ handleRefresh, headerComponent }) {
                 setHasScrolled(true)
             }}
             nestedScrollEnabled
-            extraData={data}
             contentContainerStyle={{
                 flexDirection: "column",
                 width: "100%",
             }}
             data={data}
-            onEndReached={handleLoadMore}
+            onEndReached={checkLoadMore}
             onEndReachedThreshold={0.5}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => {

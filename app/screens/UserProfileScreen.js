@@ -4,7 +4,7 @@ import Colors from "../config/Colors"
 import { Entypo, FontAwesome, FontAwesome5 } from "@expo/vector-icons"
 import { useDispatch, useSelector } from "react-redux"
 import { baseURL } from "../api/apiClient"
-import { getMyPost } from "../redux/reducers/postReducer"
+import { getMoreMyPostAction, getMyPostAction } from "../redux/actions"
 import ListFeed from "../components/ListFeed"
 import useModelEdit from "../hooks/useModelEdit"
 import useModelImageSelection from "../hooks/useModelImageSelection"
@@ -89,12 +89,13 @@ function UserProfileScreen(props) {
     const dispatch = useDispatch()
     const user = useSelector((state) => state.user)
     const theme = useSelector((s) => s.setting.theme)
+    const { data, nextPage } = useSelector((state) => state.myPost)
     const { images } = useSelector((state) => state.controller.imageSelection)
     const { showModelEdit } = useModelEdit(i18n.t("btn.edit-profile"))
     const { showModelImageSelection } = useModelImageSelection(1, 1)
 
     useEffect(() => {
-        dispatch(getMyPost())
+        dispatch(getMyPostAction())
     }, [])
     useEffect(() => {
         if (images !== null) {
@@ -200,13 +201,20 @@ function UserProfileScreen(props) {
         </>
     )
     const handleRefresh = () => {
-        return dispatch(getMyPost())
+        return dispatch(getMyPostAction())
     }
+    const handleLoadMore = () => {
+        return dispatch(getMoreMyPostAction(nextPage))
+    }
+
     return (
         <Container themeColor={theme === "light"}>
             <ListFeed
                 headerComponent={renderHeaderListAuction}
                 handleRefresh={handleRefresh}
+                handleLoadMore={handleLoadMore}
+                nextPage={nextPage}
+                data={data}
             />
         </Container>
     )

@@ -1,7 +1,7 @@
-import { createAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { createAsyncThunk } from "@reduxjs/toolkit"
 import userApi from "../../api/userApi"
-
-export const logoutAction = createAction("USER_LOGOUT")
+export * from "./auctionAction"
+export * from "./postAction"
 
 export const loginAction = createAsyncThunk(
     "auth/getToken",

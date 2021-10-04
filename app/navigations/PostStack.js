@@ -28,7 +28,6 @@ const PostStack = (props) => {
             <Stack.Screen
                 name="Post"
                 component={PostScreen}
-                title={i18n.t("navigation.post")}
                 options={{
                     headerTitle: () => <AppBar {...props} />,
                     headerStyle: customHeaderStyle,
@@ -38,6 +37,7 @@ const PostStack = (props) => {
                 name="PostDetail"
                 component={PostDetailScreen}
                 options={{
+                    headerTitle: i18n.t("navigation.post-detail"),
                     headerStyle: customHeaderStyle,
                     headerTitleStyle: customHeaderTitleStyle,
                     headerTintColor: colorText({
@@ -49,6 +49,7 @@ const PostStack = (props) => {
                 name="Search"
                 component={SearchSreen}
                 options={{
+                    headerTitle: i18n.t("navigation.search"),
                     headerStyle: customHeaderStyle,
                     headerTitleStyle: customHeaderTitleStyle,
                     headerTintColor: colorText({
@@ -60,6 +61,7 @@ const PostStack = (props) => {
                 name="CreateEditPost"
                 component={CreateEditPostScreen}
                 options={{
+                    headerTitle: i18n.t("navigation.create-edit-post"),
                     headerStyle: customHeaderStyle,
                     headerTitleStyle: customHeaderTitleStyle,
                     headerTintColor: colorText({

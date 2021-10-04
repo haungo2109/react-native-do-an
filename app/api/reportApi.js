@@ -22,7 +22,7 @@ const reportApi = {
         return api.post(url, data, config)
     },
     getReportType: () => {
-        const url = "/report-type/"
+        const url = "/report-type/?page_size=20"
         return api.get(url)
     },
 }

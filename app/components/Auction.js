@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import Colors from "../config/Colors"
 import Font from "../config/Font"
-import { dislikeAuction, likeAuction } from "../redux/reducers/auctionReducer"
+import { dislikeAuction, likeAuction } from "../redux/actions"
 import { Entypo, AntDesign, MaterialCommunityIcons } from "@expo/vector-icons"
 import Avatar from "./Avatar"
 import { baseURL } from "../api/apiClient"
@@ -13,7 +13,6 @@ import i18n from "i18n-js"
 import {
     bgBack,
     bgBtn,
-    bgItem,
     bgView,
     colorBtn,
     colorCaption,

@@ -5,10 +5,7 @@ import { ActivityIndicator, FlatList } from "react-native"
 import useModelMenu from "../hooks/useModelMenu.js"
 import { useNavigation } from "@react-navigation/native"
 import { fetchPostComment } from "../redux/reducers/commentReducer"
-import {
-    getAllPostAction,
-    getMorePostAction,
-} from "../redux/reducers/postReducer"
+import { getAllPostAction, getMorePostAction } from "../redux/actions"
 import styled from "styled-components"
 
 const WrapperActivityIndicator = styled.View`
@@ -20,13 +17,17 @@ const TextEndFooter = styled.Text`
     flex: 1;
 `
 
-function ListFeed({ handleRefresh, headerComponent }) {
-    const dispatch = useDispatch()
+function ListFeed({
+    handleRefresh,
+    headerComponent,
+    data = [],
+    handleLoadMore,
+    nextPage,
+}) {
     const [refreshing, setRefreshing] = useState(false)
     const [hasScrolled, setHasScrolled] = useState(false)
 
     const user = useSelector((state) => state.user)
-    const { data, nextPage } = useSelector((state) => state.post)
     const { showModelMenu } = useModelMenu()
 
     const handlePressMenu = (uid, post) => {
@@ -44,11 +45,13 @@ function ListFeed({ handleRefresh, headerComponent }) {
         }
         return false
     }
-    const handleLoadMore = () => {
+    const checkLoadMore = () => {
         if (!hasScrolled) {
             return null
         }
-        if (nextPage) dispatch(getMorePostAction(nextPage))
+        if (nextPage && handleLoadMore) {
+            handleLoadMore()
+        }
     }
     const renderFooter = () => {
         return nextPage ? (
@@ -60,7 +63,6 @@ function ListFeed({ handleRefresh, headerComponent }) {
     const onRefresh = useCallback(async () => {
         setRefreshing(true)
         if (handleRefresh) await handleRefresh()
-        else await dispatch(getAllPostAction())
         setRefreshing(false)
     }, [])
 
@@ -87,14 +89,13 @@ function ListFeed({ handleRefresh, headerComponent }) {
                 refreshing={refreshing}
                 removeClippedSubviews={true}
                 nestedScrollEnabled
-                extraData={data}
                 contentContainerStyle={{
                     flexDirection: "column",
                     width: "100%",
                 }}
                 data={data}
                 style={{ flex: 1 }}
-                onEndReached={handleLoadMore}
+                onEndReached={checkLoadMore}
                 onEndReachedThreshold={0.5}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={renderItem}

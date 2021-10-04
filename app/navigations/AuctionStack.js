@@ -7,6 +7,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import CreateEditAuctionScreen from "../screens/CreateEditAuctionScreen"
 import { bgView, colorText } from "../config/PropertyCss"
 import { useSelector } from "react-redux"
+import i18n from "i18n-js"
 
 const Stack = createNativeStackNavigator()
 
@@ -36,6 +37,7 @@ const AuctionStack = (props) => {
                 name="AuctionDetail"
                 component={AuctionDetailScreen}
                 options={{
+                    headerTitle: i18n.t("navigation.auction-detail"),
                     headerStyle: customHeaderStyle,
                     headerTitleStyle: customHeaderTitleStyle,
                     headerTintColor: colorText({
@@ -47,6 +49,7 @@ const AuctionStack = (props) => {
                 name="Search"
                 component={SearchSreen}
                 options={{
+                    headerTitle: i18n.t("navigation.search"),
                     headerStyle: customHeaderStyle,
                     headerTitleStyle: customHeaderTitleStyle,
                     headerTintColor: colorText({
@@ -58,6 +61,7 @@ const AuctionStack = (props) => {
                 name="CreateEditAuction"
                 component={CreateEditAuctionScreen}
                 options={{
+                    headerTitle: i18n.t("navigation.create-edit-auction"),
                     headerStyle: customHeaderStyle,
                     headerTitleStyle: customHeaderTitleStyle,
                     headerTintColor: colorText({

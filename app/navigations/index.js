@@ -13,7 +13,6 @@ import RegisterScreen from "../screens/RegisterScreen"
 import WellcomeScreen from "../screens/WellcomeScreen"
 import Feedback from "../screens/FeedbackScreen"
 import { removeAll } from "../utils/AsyncStorage"
-import { logoutAction } from "../redux/actions"
 import Constants from "expo-constants"
 import * as Notifications from "expo-notifications"
 import AuctionStack from "./AuctionStack"
@@ -79,7 +78,6 @@ function CustomDrawerContent(props) {
                 }}
                 label={i18n.t("navigation.logout")}
                 onPress={() => {
-                    dispatch(logoutAction())
                     removeAll()
                     props.navigation.reset({
                         index: 0,

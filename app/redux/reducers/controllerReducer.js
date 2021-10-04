@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import postApi from "../../api/postApi"
-import { logoutAction } from "../actions"
 
 export const setDataEditPost = createAsyncThunk(
     "post/fetchOnePost",
@@ -64,9 +63,6 @@ const controllerSlice = createSlice({
             state = Object.assign(state, {
                 editPost: { ...state.editPost, data },
             })
-        })
-        builder.addCase(logoutAction, (state) => {
-            state = Object.assign(state, initState)
         })
     },
 })

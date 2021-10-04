@@ -4,7 +4,7 @@ import styled from "styled-components"
 import ListAuction from "../components/ListAuction"
 import MakerAuction from "../components/MakerAuction"
 import { bgBack } from "../config/PropertyCss"
-import { getMyAuction } from "../redux/reducers/auctionReducer"
+import { getMoreMyAuctionAction, getMyAuction } from "../redux/actions"
 
 const Container = styled.SafeAreaView`
     flex: 1;
@@ -14,6 +14,8 @@ const Container = styled.SafeAreaView`
 function UserAuctionScreen(props) {
     const dispatch = useDispatch()
     const theme = useSelector((s) => s.setting.theme)
+    const { data, nextPage } = useSelector((s) => s.myAuction)
+
     useEffect(() => {
         dispatch(getMyAuction())
     }, [])
@@ -22,11 +24,17 @@ function UserAuctionScreen(props) {
     const handleRefresh = () => {
         return dispatch(getMyAuction())
     }
+    const handleLoadMore = () => {
+        return dispatch(getMoreMyAuctionAction(nextPage))
+    }
     return (
         <Container themeColor={theme === "light"}>
             <ListAuction
                 headerComponent={renderHeaderListAuction}
                 handleRefresh={handleRefresh}
+                data={data}
+                nextPage={nextPage}
+                handleLoadMore={handleLoadMore}
             />
         </Container>
     )

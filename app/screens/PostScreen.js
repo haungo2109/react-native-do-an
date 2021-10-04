@@ -1,10 +1,9 @@
 import React, { useEffect } from "react"
 import ListFeed from "../components/ListFeed"
 import MakerPost from "../components/MakerPost"
-import Users from "../components/Users"
 import styled from "styled-components/native"
 import { useDispatch, useSelector } from "react-redux"
-import { getAllPostAction } from "../redux/reducers/postReducer"
+import { getAllPostAction, getMorePostAction } from "../redux/actions"
 import { bgBack } from "../config/PropertyCss"
 
 const WrapperList = styled.View`
@@ -15,6 +14,7 @@ const WrapperList = styled.View`
 function PostScreen(props) {
     const dispatch = useDispatch()
     const theme = useSelector((s) => s.setting.theme)
+    const { data, nextPage } = useSelector((state) => state.post)
 
     useEffect(() => {
         dispatch(getAllPostAction())
@@ -22,13 +22,23 @@ function PostScreen(props) {
     const renderHeaderListAuction = () => (
         <>
             <MakerPost />
-            {/* <Users /> */}
         </>
     )
-
+    const handleLoadMore = () => {
+        return dispatch(getMorePostAction(nextPage))
+    }
+    const handleRefresh = () => {
+        return dispatch(getAllPostAction())
+    }
     return (
         <WrapperList themeColor={theme === "light"}>
-            <ListFeed headerComponent={renderHeaderListAuction} />
+            <ListFeed
+                headerComponent={renderHeaderListAuction}
+                data={data}
+                nextPage={nextPage}
+                handleLoadMore={handleLoadMore}
+                handleRefresh={handleRefresh}
+            />
         </WrapperList>
     )
 }

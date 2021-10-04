@@ -8,7 +8,7 @@ const config = {
 
 const paymentMethodApi = {
     getPaymentMethod: () => {
-        const url = "/payment-method/"
+        const url = "/payment-method/?page_size=20"
         return api.get(url)
     },
 }

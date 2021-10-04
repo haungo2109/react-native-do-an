@@ -20,7 +20,7 @@ import {
     colorText,
     colorTextTitle,
 } from "../config/PropertyCss"
-import { postMomoPayAction } from "../redux/reducers/auctionReducer"
+import { postMomoPayAction } from "../redux/actions"
 import formatNumberToMoney from "../utils/FormatNumberToMoney"
 const RNMoMoPaymentModule = NativeModules.RNMomosdk
 const EventEmitter = new NativeEventEmitter(RNMoMoPaymentModule)

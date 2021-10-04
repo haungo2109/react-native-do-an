@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import Font from "../config/Font"
 import { Alert, Platform, ToastAndroid } from "react-native"
 import ImageInput from "../components/ImageInput"
-import { postPostAction, updatePost } from "../redux/reducers/postReducer"
+import { postPostAction, updatePost } from "../redux/actions"
 import findHashtags from "../utils/FindHashTag"
 import {
     bgBack,

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import ListAuction from "../components/ListAuction"
 import { bgBack } from "../config/PropertyCss"
-import { getAuctionYouJoin } from "../redux/reducers/auctionReducer"
+import { getAuctionYouJoin, getMoreJoinAuctionAction } from "../redux/actions"
 
 const Container = styled.SafeAreaView`
     flex: 1;
@@ -13,6 +13,7 @@ const Container = styled.SafeAreaView`
 function UserAuctionJoinScreen(props) {
     const dispatch = useDispatch()
     const theme = useSelector((s) => s.setting.theme)
+    const { data, nextPage } = useSelector((s) => s.auctionJoin)
 
     useEffect(() => {
         dispatch(getAuctionYouJoin())
@@ -21,9 +22,18 @@ function UserAuctionJoinScreen(props) {
     const handleRefresh = () => {
         return dispatch(getAuctionYouJoin())
     }
+    const handleLoadMore = () => {
+        return dispatch(getMoreJoinAuctionAction(nextPage))
+    }
+
     return (
         <Container themeColor={theme === "light"}>
-            <ListAuction handleRefresh={handleRefresh} />
+            <ListAuction
+                handleRefresh={handleRefresh}
+                data={data}
+                handleLoadMore={handleLoadMore}
+                nextPage={nextPage}
+            />
         </Container>
     )
 }

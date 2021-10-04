@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import userApi from "../../api/userApi"
 import converUri from "../../utils/ConverUri"
-import { logoutAction } from "../actions"
 
 export const getCurrenUserAction = createAsyncThunk(
     "users/fetchCurrentUser",
@@ -65,9 +64,6 @@ const userSlice = createSlice({
             state = Object.assign(state, {
                 error: action.error.message || "Unknown error.",
             })
-        })
-        builder.addCase(logoutAction, (state) => {
-            state = {}
         })
     },
 })

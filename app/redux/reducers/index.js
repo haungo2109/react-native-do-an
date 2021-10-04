@@ -8,6 +8,9 @@ import reportReducer from "./reportReducer"
 import notificationReducer from "./notificationReducer"
 import paymentMethodReducer from "./paymentMethodReducer"
 import settingReducer from "./settingReducer"
+import auctionJoinReducer from "./auctionJoinReducer"
+import myAuctionReducer from "./myAuctionReducer"
+import myPostReducer from "./myPostReducer"
 
 const reducers = {
     user: userReducer,
@@ -20,6 +23,9 @@ const reducers = {
     notification: notificationReducer,
     paymentMethod: paymentMethodReducer,
     setting: settingReducer,
+    auctionJoin: auctionJoinReducer,
+    myAuction: myAuctionReducer,
+    myPost: myPostReducer,
 }
 
 export default reducers

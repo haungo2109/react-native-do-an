@@ -12,3 +12,9 @@ expo push:android:upload --api-key <your-token-here>
 
 update social_network_auction set status_auction="in process", accept_price=0, buyer_id=NULL, date_success=NULL where id = 22;
 update social_network_auctioncomment set status_transaction = "in process" where id = 15;
+
+Các chức năng:
+Thêm, sửa, xóa, like, dislike, report, search theo nội dung theo hashtag theo tên người đăng của bài viết chia sẻ từ thiện
+Thêm, sửa, xóa, hủy bỏ đấu giá, chọn người mua, like, dislike, report, search theo nội dung theo tiêu đề theo giá theo người đăng bài đấu giá
+
+Ng bán đấu giá chọn xóa hay

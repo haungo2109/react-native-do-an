@@ -13,7 +13,7 @@ import {
     fetchPostComment,
     sendPostComment,
 } from "../redux/reducers/commentReducer"
-import { getOnePostAction } from "../redux/reducers/postReducer"
+import { getOnePostAction } from "../redux/actions"
 import {
     bgBack,
     bgItem,

@@ -31,6 +31,9 @@ const auctionApi = {
         const url = `/auction-comments/${auctionId}/`
         return api.get(url)
     },
+    getNextPageAuction: (nextUrl) => {
+        return api.get(nextUrl)
+    },
     /**
      *Edit auction, user Formdata
      * @param {number} auctionId Id of Auction to update

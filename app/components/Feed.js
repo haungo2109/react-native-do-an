@@ -5,7 +5,7 @@ import { Entypo, AntDesign, MaterialCommunityIcons } from "@expo/vector-icons"
 import Avatar from "./Avatar"
 import { baseURL } from "../api/apiClient"
 import { useDispatch, useSelector } from "react-redux"
-import { dislikePost, likePost } from "../redux/reducers/postReducer"
+import { dislikePostAction, likePostAction } from "../redux/actions"
 import Colors from "../config/Colors"
 import Font from "../config/Font"
 import {
@@ -115,11 +115,11 @@ const Feed = ({
     })
 
     const handleLikeButton = () => {
-        dispatch(likePost(id))
+        dispatch(likePostAction(id))
     }
 
     const handleDislikeButton = () => {
-        dispatch(dislikePost(id))
+        dispatch(dislikePostAction(id))
     }
     const handlePressImage = (uri) => {
         setManagePressImage({
