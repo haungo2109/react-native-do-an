@@ -15,7 +15,7 @@ import {
 } from "./CreateEditAuctionScreen"
 import Font from "../config/Font"
 import i18n from "i18n-js"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import {
     bgBack,
     bgItem,
@@ -24,6 +24,8 @@ import {
     colorPlaceholder,
     colorText,
 } from "../config/PropertyCss"
+import { postFeedbackAction } from "../redux/actions"
+import { ToastAndroid } from "react-native"
 
 const Container = styled.View`
     flex: 1;
@@ -65,10 +67,25 @@ const TextInput = styled.TextInput`
     font-size: ${Font.big};
 `
 function FeedbackScreen(props) {
+    const dispatch = useDispatch()
     const [content, setContent] = useState("")
     const [title, setTitle] = useState("")
     const theme = useSelector((s) => s.setting.theme)
 
+    const handleSubmitFeeback = () => {
+        let data = { content, title }
+        dispatch(postFeedbackAction(data))
+            .unwrap()
+            .then((res) => {
+                ToastAndroid.show(
+                    i18n.t("txt.post-success"),
+                    ToastAndroid.SHORT
+                )
+            })
+            .catch((err) => {
+                ToastAndroid.show(i18n.t("txt.post-fail"), ToastAndroid.SHORT)
+            })
+    }
     return (
         <Container themeColor={theme === "light"}>
             <FormView themeColor={theme === "light"}>
@@ -127,7 +144,10 @@ function FeedbackScreen(props) {
                         })}
                     />
                 </Field>
-                <SubmitButton themeColor={theme === "light"}>
+                <SubmitButton
+                    themeColor={theme === "light"}
+                    onPress={handleSubmitFeeback}
+                >
                     <TextSubmitButton themeColor={theme === "light"}>
                         GỬI
                     </TextSubmitButton>

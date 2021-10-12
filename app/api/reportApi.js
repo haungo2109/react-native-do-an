@@ -25,6 +25,10 @@ const reportApi = {
         const url = "/report-type/?page_size=20"
         return api.get(url)
     },
+    postFeedback: (data) => {
+        const url = "/feedback/"
+        return api.post(url, data, config)
+    },
 }
 
 export default reportApi

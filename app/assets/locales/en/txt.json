@@ -24,5 +24,9 @@
     "label-language": "Choose language",
     "label-theme": "Choose theme",
     "light": "Light",
-    "dark": "Dark"
+    "dark": "Dark",
+    "send-success": "Send success",
+    "send-fail": "Send failed",
+    "post-success": "Post success",
+    "post-fail": "Post failed"
 }

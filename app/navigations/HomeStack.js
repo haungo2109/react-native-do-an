@@ -32,7 +32,7 @@ const TabHome = () => {
             initialRouteName="UserAuctionJoin"
             screenOptions={{
                 tabBarStyle: {
-                    backgroundColor: bgBack({ themeColor: theme === "light" }),
+                    backgroundColor: bgView({ themeColor: theme === "light" }),
                 },
             }}
         >

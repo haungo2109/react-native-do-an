@@ -257,7 +257,7 @@ const Feed = ({
                 transparent={false}
                 visible={managePressImage["show"]}
             >
-                <WrapperModelImage>
+                <WrapperModelImage themeColor={theme === "light"}>
                     <WrapperButtonClose>
                         <ButtonClose
                             onPress={() =>

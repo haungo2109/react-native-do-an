@@ -97,7 +97,7 @@ function PostDetailScreen({ route, navigation }) {
         })
     }
     return (
-        <Container>
+        <Container themeColor={theme === "light"}>
             {item?.user && <Feed {...item} handlePressMenu={handlePressMenu} />}
             <WrapperComment themeColor={theme === "light"}>
                 {data.map((c) => (
@@ -122,6 +122,7 @@ function PostDetailScreen({ route, navigation }) {
                         placeholderTextColor={colorPlaceholder({
                             themeColor: theme === "light",
                         })}
+                        themeColor={theme === "light"}
                     />
                     <ButtonSendComment onPress={handleSendComment}>
                         <Icon>

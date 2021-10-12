@@ -78,7 +78,7 @@ const ImageInput = ({ photo, setPhoto }) => {
     const widgetStyles = useMemo(
         () => ({
             margin: 2,
-            bgColor: bgBack({ themeColor: theme === "light" }),
+            bgColor: bgView({ themeColor: theme === "light" }),
             spinnerColor: Colors.blue6,
             widgetWidth: 99,
             videoIcon: {

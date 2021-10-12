@@ -5,8 +5,5 @@
         "version": "1.0.0",
         "assetBundlePatterns": ["**/*"]
     },
-    "name": "client-app-expo",
-    "android": {
-        "googleServicesFile": "./google-services.json"
-    }
+    "name": "client-app-expo"
 }

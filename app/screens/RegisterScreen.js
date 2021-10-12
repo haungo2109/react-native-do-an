@@ -39,7 +39,11 @@ const ButtonBorder = styled.TouchableOpacity`
 const TextButtonBorder = styled.Text`
     color: #f3f4f6;
 `
-const Input = styled.TextInput``
+const Input = styled.TextInput`
+    flex: 1;
+    justify-content: center;
+    text-align: center;
+`
 const InputImageButton = styled.TouchableOpacity``
 const TextInputImage = styled.Text``
 const Icon = styled.View`

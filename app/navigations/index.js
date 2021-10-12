@@ -51,7 +51,6 @@ const Stack = createNativeStackNavigator()
 const Drawer = createDrawerNavigator()
 
 function CustomDrawerContent(props) {
-    const dispatch = useDispatch()
     const theme = useSelector((s) => s.setting.theme)
     return (
         <View
@@ -240,6 +239,9 @@ const AppContainer = (props) => {
             const form = new FormData()
             form.append("push_token", push_token)
             dispatch(pushTokenUserAction(form))
+            dispatch(getPaymentMethodAction())
+            dispatch(getReportTypeAction())
+            dispatch(getCategoryAction())
         }
     }, [user])
 
@@ -252,9 +254,6 @@ const AppContainer = (props) => {
         }
     })
     useEffect(() => {
-        dispatch(getPaymentMethodAction())
-        dispatch(getReportTypeAction())
-        dispatch(getCategoryAction())
         registerForPushNotificationsAsync().then((token) => {
             dispatch(setPushToken(token))
         })

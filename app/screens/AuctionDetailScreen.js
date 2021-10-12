@@ -348,6 +348,7 @@ const ItemComment = ({ user, content, price, status_transaction, theme }) => {
 const SelectStatusComment = ({
     data,
     auctionId,
+    theme,
     statusComment = "in_process",
 }) => {
     const dispatch = useDispatch()
@@ -365,7 +366,7 @@ const SelectStatusComment = ({
     }
     return (
         <>
-            <FieldCustom>
+            <FieldCustom themeColor={theme === "light"}>
                 <Picker
                     selectedValue={commentSelect || "default"}
                     onValueChange={(val) => setCommentSelect(val)}
@@ -390,8 +391,13 @@ const SelectStatusComment = ({
                     )}
                 </Picker>
             </FieldCustom>
-            <ButtonSubmitCommentAuction onPress={handlSubmitStatusComment}>
-                <TextButtonSubmit>ĐẶT ĐỊNH GIÁ</TextButtonSubmit>
+            <ButtonSubmitCommentAuction
+                onPress={handlSubmitStatusComment}
+                themeColor={theme === "light"}
+            >
+                <TextButtonSubmit themeColor={theme === "light"}>
+                    ĐẶT ĐỊNH GIÁ
+                </TextButtonSubmit>
             </ButtonSubmitCommentAuction>
         </>
     )

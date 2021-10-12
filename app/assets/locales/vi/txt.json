@@ -24,5 +24,9 @@
     "label-language": "Chọn ngôn ngữ",
     "label-theme": "Chọn màu giao diện",
     "light": "Sáng",
-    "dark": "Tối"
+    "dark": "Tối",
+    "send-success": "Gửi thành công",
+    "send-fail": "Guiwr thaats bai",
+    "post-success": "Dang thanh cong",
+    "post-fail": "Dang that bai"
 }
