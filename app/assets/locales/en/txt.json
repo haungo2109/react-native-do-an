@@ -28,5 +28,9 @@
     "send-success": "Send success",
     "send-fail": "Send failed",
     "post-success": "Post success",
-    "post-fail": "Post failed"
+    "post-fail": "Post failed",
+    "title-introduction": "About Kanj",
+    "content-introduction": "Kanj Charity Social Network is a charity social networking application running on mobile phones, for the purpose of sharing information and creating auctions for charity purposes.",
+    "feature-app": "Features",
+    "content-feature": "- Sign in, sign in with Google, FB, register \n- Post, edit, delete posts, add comments, like, dislike \n- Post, edit, delete auctions, add pricing, like, dislike, select pricing \n- Online payment (Momo) \n- Report articles, report auction articles \n- Push Notifications \n- Light and dark interface \n- Vietnamese language, English \n- Send feedback"
 }

@@ -145,7 +145,7 @@ const CreateEditPostScreen = ({ navigation, route }) => {
                 "Lưu ý:",
                 "Bạn phải có nội dung hoặc hình ảnh để đăng."
             )
-        if (hashtag !== "")
+        if (hashtag)
             data.append("hashtag", hashtag.map((c) => c.slice(1)).join(","))
 
         dispatch(postPostAction(data))

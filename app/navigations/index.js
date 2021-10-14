@@ -41,17 +41,21 @@ import Colors from "../config/Colors"
 import TopDrawer from "../components/TopDrawer"
 import * as Localization from "expo-localization"
 import { setLanguage } from "../redux/reducers/settingReducer"
+import * as GoogleSignIn from "expo-google-sign-in"
 import {
     colorIconDrawDark,
     colorIconDrawLight,
     colorText,
 } from "../config/PropertyCss"
+import { logout } from "../redux/actions"
 
 const Stack = createNativeStackNavigator()
 const Drawer = createDrawerNavigator()
 
 function CustomDrawerContent(props) {
     const theme = useSelector((s) => s.setting.theme)
+    const dispatch = useDispatch()
+
     return (
         <View
             style={{
@@ -77,11 +81,12 @@ function CustomDrawerContent(props) {
                 }}
                 label={i18n.t("navigation.logout")}
                 onPress={() => {
-                    removeAll()
+                    dispatch(logout())
                     props.navigation.reset({
                         index: 0,
                         routes: [{ name: "Wellcome" }],
                     })
+                    GoogleSignIn.signOutAsync()
                 }}
                 icon={({ focused, size }) => (
                     <MaterialIcons
@@ -299,17 +304,27 @@ const AppContainer = (props) => {
             <Stack.Screen
                 name="Wellcome"
                 component={WellcomeScreen}
-                options={{ headerShown: false }}
+                options={{
+                    headerShown: false,
+                }}
             />
             <Stack.Screen
                 name="Login"
                 component={LoginScreen}
-                options={{ title: i18n.t("navigation.login") }}
+                options={{
+                    title: "",
+                    headerTintColor: Colors.gray2,
+                    headerTransparent: true,
+                }}
             />
             <Stack.Screen
                 name="Register"
                 component={RegisterScreen}
-                options={{ title: i18n.t("navigation.register") }}
+                options={{
+                    title: "",
+                    headerTintColor: Colors.gray2,
+                    headerTransparent: true,
+                }}
             />
             <Stack.Screen
                 name="App"

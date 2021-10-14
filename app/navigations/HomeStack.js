@@ -29,7 +29,7 @@ const TabHome = () => {
 
     return (
         <Tab.Navigator
-            initialRouteName="UserAuctionJoin"
+            initialRouteName="UserProfile"
             screenOptions={{
                 tabBarStyle: {
                     backgroundColor: bgView({ themeColor: theme === "light" }),

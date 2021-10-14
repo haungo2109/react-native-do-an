@@ -11,6 +11,7 @@ import settingReducer from "./settingReducer"
 import auctionJoinReducer from "./auctionJoinReducer"
 import myAuctionReducer from "./myAuctionReducer"
 import myPostReducer from "./myPostReducer"
+import postUserReducer from "./postUserReducer"
 
 const reducers = {
     user: userReducer,
@@ -26,6 +27,7 @@ const reducers = {
     auctionJoin: auctionJoinReducer,
     myAuction: myAuctionReducer,
     myPost: myPostReducer,
+    postUser: postUserReducer,
 }
 
 export default reducers

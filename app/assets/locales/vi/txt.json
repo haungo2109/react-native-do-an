@@ -26,7 +26,11 @@
     "light": "Sáng",
     "dark": "Tối",
     "send-success": "Gửi thành công",
-    "send-fail": "Guiwr thaats bai",
-    "post-success": "Dang thanh cong",
-    "post-fail": "Dang that bai"
+    "send-fail": "Gửi thất bại",
+    "post-success": "Đăng thành công",
+    "post-fail": "Đăng thất bại",
+    "title-introduction": "Giới thiệu Kanj",
+    "content-introduction": "Mạng xã hội từ thiện Kanj Haungo là một ứng dụng mạng xã hội từ thiện chạy trên điện thoại, nhằm mục đích chia sẻ thông tin và tạo các bài đấu giá nhằm mục đích từ thiện.",
+    "feature-app": "Các chức năng",
+    "content-feature": "- Đăng nhập, đăng nhập bằng Google, FB, đăng ký \n- Đăng, sửa xóa bài viết, thêm bình luận, like, dislike \n- Đăng, sửa xóa bài đấu giá, thêm định giá, like, dislike, chọn định giá \n- Thanh toán online (Momo) \n- Báo báo bài viết, báo cáo bài đấu giá \n- Thông báo đẩy \n- Giao diện sáng tối \n- Ngôn ngữ tiếng việt, English \n- Gửi phản hồi"
 }

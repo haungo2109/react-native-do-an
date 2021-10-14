@@ -155,11 +155,9 @@ export default class MomoPaymentScreen extends Component {
             jsonData.requestId = "your_requestId"
             jsonData.orderLabel = "Ma don hang"
             jsonData.appScheme = "momocgv20170101" // iOS App Only , get from Info.plist > key URL types > URL Schemes. Check Readme
-            console.log("data_request_payment " + JSON.stringify(jsonData))
             if (Platform.OS === "android") {
                 let dataPayment = await RNMomosdk.requestPayment(jsonData)
                 this.momoHandleResponse(dataPayment)
-                console.log("data_request_payment " + dataPayment.status)
             } else {
                 RNMomosdk.requestPayment(JSON.stringify(jsonData))
             }

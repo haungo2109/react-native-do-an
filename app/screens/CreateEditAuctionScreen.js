@@ -226,6 +226,7 @@ const CreateEditAuctionScreen = ({ navigation, route }) => {
                                 onChangeText={handleMultiInput("title")}
                                 value={input["title"]}
                                 placeholder="Nhập tiêu đề đấu giá..."
+                                themeColor={theme === "light"}
                             />
                         </Field>
                     )}
@@ -242,6 +243,7 @@ const CreateEditAuctionScreen = ({ navigation, route }) => {
                                 placeholderTextColor={colorPlaceholder({
                                     themeColor: theme === "light",
                                 })}
+                                themeColor={theme === "light"}
                                 multiline={true}
                                 numberOfLines={5}
                                 onChangeText={handleMultiInput("content")}
@@ -263,6 +265,7 @@ const CreateEditAuctionScreen = ({ navigation, route }) => {
                                 placeholderTextColor={colorPlaceholder({
                                     themeColor: theme === "light",
                                 })}
+                                themeColor={theme === "light"}
                                 onChangeText={handleMultiInput("base_price")}
                                 value={input["base_price"].toString()}
                                 placeholder="Nhập giá thấp nhất của sản phẩm..."
@@ -282,6 +285,7 @@ const CreateEditAuctionScreen = ({ navigation, route }) => {
                                 placeholderTextColor={colorPlaceholder({
                                     themeColor: theme === "light",
                                 })}
+                                themeColor={theme === "light"}
                                 multiline={true}
                                 numberOfLines={3}
                                 onChangeText={handleMultiInput("condition")}
@@ -303,6 +307,7 @@ const CreateEditAuctionScreen = ({ navigation, route }) => {
                                 placeholderTextColor={colorPlaceholder({
                                     themeColor: theme === "light",
                                 })}
+                                themeColor={theme === "light"}
                                 onChangeText={handleMultiInput("deadline")}
                                 value={input["deadline"]}
                                 placeholder="Nhập thời hạn đấu giá..."

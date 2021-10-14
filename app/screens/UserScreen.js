@@ -3,9 +3,8 @@ import styled from "styled-components/native"
 import Colors from "../config/Colors"
 import { useDispatch, useSelector } from "react-redux"
 import { baseURL } from "../api/apiClient"
-import { getMyPost as getMyPostAction } from "../redux/actions"
+import { getMorePostOfUserAction, getPostOfUserAction } from "../redux/actions"
 import ListFeed from "../components/ListFeed"
-import { ScrollView } from "react-native"
 import { getUserBaseInfoAction } from "../redux/reducers/userReducer"
 import { bgBack, colorTextTitle } from "../config/PropertyCss"
 
@@ -44,13 +43,15 @@ function UserScreen(props) {
     const dispatch = useDispatch()
     const [user, setUser] = useState()
     const theme = useSelector((s) => s.setting.theme)
+    const { data, nextPage } = useSelector((s) => s.postUser)
+
     useEffect(() => {
         dispatch(getUserBaseInfoAction(user_id))
             .unwrap()
             .then((res) => {
                 setUser(res)
             })
-        dispatch(getMyPostAction())
+        dispatch(getPostOfUserAction(user_id))
     }, [user_id])
 
     const renderHeader = () => (
@@ -63,9 +64,21 @@ function UserScreen(props) {
             </TextTitle>
         </ContainerProfile>
     )
+    const handleLoadMore = () => {
+        return dispatch(getMorePostOfUserAction(nextPage))
+    }
+    const handleRefresh = () => {
+        return dispatch(getPostOfUserAction(user_id))
+    }
     return (
         <Container themeColor={theme === "light"}>
-            <ListFeed headerComponent={renderHeader} />
+            <ListFeed
+                headerComponent={renderHeader}
+                data={data}
+                nextPage={nextPage}
+                handleLoadMore={handleLoadMore}
+                handleRefresh={handleRefresh}
+            />
         </Container>
     )
 }

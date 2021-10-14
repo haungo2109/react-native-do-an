@@ -1,0 +1,20 @@
+{
+    "auth": {
+        "accessToken": "ya29.a0ARrdaM-0CmkDCLh_A0VsrKgrIDWl9OSWMG-fan1PnYZnBKODSt0FbjtKv0KAnKZpgzhLGusTaXiWK2Lj_R2SO008ZWvz-sgGaNtOBb0OYLYiG7ilJZh9UTrW5zTNiZxhhdy3WSlDsOVPqxRBIr2nB8gKKGhK",
+        "accessTokenExpirationDate": null,
+        "idToken": null,
+        "refreshToken": null
+    },
+    "displayName": "Hau Ngo",
+    "email": "ngovanhau2109@gmail.com",
+    "firstName": "Hau",
+    "hostedDomain": "undefined",
+    "lastName": "Ngo",
+    "photoURL": "https://lh3.googleusercontent.com/a-/AOh14GgozqJheUDnWIHbNw6jM_Yf5O3VG9OdwXNwqgJl",
+    "scopes": [
+        "https://www.googleapis.com/auth/userinfo.email",
+        "https://www.googleapis.com/auth/userinfo.profile"
+    ],
+    "serverAuthCode": null,
+    "uid": "107008037916936383338"
+}

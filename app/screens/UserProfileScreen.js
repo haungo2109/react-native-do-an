@@ -12,6 +12,7 @@ import { updateCurrenUserAction } from "../redux/reducers/userReducer"
 import MakerPost from "../components/MakerPost"
 import i18n from "i18n-js"
 import { bgBack, colorTextTitle } from "../config/PropertyCss"
+import { ToastAndroid } from "react-native"
 
 const Container = styled.SafeAreaView`
     flex: 1;
@@ -92,7 +93,8 @@ function UserProfileScreen(props) {
     const { data, nextPage } = useSelector((state) => state.myPost)
     const { images } = useSelector((state) => state.controller.imageSelection)
     const { showModelEdit } = useModelEdit(i18n.t("btn.edit-profile"))
-    const { showModelImageSelection } = useModelImageSelection(1, 1)
+    const { showModelImageSelection, hiddenModelImageSelection } =
+        useModelImageSelection(1, 1)
 
     useEffect(() => {
         dispatch(getMyPostAction())
@@ -110,6 +112,15 @@ function UserProfileScreen(props) {
                 name: item.filename || `filename${i}.jpg`,
             })
             dispatch(updateCurrenUserAction({ id: user.id, data }))
+                .unwrap()
+                .then(() => {
+                    ToastAndroid.show("Đổi ảnh thành công", ToastAndroid.SHORT)
+                    hiddenModelImageSelection()
+                })
+                .catch(() => {
+                    ToastAndroid.show("Vui lòng thử lại", ToastAndroid.SHORT)
+                    hiddenModelImageSelection()
+                })
         }
     }, [images])
 

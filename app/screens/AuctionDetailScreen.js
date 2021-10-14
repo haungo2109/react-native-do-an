@@ -22,8 +22,10 @@ import {
 import {
     bgBack,
     bgBtn,
+    bgBtnSubmit,
     bgItem,
     colorBtn,
+    colorBtnSubmit,
     colorIcon,
     colorPlaceholder,
     colorText,
@@ -101,10 +103,10 @@ const TextStatusComment = styled.Text`
     background-color: ${Colors.red5};
 `
 const ButtonPayment = styled(SubmitButton)`
-    background-color: ${bgBtn};
+    background-color: ${bgBtnSubmit};
 `
 const TextButtonPayment = styled(TextSubmitButton)`
-    color: ${colorBtn};
+    color: ${colorBtnSubmit};
 `
 const WrapperTextInfo = styled.View`
     margin-top: 5px;
@@ -121,8 +123,11 @@ const TextInfo = styled.Text`
 function AuctionDetailScreen({ route, navigation }) {
     const dispatch = useDispatch()
 
-    const item = useSelector((s) =>
-        s.auction.data.find((c) => c.id == route.params.id)
+    const item = useSelector(
+        (s) =>
+            s.auction.data.find((c) => c.id == route.params.id) ||
+            s.auctionJoin.data.find((c) => c.id == route.params.id) ||
+            s.myAuction.data.find((c) => c.id == route.params.id)
     )
 
     const { data } = useSelector((state) => state.comment)
@@ -191,7 +196,7 @@ function AuctionDetailScreen({ route, navigation }) {
     const renderActionForBuyler = () => {
         switch (item.status_auction) {
             case "fail":
-            case "success":
+            case "succ":
                 return null
             case "in process":
                 if (item.payment_method === 1)

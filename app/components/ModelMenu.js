@@ -214,6 +214,9 @@ const ModelMenu = () => {
             handle: () => {
                 dispatch(deletePostAction(id))
                     .unwrap()
+                    .then(() => {
+                        ToastAndroid.show("Đã xóa bài viết", ToastAndroid.SHORT)
+                    })
                     .catch((err) => Alert.alert(err.message))
                 hiddenModelMenu()
             },
@@ -230,6 +233,12 @@ const ModelMenu = () => {
             handle: () => {
                 dispatch(deleteAuctionAction(id))
                     .unwrap()
+                    .then(() => {
+                        ToastAndroid.show(
+                            "Đã xóa bài đấu giá",
+                            ToastAndroid.SHORT
+                        )
+                    })
                     .catch((err) => Alert.alert(err.message))
                 hiddenModelMenu()
             },
@@ -272,7 +281,13 @@ const ModelMenu = () => {
                     })
                 )
                     .unwrap()
-                    .then(() => hiddenModelMenu())
+                    .then(() => {
+                        hiddenModelMenu()
+                        ToastAndroid.show(
+                            "Đã hủy giao dịch",
+                            ToastAndroid.SHORT
+                        )
+                    })
                     .catch((err) => Alert.alert(err.message))
             },
         },
@@ -288,7 +303,13 @@ const ModelMenu = () => {
                     })
                 )
                     .unwrap()
-                    .then(() => hiddenModelMenu())
+                    .then(() => {
+                        hiddenModelMenu()
+                        ToastAndroid.show(
+                            "Đấu giá thành công",
+                            ToastAndroid.SHORT
+                        )
+                    })
                     .catch((err) => Alert.alert(err.message))
             },
         },
@@ -298,7 +319,13 @@ const ModelMenu = () => {
             handle: () => {
                 dispatch(setFailAuctionAction(id))
                     .unwrap()
-                    .then(() => hiddenModelMenu())
+                    .then(() => {
+                        hiddenModelMenu()
+                        ToastAndroid.show(
+                            "Hủy đấu giá thành công",
+                            ToastAndroid.SHORT
+                        )
+                    })
                     .catch((err) => Alert.alert(err.message))
             },
         },

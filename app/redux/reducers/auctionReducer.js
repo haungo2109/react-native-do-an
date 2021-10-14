@@ -10,6 +10,7 @@ import {
     postAuctionAction,
     setFailAuctionAction,
     updateAuction,
+    postMomoPayAction,
 } from "../actions"
 
 const auctionSlice = createSlice({
@@ -142,6 +143,32 @@ const auctionSlice = createSlice({
         })
         builder.addCase(updateAuction.pending, (state, action) => {
             state = Object.assign(state, { loading: true })
+        })
+        builder.addCase(postMomoPayAction.fulfilled, (state, action) => {
+            let {
+                auction_id,
+                status_auction,
+                date_success,
+                accept_price,
+                buyer,
+            } = action.payload
+
+            let newState = state.data.map((c) =>
+                c.id != auction_id
+                    ? c
+                    : {
+                          ...c,
+                          status_auction,
+                          date_success,
+                          accept_price,
+                          buyer,
+                      }
+            )
+            state = Object.assign(state, {
+                data: newState,
+                error: "",
+                loading: false,
+            })
         })
     },
 })

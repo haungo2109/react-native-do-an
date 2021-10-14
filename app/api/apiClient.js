@@ -40,7 +40,8 @@ const handleError = (err) => {
     if (!err?.response) return Promise.reject("Lỗi app form điền bị sai.")
 
     const { status, data } = err.response
-
+    if (status === 500)
+        return Promise.reject("Máy chủ bị lỗi vui lòng thử lại.")
     if (status === 404 && data?.detail)
         return Promise.reject("Đối tượng này đã bị xóa!!!.")
     if (status === 400 && data?.username)

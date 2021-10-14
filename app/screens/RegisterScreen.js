@@ -1,7 +1,12 @@
 import React, { useState } from "react"
 import { Text } from "react-native"
 import { LinearGradient } from "expo-linear-gradient"
-import { ImageBackground, Container, Logo } from "./WellcomeScreen"
+import {
+    ImageBackground,
+    Container,
+    LogoWrapper,
+    LogoImage,
+} from "./WellcomeScreen"
 import { Feather } from "@expo/vector-icons"
 import styled from "styled-components/native"
 import useModelImageSelection from "../hooks/useModelImageSelection"
@@ -59,11 +64,11 @@ const ErrorText = styled.Text`
     background-color: ${Colors.red5};
 `
 const initState = {
-    first_name: "Dung",
-    last_name: "Ly",
-    username: "dungly",
-    password: "123456",
-    email: "dungly@gmail.com",
+    first_name: "",
+    last_name: "",
+    username: "",
+    password: "",
+    email: "",
     error: "",
 }
 function RegisterScreen({ navigation }, props) {
@@ -115,9 +120,9 @@ function RegisterScreen({ navigation }, props) {
             source={require("./../assets/images/background/story2.jpg")}
         >
             <Container>
-                <Logo>
-                    <Text>RegsterScreen view ahihi</Text>
-                </Logo>
+                <LogoWrapper>
+                    <LogoImage source={require("./../assets/logo/logo.png")} />
+                </LogoWrapper>
 
                 <GroupButton colors={["rgba(2,0,36,0)", "rgba(10,9,15,1)"]}>
                     {input.error !== "" ? (

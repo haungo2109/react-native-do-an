@@ -11,6 +11,10 @@ const postApi = {
         const url = "/post/"
         return api.get(url, { params })
     },
+    getPostOfUser: (uid) => {
+        const url = "/post/"
+        return api.get(url, { params: { id: uid } })
+    },
     postPost: (data) => {
         const url = "/post/"
         return api.post(url, data, config)

@@ -36,6 +36,18 @@ const userApi = {
         const url = "/user/"
         return api.post(url, data, config)
     },
+    loginByGG: (data) => {
+        const url = "/user/login-by-gg/"
+        return api.post(url, data, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+    },
+    loginByFB: (data) => {
+        const url = "/user/login-by-facebook/"
+        return api.post(url, data, config)
+    },
     getUserInfo: (id) => {
         const url = `/user/${id}/base-info/`
         return api.get(url)
@@ -51,6 +63,10 @@ const userApi = {
     pushTokenUser: (data) => {
         const url = `/user/push-token/`
         return api.post(url, data)
+    },
+    deleteTokenUser: () => {
+        const url = `/user/delete-token/`
+        return api.post(url)
     },
 }
 export default userApi

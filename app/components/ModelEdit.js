@@ -26,6 +26,7 @@ import {
     colorText,
     colorTextTitle,
 } from "../config/PropertyCss"
+import { ToastAndroid } from "react-native"
 
 const Row = styled.View`
     width: 95%;
@@ -150,6 +151,7 @@ const ModelEdit = () => {
     }
     const handleError = (err) => {
         setError(err.message)
+        ToastAndroid.show("Vui lòng thử lại", ToastAndroid.SHORT)
     }
     const handleSuccess = () => {
         setError("")

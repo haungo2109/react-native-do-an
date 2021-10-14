@@ -4,10 +4,12 @@ import { LinearGradient } from "expo-linear-gradient"
 import {
     ImageBackground,
     Container,
-    Logo,
     ButtonLink,
     TextLink,
     SmallText,
+    LogoWrapper,
+    LogoImage,
+    LogoText,
 } from "./WellcomeScreen"
 import { FontAwesome, Feather } from "@expo/vector-icons"
 import styled from "styled-components/native"
@@ -54,7 +56,11 @@ const ErrorText = styled.Text`
     border-radius: 2px;
     background-color: ${Colors.red5};
 `
-const Input = styled.TextInput``
+const Input = styled.TextInput`
+    flex: 1;
+    justify-content: center;
+    text-align: center;
+`
 const Icon = styled.View`
     margin-right: 6px;
     position: absolute;
@@ -100,9 +106,9 @@ function LoginScreen({ navigation, route }, props) {
             source={require("./../assets/images/background/story2.jpg")}
         >
             <Container>
-                <Logo>
-                    <Text>RegsterScreen view ahihi</Text>
-                </Logo>
+                <LogoWrapper>
+                    <LogoImage source={require("./../assets/logo/logo.png")} />
+                </LogoWrapper>
                 <GroupButton colors={["rgba(2,0,36,0)", "rgba(10,9,15,1)"]}>
                     {error !== "" && <ErrorText>{error}</ErrorText>}
                     <WapperInput>

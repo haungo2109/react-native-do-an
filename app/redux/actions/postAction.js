@@ -9,8 +9,22 @@ export const getAllPostAction = createAsyncThunk(
         return response
     }
 )
+export const getPostOfUserAction = createAsyncThunk(
+    "post/fetchPostOfUserAction",
+    async (uid) => {
+        const response = await postApi.getPostOfUser(uid)
+        return response
+    }
+)
 export const getMorePostAction = createAsyncThunk(
     "post/fetchMorePost",
+    async (nextPageUrl) => {
+        const response = await api.get(nextPageUrl)
+        return response
+    }
+)
+export const getMorePostOfUserAction = createAsyncThunk(
+    "post/getMorePostOfUserAction",
     async (nextPageUrl) => {
         const response = await api.get(nextPageUrl)
         return response
