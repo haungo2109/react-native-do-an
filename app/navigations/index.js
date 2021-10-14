@@ -47,7 +47,7 @@ import {
     colorIconDrawLight,
     colorText,
 } from "../config/PropertyCss"
-import { logout } from "../redux/actions"
+import { logoutAction } from "../redux/actions"
 
 const Stack = createNativeStackNavigator()
 const Drawer = createDrawerNavigator()
@@ -81,7 +81,7 @@ function CustomDrawerContent(props) {
                 }}
                 label={i18n.t("navigation.logout")}
                 onPress={() => {
-                    dispatch(logout())
+                    dispatch(logoutAction())
                     props.navigation.reset({
                         index: 0,
                         routes: [{ name: "Wellcome" }],
@@ -240,10 +240,12 @@ const AppContainer = (props) => {
     const { language } = useSelector((s) => s.setting)
 
     useEffect(() => {
-        if (user?.username && push_token) {
+        if (push_token) {
             const form = new FormData()
             form.append("push_token", push_token)
             dispatch(pushTokenUserAction(form))
+        }
+        if (user?.username) {
             dispatch(getPaymentMethodAction())
             dispatch(getReportTypeAction())
             dispatch(getCategoryAction())

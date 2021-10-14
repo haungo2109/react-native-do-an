@@ -1,3 +1,4 @@
+import { getData } from "../utils/AsyncStorage"
 import api, { client_id, client_secret } from "./apiClient"
 
 const config = {
@@ -16,21 +17,14 @@ const userApi = {
         const url = "/o/token/"
         return api.post(url, data, config)
     },
-    logout: () => {
+    logout: async () => {
         const url = "/o/revoke-token/"
-        return api.post(
-            url,
-            {
-                token: localStorage.getItem("Authorization"),
-                client_id: client_id,
-                client_secret: client_secret,
-            },
-            {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-            }
-        )
+        let formData = new FormData()
+        formData.append("token", auth)
+        formData.append("client_id", client_id)
+        formData.append("client_secret", client_secret)
+        const auth = await getData("Authorization")
+        return api.post(url, formData, config)
     },
     register: (data) => {
         const url = "/user/"

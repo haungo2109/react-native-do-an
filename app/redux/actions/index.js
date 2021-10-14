@@ -4,11 +4,16 @@ import userApi from "../../api/userApi"
 export * from "./auctionAction"
 export * from "./postAction"
 
-export const logout = createAsyncThunk("USER_LOGOUT", async () => {
-    await userApi.deleteTokenUser()
-    await userApi.logout()
-    return null
-})
+const logout = createAction("USER_LOGOUT")
+
+export const logoutAction = createAsyncThunk(
+    "USER_LOGOUT",
+    async (data, thunkAPI) => {
+        await userApi.deleteTokenUser()
+        thunkAPI.dispatch(logout())
+        return { res: "success" }
+    }
+)
 
 export const loginAction = createAsyncThunk(
     "auth/getToken",
