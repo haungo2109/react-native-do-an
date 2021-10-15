@@ -81,14 +81,14 @@ const auctionSlice = createSlice({
                 error: action.error.message || "Unknow error",
             })
         })
-        builder.addCase(postAuctionAction.fulfilled, (state, action) => {
-            let auction = action.payload
-            state = Object.assign(state, {
-                data: [...state.data, auction],
-                error: "",
-                loading: false,
-            })
-        })
+        // builder.addCase(postAuctionAction.fulfilled, (state, action) => {
+        //     let auction = action.payload
+        //     state = Object.assign(state, {
+        //         data: [...state.data, auction],
+        //         error: "",
+        //         loading: false,
+        //     })
+        // })
         builder.addCase(postAuctionAction.rejected, (state, action) => {
             state = Object.assign(state, {
                 error: action.error.message || "Unknow error",

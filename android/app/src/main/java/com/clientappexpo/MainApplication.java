@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.net.Uri;
 import com.reactlibrary.RNMomosdkPackage;
+import com.reactcommunity.rndatetimepicker.RNDateTimePickerPackage;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
@@ -43,6 +44,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       List<ReactPackage> packages = new PackageList(this).getPackages();
      packages.add(new ModuleRegistryAdapter(mModuleRegistryProvider));
+    //  packages.add(new RNDateTimePickerPackage());
     //   packages.add(new RNMomosdkPackage());
       return packages;
     }

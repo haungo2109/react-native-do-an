@@ -27,6 +27,7 @@ import {
     colorPlaceholder,
     colorText,
 } from "../config/PropertyCss"
+import moment from "moment"
 
 const Container = styled.View`
     height: ${(props) => props.heightContainer};
@@ -147,7 +148,9 @@ const Feed = ({
                             </User>
                             <Row>
                                 <Time themeColor={theme === "light"}>
-                                    {create_at}
+                                    {moment(create_at)
+                                        .utcOffset("+07:00")
+                                        .format("DD/MM hh:mm")}
                                 </Time>
                                 <Entypo
                                     name="dot-single"

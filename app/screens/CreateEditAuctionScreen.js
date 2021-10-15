@@ -27,6 +27,7 @@ import {
     colorText,
     colorTextTitle,
 } from "../config/PropertyCss"
+import DateTimeInput from "../components/DateTimeInput"
 
 export const TextTitle = styled.Text`
     font-size: ${Font.bigger};
@@ -94,10 +95,12 @@ const ErrorText = styled.Text`
 const CreateEditAuctionScreen = ({ navigation, route }) => {
     const dispatch = useDispatch()
     const { data, handleSubmit } = route.params
-    const listCategory = useSelector((s) => s.categoryAuction)
-    const paymentMethod = useSelector((s) => s.paymentMethod)
+
     const [error, setError] = useState("")
     const [input, setInput] = useState({ ...data })
+
+    const listCategory = useSelector((s) => s.categoryAuction)
+    const paymentMethod = useSelector((s) => s.paymentMethod)
     const theme = useSelector((s) => s.setting.theme)
 
     const handleMultiInput = (name) => {
@@ -303,11 +306,11 @@ const CreateEditAuctionScreen = ({ navigation, route }) => {
                                     color={colorIcon(theme === "light")}
                                 />
                             </Icon>
-                            <TextInput
+                            <DateTimeInput
                                 placeholderTextColor={colorPlaceholder({
                                     themeColor: theme === "light",
                                 })}
-                                themeColor={theme === "light"}
+                                theme={theme}
                                 onChangeText={handleMultiInput("deadline")}
                                 value={input["deadline"]}
                                 placeholder="Nhập thời hạn đấu giá..."

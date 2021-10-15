@@ -70,14 +70,14 @@ const postSlice = createSlice({
                 error: action.error.message || "Unknow error",
             })
         })
-        builder.addCase(postPostAction.fulfilled, (state, action) => {
-            let post = action.payload
-            state = Object.assign(state, {
-                data: [...state.data, post],
-                error: "",
-                loading: false,
-            })
-        })
+        // builder.addCase(postPostAction.fulfilled, (state, action) => {
+        //     let post = action.payload
+        //     state = Object.assign(state, {
+        //         data: [...state.data, post],
+        //         error: "",
+        //         loading: false,
+        //     })
+        // })
         builder.addCase(postPostAction.rejected, (state, action) => {
             state = Object.assign(state, {
                 error: action.error.message || "Unknow error",

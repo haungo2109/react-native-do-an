@@ -179,15 +179,11 @@ const ResultAuction = () => {
     const handleLoadMore = () => {
         return dispatch(getMoreAuctionAction(nextPage))
     }
-    const handleRefresh = () => {
-        return dispatch(getAllAuctionAction())
-    }
     return (
         <ListAuction
             data={data}
             nextPage={nextPage}
             handleLoadMore={handleLoadMore}
-            handleRefresh={handleRefresh}
         />
     )
 }
@@ -196,15 +192,11 @@ const ResultFeed = () => {
     const handleLoadMore = () => {
         return dispatch(getMorePostAction(nextPage))
     }
-    const handleRefresh = () => {
-        return dispatch(getAllPostAction())
-    }
     return (
         <ListFeed
             data={data}
             nextPage={nextPage}
             handleLoadMore={handleLoadMore}
-            handleRefresh={handleRefresh}
         />
     )
 }

@@ -10,6 +10,7 @@ import { baseURL } from "../api/apiClient"
 import { Dimensions, FlatList, Modal, View } from "react-native"
 import { useNavigation } from "@react-navigation/core"
 import i18n from "i18n-js"
+import moment from "moment"
 import {
     bgBack,
     bgBtn,
@@ -200,7 +201,9 @@ function Auction({
                             </User>
                             <Row>
                                 <Time themeColor={theme === "light"}>
-                                    {create_at}
+                                    {moment(create_at)
+                                        .utcOffset("+07:00")
+                                        .format("YYYY-MM-DD hh:mm")}
                                 </Time>
                                 <Entypo
                                     name="dot-single"
@@ -281,7 +284,9 @@ function Auction({
                                     <TextContent themeColor={theme === "light"}>
                                         {i18n.t("txt.date-success") +
                                             ": " +
-                                            date_success}
+                                            moment(date_success)
+                                                .utcOffset("+07:00")
+                                                .format("YYYY-MM-DD hh:mm")}
                                     </TextContent>
                                     <TextContent themeColor={theme === "light"}>
                                         {i18n.t("txt.buyer") +

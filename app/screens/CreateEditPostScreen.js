@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import Font from "../config/Font"
 import { Alert, Platform, ToastAndroid } from "react-native"
 import ImageInput from "../components/ImageInput"
-import { postPostAction, updatePost } from "../redux/actions"
+import { postPostAction, updatePost, updatePostAction } from "../redux/actions"
 import findHashtags from "../utils/FindHashTag"
 import {
     bgBack,
@@ -117,7 +117,7 @@ const CreateEditPostScreen = ({ navigation, route }) => {
         if (hashtag && hashtag !== data.hashtag)
             data.append("hashtag", hashtag.map((c) => c.slice(1)).join(","))
 
-        dispatch(updatePost({ id, data }))
+        dispatch(updatePostAction({ id, data }))
             .unwrap()
             .then(handleSuccess)
             .catch(handleError)
