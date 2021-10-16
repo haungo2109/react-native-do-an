@@ -1,20 +1,49 @@
+# Introduction
+
+Kanj app is a charity social networking application running on mobile phones, for the purpose of sharing information and creating auctions for charity purposes.
+
+# All of feature
+
+-   Manage feed
+-   Manage auction
+-   Search post by hashtag, username, content
+-   Search auction by username, category, price, title
+-   Change theme color, language
+-   Edit profile, change avatar
+-   Login with account, login by GG, register
+-   Like/dislike feed, auction
+-   Pay auction with Momo
+-   Notification when have new comment, accept auction, like feed, like auction
+-   Feedback
+
+# How to use
+
+## Start app with connect device by USB
+
+Required
+
+-   Android 5.0 (Lollipop) or newer
+-   USB debugging enabled
+-   connected via USB
+
+Run this command
+
 ```
-echo 256 | sudo tee -a /proc/sys/fs/inotify/max_user_instances
-echo 32768 | sudo tee -a /proc/sys/fs/inotify/max_queued_events
-echo 65536 | sudo tee -a /proc/sys/fs/inotify/max_user_watches
-watchman shutdown-server
+yarn android&&yarn start
 ```
 
-origin api ky : AIzaSyAq7E7zOctCSJ7vqMJg0YQ1CpU2ldnpjpQ
+## Start app with expo app in your phone
 
-server key AAAA4oN1NGc:APA91bGqU7-3NJN63dXzp_98wernQ8zqZ3xXQdJl3sqXDXoXhsSNhp6z0Uv-L0prhPaCG7JFlSsPrYL6ZR4BQ3nA_aKY-SkceUKGSlUMV3ukG-OPh9DpcnK6GUdU3IuPs6aQdc3tt3_y
-expo push:android:upload --api-key <your-token-here>
+Required
 
-update social_network_auction set status_auction="in process", accept_price=0, buyer_id=NULL, date_success=NULL where id = 22;
-update social_network_auctioncomment set status_transaction = "in process" where id = 15;
+-   Expo Go app installed
 
-Các chức năng:
-Thêm, sửa, xóa, like, dislike, report, search theo nội dung theo hashtag theo tên người đăng của bài viết chia sẻ từ thiện
-Thêm, sửa, xóa, hủy bỏ đấu giá, chọn người mua, like, dislike, report, search theo nội dung theo tiêu đề theo giá theo người đăng bài đấu giá
+### Step
 
-Ng bán đấu giá chọn xóa hay
+1. Run this command
+
+```
+expo start
+```
+
+2. Scan the QR code with Expo Go

@@ -34,7 +34,7 @@ const LogoText = styled.Text`
     font-size: 15px;
 `
 const GroupButton = styled.View`
-    flex: 6;
+    flex: 4;
     align-items: center;
     justify-content: center;
 `
@@ -188,7 +188,7 @@ function WellcomeScreen({ navigation }, props) {
                     <LogoText>{i18n.t("txt.slogan-app")}</LogoText>
                 </LogoWrapper>
                 <GroupButton>
-                    <ButtonFacebook onPress={handleLoginFacebook}>
+                    {/* <ButtonFacebook onPress={handleLoginFacebook}>
                         <Icon>
                             <FontAwesome5
                                 name="facebook-f"
@@ -197,7 +197,7 @@ function WellcomeScreen({ navigation }, props) {
                             />
                         </Icon>
                         <TextButtonFacebook>Facebook</TextButtonFacebook>
-                    </ButtonFacebook>
+                    </ButtonFacebook> */}
                     <Button onPress={handleLoginGoogle}>
                         <Icon>
                             <FontAwesome5

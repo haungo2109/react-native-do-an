@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { useDispatch, useSelector } from "react-redux"
 import {
@@ -231,18 +231,18 @@ Notifications.setNotificationHandler({
     }),
 })
 const AppContainer = (props) => {
+    const [token, setToken] = useState("")
     const user = useSelector((state) => state.user)
     const notificationListener = useRef()
     const responseListener = useRef()
     const dispatch = useDispatch()
     const navigation = useNavigation()
-    const push_token = useSelector((s) => s.notification.pushToken)
     const { language } = useSelector((s) => s.setting)
 
     useEffect(() => {
-        if (push_token) {
+        if (user?.username && token) {
             const form = new FormData()
-            form.append("push_token", push_token)
+            form.append("push_token", token)
             dispatch(pushTokenUserAction(form))
         }
         if (user?.username) {
@@ -263,6 +263,7 @@ const AppContainer = (props) => {
     useEffect(() => {
         registerForPushNotificationsAsync().then((token) => {
             dispatch(setPushToken(token))
+            setToken(token)
         })
 
         // This listener is fired whenever a notification is received while the app is foregrounded

@@ -87,11 +87,11 @@ function LoginScreen({ navigation, route }, props) {
         dispatch(loginAction(formData))
             .unwrap()
             .then(() => {
-                if (props?.expoPushToken && props.expoPushToken !== "") {
-                    let formPushToken = new FormData()
-                    formPushToken.append("push_token", expoPushToken)
-                    dispatch(pushTokenUserAction(formPushToken))
-                }
+                // if (props?.expoPushToken && props.expoPushToken !== "") {
+                //     let formPushToken = new FormData()
+                //     formPushToken.append("push_token", expoPushToken)
+                //     dispatch(pushTokenUserAction(formPushToken))
+                // }
                 navigation.navigate("App")
             })
             .catch((err) => {
