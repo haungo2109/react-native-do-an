@@ -77,6 +77,10 @@ const auctionApi = {
         const url = `/auction/${auctionId}/increase-vote/`
         return api.post(url, null, config)
     },
+    addRatingAuction: (auctionId, data) => {
+        const url = `/auction/${auctionId}/rating/`
+        return api.post(url, data, config)
+    },
     /**
      * This make a auction fail and cant be interact
      * @param {number} auctionId

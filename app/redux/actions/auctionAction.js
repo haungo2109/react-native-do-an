@@ -45,6 +45,13 @@ export const postMomoPayAction = createAsyncThunk(
         return response
     }
 )
+export const addRatingAuctionAction = createAsyncThunk(
+    "auction/addRatingAuction",
+    async ({auctionId, data}) => {
+        const response = await auctionApi.addRatingAuction(auctionId, data)
+        return response
+    }
+)
 export const getMyAuction = createAsyncThunk(
     "auction/fetchMyAuction",
     async () => {

@@ -47,3 +47,23 @@ expo start
 ```
 
 2. Scan the QR code with Expo Go
+
+# For production
+
+1. Build apk
+
+```
+cd android && ./gradlew assembleRelease
+```
+
+2. Install apk
+
+```
+adb install -r android/app/build/outputs/apk/release/app-release.apk
+```
+
+3. Start server
+
+```
+cd ../../btl_caccongnghelaptrinhhiendai/&&source venv/bin/activate.fish&&cd app&&python3 manage.py runserver 192.168.1.21:5000
+```

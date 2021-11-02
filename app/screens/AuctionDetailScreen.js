@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Alert, ScrollView } from "react-native"
+import { Alert, ScrollView, ToastAndroid } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import { baseURL } from "../api/apiClient"
@@ -16,6 +16,7 @@ import {
 import { Picker } from "@react-native-picker/picker"
 import { Field, SubmitButton, TextSubmitButton } from "../components/ModelEdit"
 import {
+    addRatingAuctionAction,
     changeStatusAuctionComment,
     getOneAuctionAction,
 } from "../redux/actions"
@@ -127,10 +128,6 @@ const WrapperRating = styled.View`
     background-color: ${bgItem};
     margin-bottom: 10px;
 `
-const ItemRating = styled.View`
-    flex: 1;
-    margin-bottom: 10px;
-`
 const TextRating = styled.Text`
     flex: 1;
     color: ${colorText};
@@ -209,7 +206,11 @@ function AuctionDetailScreen({ route, navigation }) {
         })
     }
     const handleRating = (rating) => {
-        
+        let data = new FormData()
+        data.append("rating", rating.toString())
+        dispatch(addRatingAuctionAction({ auctionId: item.id, data })).catch(err=>{
+            ToastAndroid.SHORT("Thêm không thành công.")
+        })
     }
     const renderActionForBuyler = () => {
         switch (item.status_auction) {
@@ -222,7 +223,7 @@ function AuctionDetailScreen({ route, navigation }) {
                                 Đánh giá sản phẩm
                             </TextRating>
                             <AirbnbRating
-                                defaultRating={0}
+                                defaultRating={item.rating || 0}
                                 count={10}
                                 size={20}
                                 reviewSize={20}

@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
 import {
+    addRatingAuctionAction,
     dislikeAuction,
     getAuctionYouJoin,
     getMoreJoinAuctionAction,
@@ -34,6 +35,13 @@ const auctionJoinSlice = createSlice({
             })
         })
         builder.addCase(likeAuction.fulfilled, (state, action) => {
+            let data = action.payload
+            let newState = state.data.map((c) =>
+                c.id != data["id"] ? c : data
+            )
+            state = Object.assign(state, { data: newState })
+        })
+        builder.addCase(addRatingAuctionAction.fulfilled, (state, action) => {
             let data = action.payload
             let newState = state.data.map((c) =>
                 c.id != data["id"] ? c : data

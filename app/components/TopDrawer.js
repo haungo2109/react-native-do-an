@@ -3,6 +3,10 @@ import Colors from "../config/Colors"
 import { useSelector } from "react-redux"
 import styled from "styled-components"
 import { baseURL } from "../api/apiClient"
+import { AirbnbRating, Rating } from "react-native-ratings"
+import ICON_STAR from "./../assets/icon/icons8-star-48.png"
+import { AntDesign } from "@expo/vector-icons"
+import { colorIconDrawDark, colorIconDrawLight } from "../config/PropertyCss"
 
 const Avatar = styled.Image`
     border-radius: 200px;
@@ -33,8 +37,9 @@ const Caption = styled.Text`
     color: ${(p) => (!p.themeColor ? Colors.gray3 : Colors.gray5)};
 `
 const WrapperExtraInfo = styled.View`
-    margin-top: 20px;
+    /* margin-top: 20px; */
     flex-direction: row;
+    justify-content: center;
     align-items: center;
 `
 const WrapperTextInfo = styled.View`
@@ -64,9 +69,40 @@ function TopDrawer(props) {
                         <TextName themeColor={theme === "light"}>
                             {user.first_name + " " + user.last_name}
                         </TextName>
-                        <Caption themeColor={theme === "light"}>@KanJ</Caption>
+                        <Caption themeColor={theme === "light"}>@Kanj</Caption>
                     </WrapperTextAvatar>
                 </WrapperAvatar>
+                {user.rating && (
+                    <WrapperExtraInfo>
+                        {[0, 2, 4, 6, 8].map((c) =>
+                            c < user.rating ? (
+                                <AntDesign
+                                    name="star"
+                                    size={24}
+                                    color={
+                                        theme === "light"
+                                            ? colorIconDrawLight(
+                                                  c < user.rating
+                                              )
+                                            : colorIconDrawDark(c < user.rating)
+                                    }
+                                />
+                            ) : (
+                                <AntDesign
+                                    name="staro"
+                                    size={24}
+                                    color={
+                                        theme === "light"
+                                            ? colorIconDrawLight(
+                                                  c < user.rating
+                                              )
+                                            : colorIconDrawDark(c < user.rating)
+                                    }
+                                />
+                            )
+                        )}
+                    </WrapperExtraInfo>
+                )}
                 {/* <WrapperExtraInfo>
                     <WrapperTextInfo>
                         <TextFigure>80</TextFigure>

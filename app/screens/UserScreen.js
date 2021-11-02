@@ -7,6 +7,7 @@ import { getMorePostOfUserAction, getPostOfUserAction } from "../redux/actions"
 import ListFeed from "../components/ListFeed"
 import { getUserBaseInfoAction } from "../redux/reducers/userReducer"
 import { bgBack, colorTextTitle } from "../config/PropertyCss"
+import { AirbnbRating } from "react-native-ratings"
 
 const Container = styled.SafeAreaView`
     flex: 1;
@@ -62,6 +63,13 @@ function UserScreen(props) {
             <TextTitle themeColor={theme === "light"}>
                 {user && user.full_name}
             </TextTitle>
+            {user && user.rating && <AirbnbRating
+                defaultRating={user.rating}
+                count={10}
+                size={20}
+                reviewSize={20}
+                showRating={false}
+            />}
         </ContainerProfile>
     )
     const handleLoadMore = () => {
