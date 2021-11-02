@@ -36,6 +36,7 @@ const refreshAccessToken = async () => {
 
 const handleError = (err) => {
     console.log("Handle error response: ", err)
+    if (err.message === "Network Error") return Promise.reject("Lỗi kết nối")
     if (!err?.response && err.status > 2000) return Promise.reject(err.message)
     if (!err?.response) return Promise.reject("Lỗi app form điền bị sai.")
 

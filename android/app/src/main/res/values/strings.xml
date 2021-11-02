@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">client-app-expo</string>
+    <string name="app_name">Kanj</string>
     <string name="facebook_app_id">232435275583717</string>
     <string name="facebook_client_token">0f666447c3664a51c543e25738cdddc3</string>
 </resources>

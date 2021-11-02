@@ -30,6 +30,7 @@ import {
     colorPlaceholder,
     colorText,
 } from "../config/PropertyCss"
+import { Rating, AirbnbRating } from "react-native-ratings"
 
 const Container = styled.ScrollView`
     background-color: ${bgBack};
@@ -119,7 +120,21 @@ const TextInfo = styled.Text`
     font-size: ${Font.big};
     color: ${colorText};
 `
-
+const WrapperRating = styled.View`
+    flex: 1;
+    padding: 11px;
+    border-radius: 7px;
+    background-color: ${bgItem};
+    margin-bottom: 10px;
+`
+const ItemRating = styled.View`
+    flex: 1;
+    margin-bottom: 10px;
+`
+const TextRating = styled.Text`
+    flex: 1;
+    color: ${colorText};
+`
 function AuctionDetailScreen({ route, navigation }) {
     const dispatch = useDispatch()
 
@@ -193,10 +208,29 @@ function AuctionDetailScreen({ route, navigation }) {
             comment_id: comment.id,
         })
     }
+    const handleRating = (rating) => {
+        
+    }
     const renderActionForBuyler = () => {
         switch (item.status_auction) {
             case "fail":
             case "succ":
+                if (item.payment_method === 1)
+                    return (
+                        <WrapperRating themeColor={theme === "light"}>
+                            <TextRating themeColor={theme === "light"}>
+                                Đánh giá sản phẩm
+                            </TextRating>
+                            <AirbnbRating
+                                defaultRating={0}
+                                count={10}
+                                size={20}
+                                reviewSize={20}
+                                showRating={false}
+                                onFinishRating={handleRating}
+                            />
+                        </WrapperRating>
+                    )
                 return null
             case "in process":
                 if (item.payment_method === 1)
