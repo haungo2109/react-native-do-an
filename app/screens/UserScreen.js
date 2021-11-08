@@ -8,6 +8,10 @@ import ListFeed from "../components/ListFeed"
 import { getUserBaseInfoAction } from "../redux/reducers/userReducer"
 import { bgBack, colorTextTitle } from "../config/PropertyCss"
 import { AirbnbRating } from "react-native-ratings"
+import { useNavigation } from "@react-navigation/core"
+import { AntDesign } from "@expo/vector-icons"
+import { addMember, getChatApi } from "../api/firebase"
+import i18n from "i18n-js"
 
 const Container = styled.SafeAreaView`
     flex: 1;
@@ -38,13 +42,36 @@ const ContainerProfile = styled.View`
     align-items: center;
     background-color: ${bgBack};
 `
+const ButtonEditProfile = styled.TouchableOpacity`
+    height: 42px;
+    width: 100%;
+    flex-direction: row;
+    margin-top: 15px;
+    color: ${Colors.facebookColor};
+    border-radius: 7px;
+    align-items: center;
+    justify-content: center;
+    background-color: ${Colors.facebookColor};
+`
+const TextButtonEditProfile = styled.Text`
+    color: ${Colors.gray1};
+    font-weight: bold;
+`
+const Icon = styled.View`
+    margin-right: 5px;
+    justify-content: center;
+    align-items: center;
+`
 
 function UserScreen(props) {
     const { user_id } = props.route.params
     const dispatch = useDispatch()
+    const navigation = useNavigation()
     const [user, setUser] = useState()
+    const [chatId, setChatId] = useState(null)
     const theme = useSelector((s) => s.setting.theme)
     const { data, nextPage } = useSelector((s) => s.postUser)
+    const myUser = useSelector((s) => s.user)
 
     useEffect(() => {
         dispatch(getUserBaseInfoAction(user_id))
@@ -53,8 +80,25 @@ function UserScreen(props) {
                 setUser(res)
             })
         dispatch(getPostOfUserAction(user_id))
+        if (myUser?.id && user_id)
+            getChatApi(myUser.id, user_id).then((id) => id && setChatId(id))
     }, [user_id])
 
+    const handleChatWith = () => {
+        if (chatId) {
+            navigation.navigate("Chat", {
+                chatId,
+                chatWith: user,
+            })
+        } else {
+            addMember(myUser.id, user_id).then((id) => {
+                navigation.navigate("Chat", {
+                    chatId: id,
+                    chatWith: user,
+                })
+            })
+        }
+    }
     const renderHeader = () => (
         <ContainerProfile themeColor={theme === "light"}>
             <WrrapperAvatar>
@@ -63,13 +107,26 @@ function UserScreen(props) {
             <TextTitle themeColor={theme === "light"}>
                 {user && user.full_name}
             </TextTitle>
-            {user && user.rating && <AirbnbRating
-                defaultRating={user.rating}
-                count={10}
-                size={20}
-                reviewSize={20}
-                showRating={false}
-            />}
+            {user && user.rating && (
+                <AirbnbRating
+                    defaultRating={user.rating}
+                    count={10}
+                    size={20}
+                    reviewSize={20}
+                    showRating={false}
+                />
+            )}
+            <ButtonEditProfile
+                onPress={handleChatWith}
+                themeColor={theme === "light"}
+            >
+                <Icon>
+                    <AntDesign name="wechat" size={15} color="white" />
+                </Icon>
+                <TextButtonEditProfile themeColor={theme === "light"}>
+                    {i18n.t("btn.chat")}
+                </TextButtonEditProfile>
+            </ButtonEditProfile>
         </ContainerProfile>
     )
     const handleLoadMore = () => {

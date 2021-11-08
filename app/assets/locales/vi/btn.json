@@ -18,5 +18,6 @@
     "model-menu-set-fail-comment": "Hủy giao dịch này",
     "model-menu-set-success-comment": "Giao dịch đã thành công",
     "model-menu-set-fail-auction": "Hủy đấu giá",
-    "send": "GỬI"
+    "send": "GỬI",
+    "chat": "Tin nhắn"
 }

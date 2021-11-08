@@ -18,5 +18,6 @@
     "model-menu-set-fail-comment": "Cancel the transaction",
     "model-menu-set-success-comment": "Set transaction success",
     "model-menu-set-fail-auction": "Cancel the auction",
-    "send": "Send"
+    "send": "Send",
+    "chat": "Chat with"
 }

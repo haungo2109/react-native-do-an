@@ -48,6 +48,8 @@ import {
     colorText,
 } from "../config/PropertyCss"
 import { logoutAction } from "../redux/actions"
+import MessagesScreen from "../screens/MessagesScreen"
+import ChatScreen from "../screens/ChatScreen"
 
 const Stack = createNativeStackNavigator()
 const Drawer = createDrawerNavigator()
@@ -165,6 +167,22 @@ const AppDrawer = () => {
                     drawerIcon: ({ focused, size }) => (
                         <FontAwesome
                             name="list-alt"
+                            size={size}
+                            color={color(focused)}
+                        />
+                    ),
+                    drawerLabelStyle,
+                }}
+            />
+            <Drawer.Screen
+                name="Message"
+                component={MessagesScreen}
+                options={{
+                    headerShown: false,
+                    title: i18n.t("navigation.chat"),
+                    drawerIcon: ({ focused, size }) => (
+                        <AntDesign
+                            name="wechat"
                             size={size}
                             color={color(focused)}
                         />
@@ -333,6 +351,11 @@ const AppContainer = (props) => {
                 name="App"
                 component={AppDrawer}
                 options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="Chat"
+                component={ChatScreen}
+                options={{ title: i18n.t("navigation.chat") }}
             />
             <Stack.Screen
                 name="User"
