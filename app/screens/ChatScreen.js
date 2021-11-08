@@ -43,7 +43,7 @@ const ChatScreen = ({ route }) => {
             isMounted = false
             return sub
         }
-    }, [])
+    }, [chatId])
 
     const onSend = useCallback((messages = []) => {
         const message = messages[0]

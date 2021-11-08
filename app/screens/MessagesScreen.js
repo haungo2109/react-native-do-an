@@ -9,8 +9,8 @@ import moment from "moment"
 
 export const Container = styled.View`
     flex: 1;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 11px;
+    padding-right: 11px;
     align-items: center;
     background-color: #ffffff;
 `
@@ -25,8 +25,8 @@ export const UserInfo = styled.View`
 `
 
 export const UserImgWrapper = styled.View`
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding-top: 11px;
+    padding-bottom: 11px;
 `
 
 export const UserImg = styled.Image`
@@ -50,6 +50,7 @@ export const UserInfoText = styled.View`
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 5px;
+    margin-right: 11px;
 `
 
 export const UserName = styled.Text`

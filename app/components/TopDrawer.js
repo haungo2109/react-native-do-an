@@ -37,21 +37,9 @@ const Caption = styled.Text`
     color: ${(p) => (!p.themeColor ? Colors.gray3 : Colors.gray5)};
 `
 const WrapperExtraInfo = styled.View`
-    /* margin-top: 20px; */
     flex-direction: row;
     justify-content: center;
     align-items: center;
-`
-const WrapperTextInfo = styled.View`
-    flex-direction: row;
-    align-items: center;
-    margin-right: 15px;
-`
-const TextFigure = styled.Text`
-    font-weight: bold;
-    margin-right: 3px;
-    font-size: 14px;
-    line-height: 14px;
 `
 function TopDrawer(props) {
     const user = useSelector((s) => s.user)
@@ -74,9 +62,10 @@ function TopDrawer(props) {
                 </WrapperAvatar>
                 {user.rating && (
                     <WrapperExtraInfo>
-                        {[0, 2, 4, 6, 8].map((c) =>
-                            c < user.rating ? (
+                        {[0, 2, 4, 6, 8].map((c, i) =>
+                            c <= user.rating ? (
                                 <AntDesign
+                                    key={i}
                                     name="star"
                                     size={24}
                                     color={
@@ -89,6 +78,7 @@ function TopDrawer(props) {
                                 />
                             ) : (
                                 <AntDesign
+                                    key={i}
                                     name="staro"
                                     size={24}
                                     color={
@@ -103,16 +93,6 @@ function TopDrawer(props) {
                         )}
                     </WrapperExtraInfo>
                 )}
-                {/* <WrapperExtraInfo>
-                    <WrapperTextInfo>
-                        <TextFigure>80</TextFigure>
-                        <Caption>Following</Caption>
-                    </WrapperTextInfo>
-                    <WrapperTextInfo>
-                        <TextFigure>100</TextFigure>
-                        <Caption>Followers</Caption>
-                    </WrapperTextInfo>
-                </WrapperExtraInfo> */}
             </Container>
         </>
     )
