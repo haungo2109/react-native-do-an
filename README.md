@@ -15,8 +15,12 @@ Kanj app is a charity social networking application running on mobile phones, fo
 -   Pay auction with Momo
 -   Notification when have new comment, accept auction, like feed, like auction
 -   Feedback
+-   Chat
+-   Rating user
 
 # How to use
+
+You have 2 way to start project in development
 
 ## Start app with connect device by USB
 
@@ -62,7 +66,7 @@ cd android && ./gradlew assembleRelease
 adb install -r android/app/build/outputs/apk/release/app-release.apk
 ```
 
-3. Start server
+3. Start server local
 
 ```
 cd ../../btl_caccongnghelaptrinhhiendai/&&source venv/bin/activate.fish&&cd app&&python3 manage.py runserver 192.168.1.21:5000
