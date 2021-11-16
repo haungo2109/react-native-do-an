@@ -51,3 +51,19 @@ export default function App() {
         </Provider>
     )
 }
+const listPrices = () => {
+    console.log(lobbies)
+    if (lobbies?.wedding_lobby_prices?.length) {
+        console.log(lobbies.wedding_lobby_prices)
+        return lobbies.wedding_lobby_prices.map((p) => {
+            return (
+                <div key={p.time}>
+                    {p.time === 1 && <div>Buổi sáng: {p.price} VNĐ</div>}
+                    {p.time === 2 && <div>Buổi trưa: {p.price} VNĐ</div>}
+                    {p.time === 3 && <div>Buổi tối: {p.price} VNĐ</div>}
+                </div>
+            )
+        })
+    }
+    return null
+}
